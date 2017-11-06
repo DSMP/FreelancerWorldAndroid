@@ -1,6 +1,7 @@
 package not_an_example.com.freelancerworld.Utils;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -20,16 +21,19 @@ public class SendPostRequest {
 
         HttpURLConnection httpConnection= null;
         try {
-
             httpConnection= (HttpURLConnection) new URL(params[0]).openConnection();
+            httpConnection.setRequestProperty( "Content-Type", "application/json");
+            httpConnection.setRequestProperty( "charset", "utf-8");
             httpConnection.setRequestMethod("POST");
             httpConnection.setDoOutput(true);
 
             DataOutputStream outputStream= new DataOutputStream(httpConnection.getOutputStream());
-            outputStream.writeBytes("PostData=" + params[1]);
+            Log.v("========sendData", params[1]);
+            outputStream.writeBytes(params[1]);
             outputStream.flush();
             outputStream.close();
 
+            Thread.sleep(1000);
             InputStream in = httpConnection.getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(in);
 

@@ -13,8 +13,8 @@ public class UserModel {
     public String lastName;
     public String active;
     public RoleModel[] roleModels;
-    public String professions;
-    public String addresses;
-    public String orderMaker;
-    public String orderTaker;
+    public String[] professions;
+    public String[] addresses;
+    public String[] orderMaker;
+    public String[] orderTaker;
 }

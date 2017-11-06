@@ -351,7 +351,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                // try {
                     SendPostRequest sendPostRequest = new SendPostRequest();
-                    String returnedRequestedData = sendPostRequest.SendRequest("http://127.0.0.1:8080/user/login", ("{\n" +
+                    String returnedRequestedData = sendPostRequest.SendRequest("http://192.168.0.51:8080/user/login", ("{\n" +
                             "    \"email\": \"damian@wp.pl\",\n" +
                             "    \"password\": \"$2a$10$sIeySX7g2hjgouU0pb9AUeHg9f47zxsh4nw1B8StEOzitHGb9rf.y\"\n" +
                             "}\n"));
