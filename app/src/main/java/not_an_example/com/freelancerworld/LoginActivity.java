@@ -125,8 +125,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void attemptRegister() {
         Intent intent = new Intent(this, RegisterActivity.class);
-        intent.putExtra("m_email", mEmailView.getText());
-        intent.putExtra("m_pass", mPasswordView.getText());
+        intent.putExtra("m_email", mEmailView.getText().toString());
+        intent.putExtra("m_pass", mPasswordView.getText().toString());
         startActivity(intent);
     }
 

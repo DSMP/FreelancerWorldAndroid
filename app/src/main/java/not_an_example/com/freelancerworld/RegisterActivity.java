@@ -31,8 +31,8 @@ public class RegisterActivity extends AppCompatActivity {
                 attemptRegister();
             }
         });
-        mEmail.setText(savedInstanceState.getString("m_email"));
-        mPass.setText(savedInstanceState.getString("m_pass"));
+        mEmail.setText(getIntent().getStringExtra("m_email"));
+        mPass.setText(getIntent().getStringExtra("m_pass"));
     }
 
     private void attemptRegister() {
