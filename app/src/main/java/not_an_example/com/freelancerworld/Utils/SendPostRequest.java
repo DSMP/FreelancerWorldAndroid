@@ -33,7 +33,7 @@ public class SendPostRequest {
             outputStream.flush();
             outputStream.close();
 
-            Thread.sleep(1000);
+//            Thread.sleep(1000);
             InputStream in = httpConnection.getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(in);
 
