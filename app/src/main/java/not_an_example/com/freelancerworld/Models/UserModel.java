@@ -12,7 +12,7 @@ public class UserModel {
     public String name;
     public String lastName;
     public String active;
-    public Role[] roles;
+    public RoleModel[] roleModels;
     public String professions;
     public String addresses;
     public String orderMaker;

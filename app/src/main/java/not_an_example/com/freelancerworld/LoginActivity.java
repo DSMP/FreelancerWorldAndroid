@@ -30,6 +30,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,6 +50,7 @@ import java.util.List;
 
 import javax.xml.transform.stream.StreamResult;
 
+import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.SendPostRequest;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -353,6 +356,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             "    \"password\": \"$2a$10$sIeySX7g2hjgouU0pb9AUeHg9f47zxsh4nw1B8StEOzitHGb9rf.y\"\n" +
                             "}\n"));
                     Log.v("GSON", returnedRequestedData);
+
+                Gson gson = new Gson();
+                UserModel user = gson.fromJson(returnedRequestedData, UserModel.class);
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
