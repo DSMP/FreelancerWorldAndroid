@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,8 +30,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.transform.stream.StreamResult;
+
+import not_an_example.com.freelancerworld.Utils.SendPostRequest;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -311,12 +329,39 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 // Simulate network access.
 
+//                URL url = new URL("http://localhost:8080/user/login");
+//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+//                urlConnection.setRequestMethod("POST");
+//                try {
+//                    urlConnection.setDoOutput(true);
+//                    OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+//                    out.write(("{\n" +
+//                            "    \"email\": \"damian@wp.pl\",\n" +
+//                            "    \"password\": \"$2a$10$sIeySX7g2hjgouU0pb9AUeHg9f47zxsh4nw1B8StEOzitHGb9rf.y\"\n" +
+//                            "}\n").getBytes(Charset.forName("UTF-8")));
+//                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+//                    String JsonProfile = in.toString();
+//                    Log.v("GSON", JsonProfile);
+//                } finally {
+//                    urlConnection.disconnect();
+//                }
 
-
+               // try {
+                    SendPostRequest sendPostRequest = new SendPostRequest();
+                    String returnedRequestedData = sendPostRequest.SendRequest("http://127.0.0.1:8080/user/login", ("{\n" +
+                            "    \"email\": \"damian@wp.pl\",\n" +
+                            "    \"password\": \"$2a$10$sIeySX7g2hjgouU0pb9AUeHg9f47zxsh4nw1B8StEOzitHGb9rf.y\"\n" +
+                            "}\n"));
+                    Log.v("GSON", returnedRequestedData);
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
             }
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");

@@ -1,6 +1,5 @@
 package not_an_example.com.freelancerworld.Models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by Damianek on 06-Nov-17.
