@@ -1,9 +1,10 @@
 package not_an_example.com.freelancerworld.Models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by Damianek on 06-Nov-17.
  */
-
 public class UserModel {
 
     public int id;
