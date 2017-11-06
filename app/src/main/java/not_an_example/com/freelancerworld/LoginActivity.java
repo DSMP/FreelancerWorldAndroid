@@ -3,6 +3,7 @@ package not_an_example.com.freelancerworld;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -110,9 +111,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin();
             }
         });
+        Button mEmailSignUpButton = (Button) findViewById(R.id.to_register_button);
+        mEmailSignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptRegister();
+            }
+        });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void attemptRegister() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("m_email", mEmailView.getText());
+        intent.putExtra("m_pass", mPasswordView.getText());
+        startActivity(intent);
     }
 
     private void populateAutoComplete() {
@@ -336,18 +351,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         "    \"password\": \"" + mPassword + "\"\n" +
                         "}\n"));
                 Log.v("GSON", returnedRequestedData);
-//$2a$10$sIeySX7g2hjgouU0pb9AUeHg9f47zxsh4nw1B8StEOzitHGb9rf.y
                 Gson gson = new Gson();
                 UserModel user = gson.fromJson(returnedRequestedData, UserModel.class);
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
             }
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
@@ -367,7 +376,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                StartDashboard();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -379,6 +388,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    private void StartDashboard() {
+
+
     }
 }
 
