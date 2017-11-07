@@ -349,14 +349,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            Gson gson = new Gson();
             try {
-                String responseData = new SendPostRequest().body("http://192.168.0.51:8080/user/login", ("{\n" +
-                                "    \"email\": \"" + mEmail + "\",\n" +
-                                "    \"password\": \"" + mPass + "\"\n" +
-                                "}\n"));
-                Log.v("GSON", responseData);
-                Gson gson = new Gson();
-                UserModel user = gson.fromJson(responseData, UserModel.class);
+                UserModel user = new UserModel();
+                user.email = mEmail;
+                user.password = mPassword;
+                String userJson = gson.toJson(user);
+                String responseData = new SendPostRequest().body("http://192.168.0.51:8080/user/login", userJson);
+                //Log.v("======GSON", responseData);
+//                UserModel user = gson.fromJson(responseData, UserModel.class);
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;

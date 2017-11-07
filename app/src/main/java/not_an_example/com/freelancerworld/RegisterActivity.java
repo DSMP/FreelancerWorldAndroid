@@ -16,6 +16,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mEmail;
     private EditText mPass;
     private EditText mRePass;
+    private EditText mName;
+    private EditText mSurname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,8 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.email);
         mPass = (EditText) findViewById(R.id.password);
         mRePass = (EditText) findViewById(R.id.re_password);
+        mName = (EditText) findViewById(R.id.name);
+        mSurname = (EditText) findViewById(R.id.surname);
         Button mSignUp = (Button) findViewById(R.id.sign_up);
         mSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,10 +40,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
-        if (isEmailValid(mEmail.getText().toString()) && isPasswordValid(mPass.getText().toString(), mRePass.getText().toString()))
-            //asynccc!!!!
+        String email = mEmail.getText().toString();
+        String pass = mPass.getText().toString();
+        String name = mName.getText().toString();
+        String surname = mSurname.getText().toString();
+        if (isEmailValid(email.toString()) && isPasswordValid(pass.toString(), mRePass.getText().toString())
+                && !name.isEmpty() && !surname.isEmpty())
         new SendPostRequest().execute("http://192.168.0.51:8080/user/register",
-                String.format("{\n    email: %s,\n    password: %s\n}", mEmail.getText(), mPass.getText()));
+                String.format("{email: %s, password: %s, name: %s, lastName: %s}",
+                                mEmail.getText(), mPass.getText(), name, surname));
         else {
             Log.v("==========register","failed");
         }
