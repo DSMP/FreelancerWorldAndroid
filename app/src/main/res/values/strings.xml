@@ -17,4 +17,6 @@
         completions."
     </string>
     <string name="sign_up">Sign Up</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_surname">Surname</string>
 </resources>
