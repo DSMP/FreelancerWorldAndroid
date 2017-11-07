@@ -400,6 +400,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("user_profile", UserProfile);
         startActivity(intent);
+        finish();
     }
 }
 
