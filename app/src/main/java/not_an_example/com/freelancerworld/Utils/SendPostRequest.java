@@ -13,10 +13,15 @@ import java.net.URL;
  * Created by Damianek on 06-Nov-17.
  */
 
-public class SendPostRequest {
+public class SendPostRequest extends AsyncTask<String, Integer, String> {
 
-    public String SendRequest(String... params) {
+    @Override
+    protected String doInBackground(String... params) {
+       return body(params);
+    }
 
+    public String body(String... params)
+    {
         String postData = "";
 
         HttpURLConnection httpConnection= null;
@@ -28,7 +33,7 @@ public class SendPostRequest {
             httpConnection.setDoOutput(true);
 
             DataOutputStream outputStream= new DataOutputStream(httpConnection.getOutputStream());
-            Log.v("========sendData", params[1]);
+            Log.v("========sentData", params[1]);
             outputStream.writeBytes(params[1]);
             outputStream.flush();
             outputStream.close();
@@ -50,6 +55,12 @@ public class SendPostRequest {
                 httpConnection.disconnect();
             }
         }
+        Log.v("========receivedData", postData);
         return postData;
+    }
+
+    protected void OnPostExecute(String result)
+    {
+        super.onPostExecute(result);
     }
 }

@@ -48,6 +48,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.xml.transform.stream.StreamResult;
 
@@ -83,6 +84,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private String mEmail;
+    private String mPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,6 +224,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+            mEmail = email;
+            mPass = password;
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
@@ -345,14 +350,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
             try {
-                SendPostRequest sendPostRequest = new SendPostRequest();
-                String returnedRequestedData = sendPostRequest.SendRequest("http://192.168.0.51:8080/user/login", ("{\n" +
-                        "    \"email\": \"" + mEmail + "\",\n" +
-                        "    \"password\": \"" + mPassword + "\"\n" +
-                        "}\n"));
-                Log.v("GSON", returnedRequestedData);
+                String responseData = new SendPostRequest().body("http://192.168.0.51:8080/user/login", ("{\n" +
+                                "    \"email\": \"" + mEmail + "\",\n" +
+                                "    \"password\": \"" + mPass + "\"\n" +
+                                "}\n"));
+                Log.v("GSON", responseData);
                 Gson gson = new Gson();
-                UserModel user = gson.fromJson(returnedRequestedData, UserModel.class);
+                UserModel user = gson.fromJson(responseData, UserModel.class);
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
