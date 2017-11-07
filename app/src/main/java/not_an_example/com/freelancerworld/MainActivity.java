@@ -1,5 +1,7 @@
 package not_an_example.com.freelancerworld;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity
     private TextView mNickNameView;
     private TextView mFullNameView;
     private TextView mSpecView;
+    private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +78,25 @@ public class MainActivity extends AppCompatActivity
         mNickNameView = (TextView) findViewById(R.id.nickNameView);
         mFullNameView = (TextView) findViewById(R.id.fullNameView);
         mSpecView = (TextView) findViewById(R.id.specView);
+        mImageView = (ImageView) findViewById(R.id.logOffImageView);
         mNickNameView.setText(userModel.email);
         mFullNameView.setText(userModel.name + userModel.lastName);
         mSpecView.setText("nie mam specki");
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOff();
+            }
+        });
         return true;
+    }
+
+    private void logOff()
+    {
+        Intent LogingIntent = new Intent(this, LoginActivity.class);
+//        setResult( Activity.RESULT_OK, LogingIntent );
+        startActivity(LogingIntent);
+        finish();
     }
 
     @Override
