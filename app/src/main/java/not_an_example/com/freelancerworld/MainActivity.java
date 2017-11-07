@@ -13,8 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.gson.Gson;
+
+import not_an_example.com.freelancerworld.Models.UserModel;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    UserModel userModel;
+    Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,10 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        userModel = new UserModel();
+        gson = new Gson();
+        userModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
     }
 
     @Override
@@ -80,17 +91,15 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.JobsTaken) {
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.JobFilters) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.MakeJob) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.YourProfile) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.Settings) {
 
         }
 
