@@ -37,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void attemptRegister() {
         if (isEmailValid(mEmail.getText().toString()) && isPasswordValid(mPass.getText().toString(), mRePass.getText().toString()))
+            //asynccc!!!!
         new SendPostRequest().SendRequest("http://192.168.0.51:8080/user/register",
                 String.format("{email: {0},password: {1}}", mEmail.getText(), mPass.getText()));
         else {
