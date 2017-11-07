@@ -24,21 +24,21 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-
+<<<<<<< HEAD
             android:label="@string/title_activity_login">
-
-
-
-           <intent-filter>
+=======
+            android:label="@string/title_activity_login" >
+>>>>>>> feature/registration
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
+<<<<<<< HEAD
+=======
         <activity android:name=".RegisterActivity"/>
-
+>>>>>>> feature/registration
     </application>
 
 </manifest>
