@@ -48,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         String name = mName.getText().toString();
         String surname = mSurname.getText().toString();
         if (isEmailValid(email.toString()) && isPasswordValid(pass.toString(), mRePass.getText().toString())
-                && !name.isEmpty() && !surname.isEmpty())
+                && !name.isEmpty() && !surname.isEmpty() && !pass.isEmpty() && !email.isEmpty())
         {
             Gson gson = new Gson();
             UserModel user = new UserModel();
