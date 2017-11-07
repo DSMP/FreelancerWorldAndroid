@@ -16,6 +16,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mEmail;
     private EditText mPass;
     private EditText mRePass;
+    private EditText mName;
+    private EditText mSurname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,8 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.email);
         mPass = (EditText) findViewById(R.id.password);
         mRePass = (EditText) findViewById(R.id.re_password);
+        mName = (EditText) findViewById(R.id.name);
+        mSurname = (EditText) findViewById(R.id.surname);
         Button mSignUp = (Button) findViewById(R.id.sign_up);
         mSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,10 +40,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
-        if (isEmailValid(mEmail.getText().toString()) && isPasswordValid(mPass.getText().toString(), mRePass.getText().toString()))
-            //asynccc!!!!
-        new SendPostRequest().SendRequest("http://192.168.0.51:8080/user/register",
-                String.format("{email: {0},password: {1}}", mEmail.getText(), mPass.getText()));
+        if (isEmailValid(mEmail.getText().toString()) && isPasswordValid(mPass.getText().toString(), mRePass.getText().toString())
+                && !mName.getText().toString().isEmpty() && !mSurname.getText().toString().isEmpty())
+            new SendPostRequest().SendRequest("http://192.168.0.51:8080/user/register",
+                String.format("{email: ,password: %s,}", mEmail.getText(), mPass.getText()));
         else {
             Log.v("==========register","failed");
         }
