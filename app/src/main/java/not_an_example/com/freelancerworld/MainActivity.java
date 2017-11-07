@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -22,6 +23,9 @@ public class MainActivity extends AppCompatActivity
 
     UserModel userModel;
     Gson gson;
+    private TextView mNickNameView;
+    private TextView mFullNameView;
+    private TextView mSpecView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,12 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        mNickNameView = (TextView) findViewById(R.id.nickNameView);
+        mFullNameView = (TextView) findViewById(R.id.fullNameView);
+        mSpecView = (TextView) findViewById(R.id.specView);
+        mNickNameView.setText(userModel.email);
+        mFullNameView.setText(userModel.name + userModel.lastName);
+        mSpecView.setText("nie mam specki");
         return true;
     }
 

@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NickName"
-            android:textSize="25dp"/>
+            android:textSize="15dp"/>
         <!--o ja ale andek tro syf xD-->
         <Space
             android:layout_width="match_parent"
@@ -40,14 +40,14 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Name surname"
-        android:textSize="15dp"
+        android:textSize="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/specView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="12dp"
         android:text="Specialization" />
 
 </LinearLayout>
