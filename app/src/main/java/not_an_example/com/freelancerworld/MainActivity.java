@@ -140,8 +140,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment = null;
         Class fragmentClass = null;
-
-        if (id == R.id.JobsTaken) {
+        if (id == R.id.Dashboard) {
+            fragmentClass= MainFragment.class;
+        }else if (id == R.id.JobsTaken) {
             fragmentClass = JobsTakenFragment.class;
         } else if (id == R.id.JobFilters) {
             fragmentClass = JobFiltersFragment.class;
