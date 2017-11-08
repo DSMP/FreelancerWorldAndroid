@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import not_an_example.com.freelancerworld.Fragments.MainFragment;
 import not_an_example.com.freelancerworld.Models.UserModel;
 
 public class MainActivity extends AppCompatActivity
@@ -59,6 +62,18 @@ public class MainActivity extends AppCompatActivity
         userModel = new UserModel();
         gson = new Gson();
         userModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
+
+        Fragment fragment = null;
+        Class fragmentClass = null;
+        fragmentClass = MainFragment.class;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contentFL, fragment).commit();
     }
 
     @Override
