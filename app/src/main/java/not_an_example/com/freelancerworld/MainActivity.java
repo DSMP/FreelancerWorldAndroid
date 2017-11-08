@@ -1,7 +1,7 @@
 package not_an_example.com.freelancerworld;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,11 +21,15 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment;
+import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment.OnFragmentInteractionListener;
+import not_an_example.com.freelancerworld.Fragments.JobsTakenFragment;
 import not_an_example.com.freelancerworld.Fragments.MainFragment;
 import not_an_example.com.freelancerworld.Models.UserModel;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,
+        JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener {
 
     UserModel userModel;
     Gson gson;
@@ -134,11 +138,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Fragment fragment = null;
+        Class fragmentClass = null;
 
         if (id == R.id.JobsTaken) {
-
+            fragmentClass = JobsTakenFragment.class;
         } else if (id == R.id.JobFilters) {
-
+            fragmentClass = JobFiltersFragment.class;
         } else if (id == R.id.MakeJob) {
 
         } else if (id == R.id.YourProfile) {
@@ -146,9 +152,22 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.Settings) {
 
         }
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contentFL, fragment).commit();
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

@@ -5,26 +5,30 @@
     tools:context="not_an_example.com.freelancerworld.Fragments.MainFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="1"
-        android:rowCount="2"
-        android:rowHeight="10dp"
-        android:horizontalSpacing="10dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Main Fragment"/>
+    <!--<GridLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:columnCount="1"-->
+        <!--android:rowCount="2"-->
+        <!--android:rowHeight="10dp"-->
+        <!--android:horizontalSpacing="10dp">-->
 
         <!--no kurwa zobacz gdzie on wpierdala te komórki-->
-        <ListView
-            android:id="@+id/nieWażne"
-            android:layout_gravity="top"
-            android:layout_height="match_parent">
+        <!--<ListView-->
+            <!--android:id="@+id/nieWażne"-->
+            <!--android:layout_gravity="top"-->
+            <!--android:layout_height="match_parent">-->
 
-        </ListView>
-        <ListView
-            android:layout_gravity="bottom"
-            android:layout_height="match_parent">
+        <!--</ListView>-->
+        <!--<ListView-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:layout_height="match_parent">-->
 
-        </ListView>
-    </GridLayout>
+        <!--</ListView>-->
+    <!--</GridLayout>-->
 
 </FrameLayout>
