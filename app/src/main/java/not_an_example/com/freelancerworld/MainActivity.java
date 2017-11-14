@@ -66,18 +66,18 @@ public class MainActivity extends AppCompatActivity
         userModel = new UserModel();
         gson = new Gson();
         userModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
-
-        Fragment fragment = null;
-        Class fragmentClass = null;
-        fragmentClass = MainFragment.class;
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contentFL, fragment).commit();
+//
+//        Fragment fragment = null;
+//        Class fragmentClass = null;
+//        fragmentClass = MainFragment.class;
+//        try {
+//            fragment = (Fragment) fragmentClass.newInstance();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.contentFL, fragment).commit();
     }
 
     @Override
@@ -137,33 +137,33 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        Fragment fragment = null;
-        Class fragmentClass = null;
-        if (id == R.id.Dashboard) {
-            fragmentClass= MainFragment.class;
-        }else if (id == R.id.JobsTaken) {
-            fragmentClass = JobsTakenFragment.class;
-        } else if (id == R.id.JobFilters) {
-            fragmentClass = JobFiltersFragment.class;
-        } else if (id == R.id.MakeJob) {
-
-        } else if (id == R.id.YourProfile) {
-
-        } else if (id == R.id.Settings) {
-
-        }
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contentFL, fragment).commit();
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+//        int id = item.getItemId();
+//        Fragment fragment = null;
+//        Class fragmentClass = null;
+//        if (id == R.id.Dashboard) {
+//            fragmentClass= MainFragment.class;
+//        }else if (id == R.id.JobsTaken) {
+//            fragmentClass = JobsTakenFragment.class;
+//        } else if (id == R.id.JobFilters) {
+//            fragmentClass = JobFiltersFragment.class;
+//        } else if (id == R.id.MakeJob) {
+//
+//        } else if (id == R.id.YourProfile) {
+//
+//        } else if (id == R.id.Settings) {
+//
+//        }
+//        try {
+//            fragment = (Fragment) fragmentClass.newInstance();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.contentFL, fragment).commit();
+//
+//
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

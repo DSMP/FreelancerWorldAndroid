@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             SendPostRequest sendPostRequest = new SendPostRequest();
-            return sendPostRequest.body("http://192.168.0.51:8080/user/register", params[0]);
+            return sendPostRequest.body("http://10.105.94.23:8080/user/register", params[0]);
         }
 
         @Override
