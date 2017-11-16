@@ -1,6 +1,5 @@
 package not_an_example.com.freelancerworld;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,11 +10,8 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 
-import java.io.StringReader;
-import java.util.concurrent.ExecutionException;
-
 import not_an_example.com.freelancerworld.Models.UserModel;
-import not_an_example.com.freelancerworld.Utils.SendPostRequest;
+import not_an_example.com.freelancerworld.Utils.Communication;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -56,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
             Gson gson = new Gson();
             UserModel user = new UserModel();
             user.email = email; user.password = pass; user.name = name; user.lastName = surname;
-//            SendPostRequest sendPostRequest = new SendPostRequest();
+//            Communication sendPostRequest = new Communication();
 //            sendPostRequest.execute("http://192.168.0.51:8080/user/register", gson.toJson(user));
             new AsyncSendData().execute(gson.toJson(user));
 
@@ -78,8 +74,8 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            SendPostRequest sendPostRequest = new SendPostRequest();
-            return sendPostRequest.body("http://192.168.0.51:8080/user/register", params[0]);
+            Communication communication = new Communication();
+            return communication.Receive("/user/register", params[0]);
         }
 
         @Override
