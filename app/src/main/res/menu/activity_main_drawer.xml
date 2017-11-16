@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/Dashboard"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/JobsTaken"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Jobs taken" />
+        <item
+            android:id="@+id/JobFilters"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Job filters" />
+        <item
+            android:id="@+id/MakeJob"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Make job" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/YourProfile"
+                android:icon="@mipmap/ic_launcher"
+                android:title="Your profile" />
+            <item
+                android:id="@+id/Settings"
+                android:icon="@mipmap/ic_launcher"
+                android:title="Settings" />
+        </menu>
+    </item>
+
+</menu>
