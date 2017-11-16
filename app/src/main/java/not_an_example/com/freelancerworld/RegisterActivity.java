@@ -1,5 +1,7 @@
 package not_an_example.com.freelancerworld;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 
 import java.io.StringReader;
+import java.util.concurrent.ExecutionException;
 
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.SendPostRequest;
@@ -53,7 +56,11 @@ public class RegisterActivity extends AppCompatActivity {
             Gson gson = new Gson();
             UserModel user = new UserModel();
             user.email = email; user.password = pass; user.name = name; user.lastName = surname;
-            new SendPostRequest().execute("http://192.168.0.51:8080/user/register", gson.toJson(user));
+//            SendPostRequest sendPostRequest = new SendPostRequest();
+//            sendPostRequest.execute("http://192.168.0.51:8080/user/register", gson.toJson(user));
+            new AsyncSendData().execute(gson.toJson(user));
+
+
         }
         else {
             Log.v("==========register","failed");
@@ -65,5 +72,21 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password, String rePassword) {
         return password.equals(rePassword);
+    }
+    private class AsyncSendData extends AsyncTask<String,Integer,String>
+    {
+        @Override
+        protected String doInBackground(String... params) {
+
+            SendPostRequest sendPostRequest = new SendPostRequest();
+            return sendPostRequest.body("http://192.168.0.51:8080/user/register", params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            finish();
+        }
     }
 }

@@ -15,6 +15,7 @@ import java.net.URL;
 
 public class SendPostRequest extends AsyncTask<String, Integer, String> {
 
+    private String returnedData;
     @Override
     protected String doInBackground(String... params) {
        return body(params);
@@ -59,8 +60,13 @@ public class SendPostRequest extends AsyncTask<String, Integer, String> {
         return postData;
     }
 
-    protected void OnPostExecute(String result)
+    public void OnPostExecute(String result)
     {
         super.onPostExecute(result);
+        returnedData = result;
+    }
+
+    public String getReturnedData() {
+        return returnedData;
     }
 }

@@ -62,6 +62,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+    String UserProfile;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -350,19 +351,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
             Gson gson = new Gson();
-            try {
+//            try {
                 UserModel user = new UserModel();
                 user.email = mEmail;
                 user.password = mPassword;
                 String userJson = gson.toJson(user);
-                String responseData = new SendPostRequest().body("http://192.168.0.51:8080/user/login", userJson);
-                //Log.v("======GSON", responseData);
-//                UserModel user = gson.fromJson(responseData, UserModel.class);
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
+                UserProfile = new SendPostRequest().body("http://192.168.0.51:8080/user/login", userJson);
+                Log.v("======GSON", UserProfile);
+//                UserModel user = gson.fromJson(UserProfile, UserModel.class);
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                return false;
+//            }
+            if (UserProfile.isEmpty()) return false;
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -396,8 +397,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void StartDashboard() {
-
-
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("user_profile", UserProfile);
+        startActivity(intent);
+        finish();
     }
 }
 
