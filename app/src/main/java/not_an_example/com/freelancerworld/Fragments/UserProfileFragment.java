@@ -83,16 +83,15 @@ public class UserProfileFragment extends Fragment {
                 mUpperAdapter.notifyDataSetChanged();
                 ProfessionModel professionModel = new ProfessionModel();
                 User userID = new User(); userID.id = mUserModel.id;
-                Professions[] professionsTable = new Professions[mUserSpec.size()+1]; int i = 0; for (int j = 0; j < professionsTable.length ; j++) professionsTable[j] = new Professions();
+                Professions[] professionsTable = new Professions[mUserSpec.size()]; int i = 0; for (int j = 0; j < professionsTable.length ; j++) professionsTable[j] = new Professions();
                 for (String s: mUserSpec) {
                     professionsTable[i].name = mUserSpec.get(i);
                     i++;
                 }
-                professionsTable[i].name = (String) mSpinner.getSelectedItem();
                 professionModel.user = userID;
                 professionModel.professions = professionsTable;
                 Gson gson = new Gson();
-                new AsyncSendData().execute(gson.toJson(professionModel));
+                new AsyncAddProfession().execute(gson.toJson(professionModel));
             }
         });
     }
@@ -144,7 +143,7 @@ public class UserProfileFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private class AsyncSendData extends AsyncTask<String,Integer,String>
+    private class AsyncAddProfession extends AsyncTask<String,Integer,String>
     {
         @Override
         protected String doInBackground(String... params) {
