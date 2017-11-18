@@ -4,13 +4,18 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import not_an_example.com.freelancerworld.JobListAdapter;
+import not_an_example.com.freelancerworld.MainActivity;
 import not_an_example.com.freelancerworld.R;
 
 public class UserProfileFragment extends Fragment {
@@ -46,6 +51,11 @@ public class UserProfileFragment extends Fragment {
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
+        Spinner spinner = (Spinner) view.findViewById(R.id.SelectSpec);
+        String[] upperJobs = { "Mechanic", "Hydraulik", "Programista" };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, upperJobs);
+        spinner.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -88,6 +98,7 @@ public class UserProfileFragment extends Fragment {
 
         mUpperRecycler.setAdapter(mUpperAdapter);
         mLowerRecycler.setAdapter(mLowerAdapter);
+
     }
 
     public interface OnFragmentInteractionListener {
