@@ -66,7 +66,7 @@ public class UserProfileFragment extends Fragment {
         mUserModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
         mAllSpec = new ArrayList<>();
         mUserSpec = new ArrayList<>();
-        mAllSpec.add("Mechanic"); mAllSpec.add( "Hydraulik"); mAllSpec.add("Programista");
+        mAllSpec.add("Stolarz"); mAllSpec.add( "Hydraulik"); mAllSpec.add("Programista");
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
