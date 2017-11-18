@@ -30,7 +30,7 @@ import not_an_example.com.freelancerworld.Models.UserModel;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,
-        JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener {
+        JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
 
     UserModel userModel;
     Gson gson;
