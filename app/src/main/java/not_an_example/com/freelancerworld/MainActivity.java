@@ -25,6 +25,7 @@ import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment;
 import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment.OnFragmentInteractionListener;
 import not_an_example.com.freelancerworld.Fragments.JobsTakenFragment;
 import not_an_example.com.freelancerworld.Fragments.MainFragment;
+import not_an_example.com.freelancerworld.Fragments.UserProfileFragment;
 import not_an_example.com.freelancerworld.Models.UserModel;
 
 public class MainActivity extends AppCompatActivity
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.MakeJob) {
 
         } else if (id == R.id.YourProfile) {
-
+            
         } else if (id == R.id.Settings) {
 
         }
