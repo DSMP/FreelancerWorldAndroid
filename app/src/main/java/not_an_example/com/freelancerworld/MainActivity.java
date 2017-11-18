@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.MakeJob) {
 
         } else if (id == R.id.YourProfile) {
-            
+            fragmentClass = UserProfileFragment.class;
         } else if (id == R.id.Settings) {
 
         }
