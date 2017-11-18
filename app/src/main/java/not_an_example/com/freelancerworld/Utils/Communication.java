@@ -30,7 +30,7 @@ public class Communication extends AsyncTask<String, Integer, String> {
             httpConnection= (HttpURLConnection) new URL("http://192.168.0.51:8080" + params[0]).openConnection();
             httpConnection.setRequestProperty( "Content-Type", "application/json");
             httpConnection.setRequestProperty( "charset", "utf-8");
-            httpConnection.setRequestMethod(params[3]);
+            httpConnection.setRequestMethod(params[2]);
             httpConnection.setDoOutput(true);
 
             DataOutputStream outputStream= new DataOutputStream(httpConnection.getOutputStream());
