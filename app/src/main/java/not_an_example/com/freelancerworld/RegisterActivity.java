@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 
+import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
 
@@ -55,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         {
             Gson gson = new Gson();
             UserModel user = new UserModel();
-            user.email = email; user.password = pass; user.name = name; user.lastName = surname;
+            user.email = email; user.password = pass; user.name = name; user.lastName = surname; user.phoneNumber= phoneNumber;
 //            Communication sendPostRequest = new Communication();
 //            sendPostRequest.execute("http://192.168.0.51:8080/user/register", gson.toJson(user));
             new AsyncSendData().execute(gson.toJson(user));
@@ -74,6 +75,11 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean isPasswordValid(String password, String rePassword) {
         return password.equals(rePassword);
     }
+
+    private void setErrorRegistration(String message)
+    {
+        mSignUp.setError(message);
+    }
     private class AsyncSendData extends AsyncTask<String,Integer,String>
     {
         @Override
@@ -87,7 +93,11 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            finish();
+            Gson gson = new Gson();
+            Message message = gson.fromJson(result, Message.class);
+            setErrorRegistration(message.message);
+            if (message.status == 1)
+                finish();
         }
     }
 }
