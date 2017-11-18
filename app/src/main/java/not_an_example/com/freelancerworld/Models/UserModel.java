@@ -11,6 +11,7 @@ public class UserModel {
     public String password;
     public String name;
     public String lastName;
+    public String phoneNumber;
     public String active;
     public RoleModel[] roleModels;
     public String[] professions;
