@@ -9,5 +9,5 @@ import not_an_example.com.freelancerworld.Models.SmallModels.Profession;
 
 public class ProfessionModel {
     public User user;
-    public Profession profession;
+    public Profession[] profession;
 }
