@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import not_an_example.com.freelancerworld.JobListAdapter;
 import not_an_example.com.freelancerworld.Models.ProfessionModel;
-import not_an_example.com.freelancerworld.Models.SmallModels.Profession;
+import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.SmallModels.User;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
@@ -83,14 +83,14 @@ public class UserProfileFragment extends Fragment {
                 mUpperAdapter.notifyDataSetChanged();
                 ProfessionModel professionModel = new ProfessionModel();
                 User userID = new User(); userID.id = mUserModel.id;
-                Profession []professionTable = new Profession[mUserSpec.size()+1]; int i = 0; for (int j = 0; j < professionTable.length ; j++) professionTable[j] = new Profession();
+                Professions[] professionsTable = new Professions[mUserSpec.size()+1]; int i = 0; for (int j = 0; j < professionsTable.length ; j++) professionsTable[j] = new Professions();
                 for (String s: mUserSpec) {
-                    professionTable[i].name = mUserSpec.get(i);
+                    professionsTable[i].name = mUserSpec.get(i);
                     i++;
                 }
-                professionTable[i].name = (String) mSpinner.getSelectedItem();
+                professionsTable[i].name = (String) mSpinner.getSelectedItem();
                 professionModel.user = userID;
-                professionModel.profession = professionTable;
+                professionModel.professions = professionsTable;
                 Gson gson = new Gson();
                 new AsyncSendData().execute(gson.toJson(professionModel));
             }
