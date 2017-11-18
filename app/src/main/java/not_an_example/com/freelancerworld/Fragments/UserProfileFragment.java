@@ -81,17 +81,7 @@ public class UserProfileFragment extends Fragment {
                 mUserSpec.add((String) mSpinner.getSelectedItem());
                 mUpperAdapter.notifyItemInserted(mUserSpec.size()-1);
                 mUpperAdapter.notifyDataSetChanged();
-                ProfessionModel professionModel = new ProfessionModel();
-                User userID = new User(); userID.id = mUserModel.id;
-                Professions[] professionsTable = new Professions[mUserSpec.size()]; int i = 0; for (int j = 0; j < professionsTable.length ; j++) professionsTable[j] = new Professions();
-                for (String s: mUserSpec) {
-                    professionsTable[i].name = mUserSpec.get(i);
-                    i++;
-                }
-                professionModel.user = userID;
-                professionModel.professions = professionsTable;
-                Gson gson = new Gson();
-                new AsyncAddProfession().execute(gson.toJson(professionModel));
+                new AsyncAddProfession().execute();
             }
         });
     }
@@ -147,9 +137,19 @@ public class UserProfileFragment extends Fragment {
     {
         @Override
         protected String doInBackground(String... params) {
-
+            ProfessionModel professionModel = new ProfessionModel();
+            User userID = new User(); userID.id = mUserModel.id;
+            Professions[] professionsTable = new Professions[mUserSpec.size()]; int i = 0; for (int j = 0; j < professionsTable.length ; j++) professionsTable[j] = new Professions();
+            for (String s: mUserSpec) {
+                professionsTable[i].name = mUserSpec.get(i);
+                i++;
+            }
+            professionModel.user = userID;
+            professionModel.professions = professionsTable;
+            Gson gson = new Gson();
             Communication communication = new Communication();
-            return communication.Receive("/user/professionadd", params[0], "PUT");
+            return communication.Receive("/user/professionadd",
+                    gson.toJson(professionModel), "PUT");
         }
 
         @Override
