@@ -1,13 +1,86 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="not_an_example.com.freelancerworld.Fragments.UserProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main_fragment_constraint"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+        <android.support.constraint.Guideline
+            android:id="@+id/middle_guideline"
+            app:layout_constraintGuide_percent="0.6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/center_guideline"
+            app:layout_constraintGuide_percent="0.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteY="132dp"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/top_guideline"
+            app:layout_constraintGuide_percent="0.1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteY="132dp"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/upper_job_recycler"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/editText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            tools:layout_editor_absoluteX="8dp"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintTop_toTopOf="@+id/top_guideline"
+            android:layout_marginBottom="0dp" />
+
+        <EditText
+            android:layout_width="368dp"
+            android:layout_height="100dp"
+            tools:layout_editor_absoluteY="81dp"
+            tools:layout_editor_absoluteX="8dp"
+            android:text="qwwqrwetdsfsdcvx"
+            app:layout_constraintBottom_toTopOf="@+id/middle_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintTop_toTopOf="@+id/top_guideline"
+            android:id="@+id/editText" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lower_job_recycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorAccent"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp" />
+
+    </android.support.constraint.ConstraintLayout>
 </FrameLayout>
