@@ -172,4 +172,9 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    public UserModel getUserModel()
+    {
+        return userModel;
+    }
 }
