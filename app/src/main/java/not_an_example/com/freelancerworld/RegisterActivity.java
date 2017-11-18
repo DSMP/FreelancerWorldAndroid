@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             Communication communication = new Communication();
-            return communication.Receive("/user/register", params[0]);
+            return communication.Receive("/user/register", params[0], "POST");
         }
 
         @Override
