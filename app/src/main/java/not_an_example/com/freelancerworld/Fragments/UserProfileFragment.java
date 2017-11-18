@@ -70,6 +70,7 @@ public class UserProfileFragment extends Fragment {
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
+        new AsyncGetAllProfs().execute();
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, (String[]) mAllSpec.toArray(new String[mAllSpec.size()]));
@@ -131,6 +132,29 @@ public class UserProfileFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private class AsyncGetAllProfs extends AsyncTask<String,Integer,String>
+    {
+
+        @Override
+        protected String doInBackground(String... params) {
+            Communication communication = new Communication();
+            String JSON = communication.Receive("/profession/getall", "", "GET");
+            return JSON;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            Gson gson = new Gson();
+            Professions[] professionses = new Professions[10]; for (int j = 0; j < professionses.length ; j++) professionses[j] = new Professions();
+            professionses = gson.fromJson(result, Professions[].class);
+            for (Professions s:professionses) {
+                mAllSpec.add(s.name);
+            }
+        }
     }
 
     private class AsyncAddProfession extends AsyncTask<String,Integer,String>
