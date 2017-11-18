@@ -150,7 +150,7 @@ public class UserProfileFragment extends Fragment {
         protected String doInBackground(String... params) {
 
             Communication communication = new Communication();
-            return communication.Receive("/user/professionadd", params[0]);
+            return communication.Receive("/user/professionadd", params[0], "PUT");
         }
 
         @Override
