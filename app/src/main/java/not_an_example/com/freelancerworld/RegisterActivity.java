@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 
+import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
 
@@ -20,6 +22,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mRePass;
     private EditText mName;
     private EditText mSurname;
+    private EditText mPhoneNumber;
+    private Button mSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,8 @@ public class RegisterActivity extends AppCompatActivity {
         mRePass = (EditText) findViewById(R.id.re_password);
         mName = (EditText) findViewById(R.id.name);
         mSurname = (EditText) findViewById(R.id.surname);
-        Button mSignUp = (Button) findViewById(R.id.sign_up);
+        mPhoneNumber = (EditText) findViewById(R.id.phone);
+        mSignUp = (Button) findViewById(R.id.sign_up);
         mSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,12 +51,13 @@ public class RegisterActivity extends AppCompatActivity {
         String pass = mPass.getText().toString();
         String name = mName.getText().toString();
         String surname = mSurname.getText().toString();
+        String phoneNumber = mPhoneNumber.getText().toString();
         if (isEmailValid(email.toString()) && isPasswordValid(pass.toString(), mRePass.getText().toString())
-                && !name.isEmpty() && !surname.isEmpty() && !pass.isEmpty() && !email.isEmpty())
+                && !name.isEmpty() && !surname.isEmpty() && !pass.isEmpty() && !email.isEmpty() && !phoneNumber.isEmpty())
         {
             Gson gson = new Gson();
             UserModel user = new UserModel();
-            user.email = email; user.password = pass; user.name = name; user.lastName = surname;
+            user.email = email; user.password = pass; user.name = name; user.lastName = surname; user.phoneNumber= phoneNumber;
 //            Communication sendPostRequest = new Communication();
 //            sendPostRequest.execute("http://192.168.0.51:8080/user/register", gson.toJson(user));
             new AsyncSendData().execute(gson.toJson(user));
@@ -60,6 +66,14 @@ public class RegisterActivity extends AppCompatActivity {
         }
         else {
             Log.v("==========register","failed");
+            if (!isPasswordValid(pass.toString(), mRePass.getText().toString()))
+                mRePass.setError("Passwords aren't the same");
+            if (name.isEmpty())
+                mName.setError("This field cannot be empty");
+            if (surname.isEmpty())
+                mSurname.setError("This field cannot be empty");
+            if (phoneNumber.isEmpty())
+                mPhoneNumber.setError("This field cannot be empty");
         }
     }
     private boolean isEmailValid(String email) {
@@ -68,6 +82,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password, String rePassword) {
         return password.equals(rePassword);
+    }
+
+    private void setErrorRegistration(String message)
+    {
+        mEmail.setError(message);
     }
     private class AsyncSendData extends AsyncTask<String,Integer,String>
     {
@@ -82,7 +101,11 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            finish();
+            Gson gson = new Gson();
+            Message message = gson.fromJson(result, Message.class);
+            setErrorRegistration(message.message);
+            if (message.status == 1)
+                finish();
         }
     }
 }
