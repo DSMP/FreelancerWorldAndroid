@@ -33,26 +33,11 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.stream.StreamResult;
-
 import not_an_example.com.freelancerworld.Models.UserModel;
-import not_an_example.com.freelancerworld.Utils.SendPostRequest;
+import not_an_example.com.freelancerworld.Utils.Communication;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -61,6 +46,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+    String UserProfile;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -83,6 +69,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private String mEmail;
+    private String mPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,6 +209,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+            mEmail = email;
+            mPass = password;
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
@@ -344,20 +334,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                SendPostRequest sendPostRequest = new SendPostRequest();
-                String returnedRequestedData = sendPostRequest.SendRequest("http://192.168.0.51:8080/user/login", ("{\n" +
-                        "    \"email\": \"" + mEmail + "\",\n" +
-                        "    \"password\": \"" + mPassword + "\"\n" +
-                        "}\n"));
-                Log.v("GSON", returnedRequestedData);
-                Gson gson = new Gson();
-                UserModel user = gson.fromJson(returnedRequestedData, UserModel.class);
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
+            Gson gson = new Gson();
+//            try {
+                UserModel user = new UserModel();
+                user.email = mEmail;
+                user.password = mPassword;
+                String userJson = gson.toJson(user);
+                UserProfile = new Communication().Receive("/user/login", userJson);
+                Log.v("======GSON", UserProfile);
+//                UserModel user = gson.fromJson(UserProfile, UserModel.class);
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                return false;
+//            }
+            if (UserProfile.isEmpty()) return false;
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -391,8 +381,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void StartDashboard() {
-
-
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("user_profile", UserProfile);
+        startActivity(intent);
+        finish();
     }
 }
 

@@ -1,5 +1,6 @@
 package not_an_example.com.freelancerworld;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,9 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.StringReader;
+import com.google.gson.Gson;
 
-import not_an_example.com.freelancerworld.Utils.SendPostRequest;
+import not_an_example.com.freelancerworld.Models.UserModel;
+import not_an_example.com.freelancerworld.Utils.Communication;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -40,10 +42,22 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
-        if (isEmailValid(mEmail.getText().toString()) && isPasswordValid(mPass.getText().toString(), mRePass.getText().toString())
-                && !mName.getText().toString().isEmpty() && !mSurname.getText().toString().isEmpty())
-            new SendPostRequest().SendRequest("http://192.168.0.51:8080/user/register",
-                String.format("{email: ,password: %s,}", mEmail.getText(), mPass.getText()));
+        String email = mEmail.getText().toString();
+        String pass = mPass.getText().toString();
+        String name = mName.getText().toString();
+        String surname = mSurname.getText().toString();
+        if (isEmailValid(email.toString()) && isPasswordValid(pass.toString(), mRePass.getText().toString())
+                && !name.isEmpty() && !surname.isEmpty() && !pass.isEmpty() && !email.isEmpty())
+        {
+            Gson gson = new Gson();
+            UserModel user = new UserModel();
+            user.email = email; user.password = pass; user.name = name; user.lastName = surname;
+//            Communication sendPostRequest = new Communication();
+//            sendPostRequest.execute("http://192.168.0.51:8080/user/register", gson.toJson(user));
+            new AsyncSendData().execute(gson.toJson(user));
+
+
+        }
         else {
             Log.v("==========register","failed");
         }
@@ -54,5 +68,21 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password, String rePassword) {
         return password.equals(rePassword);
+    }
+    private class AsyncSendData extends AsyncTask<String,Integer,String>
+    {
+        @Override
+        protected String doInBackground(String... params) {
+
+            Communication communication = new Communication();
+            return communication.Receive("/user/register", params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            finish();
+        }
     }
 }
