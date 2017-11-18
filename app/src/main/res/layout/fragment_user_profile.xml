@@ -32,12 +32,10 @@
 
         <android.support.constraint.Guideline
             android:id="@+id/top_guideline"
-            app:layout_constraintGuide_percent="0.1"
+            app:layout_constraintGuide_percent="0.001"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:layout_editor_absoluteY="132dp"
-            tools:layout_editor_absoluteX="0dp" />
+            android:orientation="horizontal" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/upper_job_recycler"
@@ -72,7 +70,6 @@
                 android:layout_height="match_parent"
                 tools:layout_editor_absoluteX="8dp"
                 android:hint="Describe you and your Job"
-
                 android:id="@+id/editText" />
         </ScrollView>
 
