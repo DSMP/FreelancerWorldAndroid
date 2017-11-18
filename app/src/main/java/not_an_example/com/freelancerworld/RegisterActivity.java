@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 
@@ -65,7 +66,14 @@ public class RegisterActivity extends AppCompatActivity {
         }
         else {
             Log.v("==========register","failed");
-            mSignUp.setError("Fields cannot be empty");
+            if (!isPasswordValid(pass.toString(), mRePass.getText().toString()))
+                mRePass.setError("Passwords aren't the same");
+            if (name.isEmpty())
+                mName.setError("This field cannot be empty");
+            if (surname.isEmpty())
+                mSurname.setError("This field cannot be empty");
+            if (phoneNumber.isEmpty())
+                mPhoneNumber.setError("This field cannot be empty");
         }
     }
     private boolean isEmailValid(String email) {
@@ -78,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void setErrorRegistration(String message)
     {
-        mSignUp.setError(message);
+        mEmail.setError(message);
     }
     private class AsyncSendData extends AsyncTask<String,Integer,String>
     {
