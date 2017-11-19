@@ -11,6 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import not_an_example.com.freelancerworld.JobListAdapter;
 import not_an_example.com.freelancerworld.R;
 
@@ -80,12 +84,13 @@ public class MainFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            String[] upperJobs = { "Steve Jobs", "No Jobs", "Blow Jobs" };
+            List<String> upperJobs = new ArrayList<String>(); upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
             mUpperAdapter = new JobListAdapter(upperJobs);
         }
 
         if ( mLowerAdapter == null) {
-            String[] lowerJobs = { "Job well done", "Job not paid", "JIP a.k.a. job in progress", "Job awaiting... for executioner" };
+            List<String> lowerJobs = new ArrayList<String>(); lowerJobs.add("Job well done");lowerJobs.add("Job not paid");
+            lowerJobs.add("JIP a.k.a. job in progress");lowerJobs.add("Job awaiting... for executioner");
             mLowerAdapter = new JobListAdapter(lowerJobs);
         }
 
