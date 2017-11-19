@@ -72,7 +72,7 @@ public class UserProfileFragment extends Fragment {
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
-        spinnerAdapter = new ArrayAdapter<String>(getContext(),
+        spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
         mSpinner.setAdapter(spinnerAdapter);
         mSpeccAdd = (Button) view.findViewById(R.id.specAddButton);
@@ -121,7 +121,7 @@ public class UserProfileFragment extends Fragment {
         }
 
         if ( mLowerAdapter == null) {
-            List<String> lowerJobs = new ArrayList<String>(); for (int i=1; i< 5 ; i++){lowerJobs.add("zlecenie " + (i*3-2));}
+            List<String> lowerJobs = new ArrayList<>(); for (int i=1; i< 5 ; i++){lowerJobs.add("zlecenie " + (i*3-2));}
             mLowerAdapter = new JobListAdapter(lowerJobs);
         }
 

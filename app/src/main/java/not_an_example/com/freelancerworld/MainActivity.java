@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity
 
     UserModel userModel;
     Gson gson;
+
+    private Fragment SelectedFragment;
+
     private TextView mNickNameView;
     private TextView mFullNameView;
     private TextView mSpecView;
@@ -132,7 +136,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;

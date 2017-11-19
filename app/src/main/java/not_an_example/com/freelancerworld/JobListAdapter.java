@@ -43,5 +43,4 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
     public int getItemCount() {
         return mDataset.size();
     }
-
 }
