@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import not_an_example.com.freelancerworld.JobListAdapter;
 import not_an_example.com.freelancerworld.Models.ProfessionModel;
@@ -114,11 +115,11 @@ public class UserProfileFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            mUpperAdapter = new JobListAdapter((String[]) mUserSpec.toArray(new String[mUserSpec.size()]));
+            mUpperAdapter = new JobListAdapter(mUserSpec);
         }
 
         if ( mLowerAdapter == null) {
-            String[] lowerJobs = { "Zlecenie 11", "Zlecenie 13", "Zlecenie 21", "Zlecenie 24" };
+            List<String> lowerJobs = new ArrayList<String>(); for (int i=1; i< 5 ; i++){lowerJobs.add("zlecenie " + (i*3-2));}
             mLowerAdapter = new JobListAdapter(lowerJobs);
         }
 
