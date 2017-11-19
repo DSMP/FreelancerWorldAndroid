@@ -86,6 +86,9 @@ public class UserProfileFragment extends Fragment {
                 new AsyncAddProfession().execute();
             }
         });
+        for (Professions p: mUserModel.professions) {
+            mUserSpec.add(p.name);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
