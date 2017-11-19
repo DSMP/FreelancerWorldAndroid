@@ -3,6 +3,9 @@ package not_an_example.com.freelancerworld;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -23,11 +26,12 @@ import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment;
 import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment.OnFragmentInteractionListener;
 import not_an_example.com.freelancerworld.Fragments.JobsTakenFragment;
 import not_an_example.com.freelancerworld.Fragments.MainFragment;
+import not_an_example.com.freelancerworld.Fragments.UserProfileFragment;
 import not_an_example.com.freelancerworld.Models.UserModel;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,
-        JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener {
+        JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
 
     UserModel userModel;
     Gson gson;
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        userModel = new UserModel();
         gson = new Gson();
         userModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
 
@@ -126,8 +131,8 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-//         Handle navigation view item clicks here.
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;
         Class fragmentClass = null;
@@ -140,7 +145,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.MakeJob) {
 
         } else if (id == R.id.YourProfile) {
-
+            fragmentClass = UserProfileFragment.class;
         } else if (id == R.id.Settings) {
 
         }
@@ -161,5 +166,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public UserModel getUserModel()
+    {
+        return userModel;
     }
 }
