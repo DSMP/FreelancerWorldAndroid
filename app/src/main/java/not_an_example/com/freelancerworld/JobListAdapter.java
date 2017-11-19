@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder> {
-    private String[] mDataset;
+    private List<String> mDataset;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTextView;
@@ -17,7 +19,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
         }
     }
 
-    public JobListAdapter(String[] myDataset) {
+    public JobListAdapter(List<String> myDataset) {
         mDataset = myDataset;
     }
 
@@ -33,13 +35,13 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(mDataset[position]);
+        holder.mTextView.setText(mDataset.get(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
 }
