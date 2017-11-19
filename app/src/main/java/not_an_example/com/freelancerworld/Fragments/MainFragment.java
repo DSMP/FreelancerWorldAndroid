@@ -11,8 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+
 import not_an_example.com.freelancerworld.JobListAdapter;
 import not_an_example.com.freelancerworld.R;
+import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
 
 public class MainFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
@@ -80,14 +84,19 @@ public class MainFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            String[] upperJobs = { "Steve Jobs", "No Jobs", "Blow Jobs" };
+            ArrayList<String> upperJobs = new ArrayList<String>() {{ add("Steve Jobs"); add("No Jobs"); add("Blow Jobs");}};
             mUpperAdapter = new JobListAdapter(upperJobs);
         }
 
         if ( mLowerAdapter == null) {
-            String[] lowerJobs = { "Job well done", "Job not paid", "JIP a.k.a. job in progress", "Job awaiting... for executioner" };
+            ArrayList<String> lowerJobs = new ArrayList<String>() {{ add("Job well done"); add("Job not paid"); add("JIP a.k.a. job in progress"); add("Job awaiting... for executioner"); }};
             mLowerAdapter = new JobListAdapter(lowerJobs);
         }
+
+        DividerItemDecoration recyclerDecoration = new DividerItemDecoration(mUpperRecycler.getContext(),R.drawable.list_decorator);
+        mUpperRecycler.addItemDecoration(recyclerDecoration);
+        recyclerDecoration = new DividerItemDecoration(mLowerRecycler.getContext(),R.drawable.list_decorator);
+        mLowerRecycler.addItemDecoration(recyclerDecoration);
 
         mUpperRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mLowerRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));

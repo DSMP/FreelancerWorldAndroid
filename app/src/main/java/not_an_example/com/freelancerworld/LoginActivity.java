@@ -356,7 +356,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 user.email = mEmail;
                 user.password = mPassword;
                 String userJson = gson.toJson(user);
-                UserProfile = new SendPostRequest().body("http://10.105.94.23:8080/user/login", userJson);
+                UserProfile = new SendPostRequest().body("http://10.1.0.146:8080/user/login", userJson);
                 Log.v("======GSON", UserProfile);
 //                UserModel user = gson.fromJson(UserProfile, UserModel.class);
 //                Thread.sleep(2000);
