@@ -1,5 +1,11 @@
 package not_an_example.com.freelancerworld.Models;
 
+
+import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
+
+/**
+ * Created by Damianek on 06-Nov-17.
+ */
 public class UserModel {
 
     public int id;
