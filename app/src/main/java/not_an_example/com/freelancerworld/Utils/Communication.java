@@ -13,24 +13,24 @@ import java.net.URL;
  * Created by Damianek on 06-Nov-17.
  */
 
-public class SendPostRequest extends AsyncTask<String, Integer, String> {
+public class Communication extends AsyncTask<String, Integer, String> {
 
     private String returnedData;
     @Override
     protected String doInBackground(String... params) {
-       return body(params);
+       return Receive(params);
     }
 
-    public String body(String... params)
+    public String Receive(String... params)
     {
         String postData = "";
 
         HttpURLConnection httpConnection= null;
         try {
-            httpConnection= (HttpURLConnection) new URL(params[0]).openConnection();
+            httpConnection= (HttpURLConnection) new URL("http://192.168.0.51:8080" + params[0]).openConnection();
             httpConnection.setRequestProperty( "Content-Type", "application/json");
             httpConnection.setRequestProperty( "charset", "utf-8");
-            httpConnection.setRequestMethod("POST");
+            httpConnection.setRequestMethod(params[2]);
             httpConnection.setDoOutput(true);
 
             DataOutputStream outputStream= new DataOutputStream(httpConnection.getOutputStream());

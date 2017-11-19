@@ -33,27 +33,11 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import javax.xml.transform.stream.StreamResult;
 
 import not_an_example.com.freelancerworld.Models.UserModel;
-import not_an_example.com.freelancerworld.Utils.SendPostRequest;
+import not_an_example.com.freelancerworld.Utils.Communication;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -356,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 user.email = mEmail;
                 user.password = mPassword;
                 String userJson = gson.toJson(user);
-                UserProfile = new SendPostRequest().body("http://10.1.0.146:8080/user/login", userJson);
+                UserProfile = new Communication().Receive("/user/login", userJson, "POST");
                 Log.v("======GSON", UserProfile);
 //                UserModel user = gson.fromJson(UserProfile, UserModel.class);
 //                Thread.sleep(2000);

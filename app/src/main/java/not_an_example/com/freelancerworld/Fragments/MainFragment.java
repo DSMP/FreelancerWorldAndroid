@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import not_an_example.com.freelancerworld.JobListAdapter;
 
 import java.util.ArrayList;
 
