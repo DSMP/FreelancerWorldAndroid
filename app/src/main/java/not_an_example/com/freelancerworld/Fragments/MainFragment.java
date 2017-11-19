@@ -2,6 +2,7 @@ package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import not_an_example.com.freelancerworld.JobListAdapter;
+import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
+import not_an_example.com.freelancerworld.Utils.Communication;
 import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
 
 public class MainFragment extends Fragment {
@@ -30,6 +38,8 @@ public class MainFragment extends Fragment {
     private View mLayout;
     private RecyclerView mUpperRecycler, mLowerRecycler;
     private JobListAdapter mUpperAdapter, mLowerAdapter;
+
+    List<RequestModel> requestModelList = new ArrayList<RequestModel>();
 
     public MainFragment() {
         // Required empty public constructor
@@ -59,6 +69,7 @@ public class MainFragment extends Fragment {
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
+        new GetAllRequestsTask().execute((Void)null);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -110,5 +121,29 @@ public class MainFragment extends Fragment {
 
         mUpperRecycler.setAdapter(mUpperAdapter);
         mLowerRecycler.setAdapter(mLowerAdapter);
+    }
+
+    public class GetAllRequestsTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            String response = new Communication().Receive("/request/getall","", "GET");
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            requestModelList = gson.fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
+            Log.v("======GSON", response);
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            List<String> requestNameList = new ArrayList<>();
+            for (RequestModel requestModel : requestModelList) {
+                requestNameList.add(requestModel.title);
+            }
+            mUpperAdapter = new JobListAdapter(requestNameList);
+            mUpperRecycler.setAdapter(mUpperAdapter);
+            mUpperAdapter.notifyDataSetChanged();
+        }
     }
 }
