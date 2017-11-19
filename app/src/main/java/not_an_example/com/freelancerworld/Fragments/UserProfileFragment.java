@@ -35,6 +35,7 @@ public class UserProfileFragment extends Fragment {
     Button mSpeccAdd;
     ArrayList<String> mAllSpec;
     ArrayList<String> mUserSpec;
+    ArrayAdapter<String> spinnerAdapter;
 
     UserModel mUserModel;
 
@@ -66,16 +67,16 @@ public class UserProfileFragment extends Fragment {
         mUserModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
         mAllSpec = new ArrayList<>();
         mUserSpec = new ArrayList<>();
-        mAllSpec.add("Stolarz"); mAllSpec.add( "Hydraulik"); mAllSpec.add("Programista");
+//        mAllSpec.add("Stolarz"); mAllSpec.add( "Hydraulik"); mAllSpec.add("Programista");
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
-        new AsyncGetAllProfs().execute();
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+        spinnerAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, (String[]) mAllSpec.toArray(new String[mAllSpec.size()]));
-        mSpinner.setAdapter(adapter);
+        mSpinner.setAdapter(spinnerAdapter);
         mSpeccAdd = (Button) view.findViewById(R.id.specAddButton);
+        new AsyncGetAllProfs().execute();
         mSpeccAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +155,10 @@ public class UserProfileFragment extends Fragment {
             for (Professions s:professionses) {
                 mAllSpec.add(s.name);
             }
+//            spinnerAdapter.clear();
+//            spinnerAdapter = new ArrayAdapter<String>(getContext(),
+//                    android.R.layout.simple_spinner_dropdown_item, (String[]) mAllSpec.toArray(new String[mAllSpec.size()]));
+            spinnerAdapter.notifyDataSetChanged();
         }
     }
 
