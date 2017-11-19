@@ -37,7 +37,6 @@ public class UserProfileFragment extends Fragment {
     ArrayList<String> mAllSpec;
     ArrayList<String> mUserSpec;
     ArrayAdapter<String> spinnerAdapter;
-    Object[] mAllSpecRef;
 
     UserModel mUserModel;
 
@@ -73,7 +72,6 @@ public class UserProfileFragment extends Fragment {
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
-        mAllSpecRef = mAllSpec.toArray(new String[mAllSpec.size()]);
         spinnerAdapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
         mSpinner.setAdapter(spinnerAdapter);
