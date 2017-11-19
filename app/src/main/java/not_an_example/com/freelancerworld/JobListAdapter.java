@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder> {
@@ -26,7 +25,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
 
     @Override
     public JobListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+                                                        int viewType) {
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.job_item_recycler, parent, false);
         TextView textView = (TextView) v.findViewById(R.id.job_name);
