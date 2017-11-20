@@ -7,12 +7,26 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 
 import not_an_example.com.freelancerworld.R;
 
 public class MakeJobFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    EditText mBuildingNumber;
+    EditText mCity;
+    EditText mHouseNumber;
+    EditText mPostalCode;
+    EditText mStreet;
+    Spinner mSpec;
+    EditText mDescription;
+    SeekBar mMaxPayment;
+    SeekBar mMinPayment;
+    EditText mTitle;
+
 
     public MakeJobFragment() {
         // Required empty public constructor
@@ -25,6 +39,22 @@ public class MakeJobFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mBuildingNumber = (EditText) view.findViewById(R.id.BuildingNumberEditText);
+        mCity = (EditText) view.findViewById(R.id.CityEditText);
+        mHouseNumber = (EditText) view.findViewById(R.id.HouseNumberEditText);
+        mPostalCode = (EditText) view.findViewById(R.id.PostalCodeEditText);
+        mStreet = (EditText) view.findViewById(R.id.StreetEditText);
+        mSpec = (Spinner) view.findViewById(R.id.SpecSpinner);
+        mDescription = (EditText) view.findViewById(R.id.DescriptionEditText);
+        mMaxPayment = (SeekBar) view.findViewById(R.id.MaxPaymentSeekBar);
+        mMinPayment = (SeekBar) view.findViewById(R.id.MinPaymentSeekBar);
+        mTitle = (EditText) view.findViewById(R.id.TitleEditText);
+
     }
 
     @Override

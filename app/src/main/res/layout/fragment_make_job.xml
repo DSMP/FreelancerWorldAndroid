@@ -84,7 +84,7 @@
                 android:paddingBottom="20dp"/>
 
             <Spinner
-                android:id="@+id/SPecSpinner"
+                android:id="@+id/SpecSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
