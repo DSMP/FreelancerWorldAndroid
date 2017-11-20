@@ -178,6 +178,8 @@ public class MakeJobFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
+            Gson gson = new Gson();
+
             return null;
         }
         @Override
