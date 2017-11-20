@@ -173,4 +173,15 @@ public class MakeJobFragment extends Fragment {
             spinnerAdapter.notifyDataSetChanged();
         }
     }
+    private class AsyncSendNewRequest extends AsyncTask<String,Integer,String>
+    {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result)
+        {}
+    }
 }
