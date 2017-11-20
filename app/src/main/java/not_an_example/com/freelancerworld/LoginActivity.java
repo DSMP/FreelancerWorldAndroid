@@ -341,7 +341,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 user.password = mPassword;
                 String userJson = gson.toJson(user);
                 UserProfile = new Communication().Receive("/user/login", userJson, "POST");
-                Log.v("======GSON", UserProfile);
 //                UserModel user = gson.fromJson(UserProfile, UserModel.class);
 //                Thread.sleep(2000);
 //            } catch (InterruptedException e) {
