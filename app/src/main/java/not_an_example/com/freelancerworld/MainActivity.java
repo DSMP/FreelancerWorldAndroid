@@ -30,13 +30,15 @@ import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment;
 import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment.OnFragmentInteractionListener;
 import not_an_example.com.freelancerworld.Fragments.JobsTakenFragment;
 import not_an_example.com.freelancerworld.Fragments.MainFragment;
+import not_an_example.com.freelancerworld.Fragments.MakeJobFragment;
 import not_an_example.com.freelancerworld.Fragments.UserProfileFragment;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,
-        JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
+        JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener,
+        UserProfileFragment.OnFragmentInteractionListener, MakeJobFragment.OnFragmentInteractionListener {
 
     UserModel userModel;
     Gson gson;
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.JobFilters) {
             fragmentClass = JobFiltersFragment.class;
         } else if (id == R.id.MakeJob) {
-
+            fragmentClass = MakeJobFragment.class;
         } else if (id == R.id.YourProfile) {
             fragmentClass = UserProfileFragment.class;
         } else if (id == R.id.Settings) {
