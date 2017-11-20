@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import not_an_example.com.freelancerworld.JobListAdapter;
 import not_an_example.com.freelancerworld.Models.ProfessionModel;
@@ -35,6 +36,7 @@ public class UserProfileFragment extends Fragment {
     Button mSpeccAdd;
     ArrayList<String> mAllSpec;
     ArrayList<String> mUserSpec;
+    ArrayAdapter<String> spinnerAdapter;
 
     UserModel mUserModel;
 
@@ -66,35 +68,27 @@ public class UserProfileFragment extends Fragment {
         mUserModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
         mAllSpec = new ArrayList<>();
         mUserSpec = new ArrayList<>();
-        mAllSpec.add("Stolarz"); mAllSpec.add( "Hydraulik"); mAllSpec.add("Programista");
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_dropdown_item, (String[]) mAllSpec.toArray(new String[mAllSpec.size()]));
-        mSpinner.setAdapter(adapter);
+        spinnerAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, mAllSpec);
+        mSpinner.setAdapter(spinnerAdapter);
         mSpeccAdd = (Button) view.findViewById(R.id.specAddButton);
+        new AsyncGetAllProfs().execute();
         mSpeccAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mUserSpec.add((String) mSpinner.getSelectedItem());
                 mUpperAdapter.notifyItemInserted(mUserSpec.size()-1);
                 mUpperAdapter.notifyDataSetChanged();
-                ProfessionModel professionModel = new ProfessionModel();
-                User userID = new User(); userID.id = mUserModel.id;
-                Professions[] professionsTable = new Professions[mUserSpec.size()+1]; int i = 0; for (int j = 0; j < professionsTable.length ; j++) professionsTable[j] = new Professions();
-                for (String s: mUserSpec) {
-                    professionsTable[i].name = mUserSpec.get(i);
-                    i++;
-                }
-                professionsTable[i].name = (String) mSpinner.getSelectedItem();
-                professionModel.user = userID;
-                professionModel.professions = professionsTable;
-                Gson gson = new Gson();
-                new AsyncSendData().execute(gson.toJson(professionModel));
+                new AsyncAddProfession().execute();
             }
         });
+        for (Professions p: mUserModel.professions) {
+            mUserSpec.add(p.name);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -123,11 +117,11 @@ public class UserProfileFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            mUpperAdapter = new JobListAdapter((String[]) mUserSpec.toArray(new String[mUserSpec.size()]));
+            mUpperAdapter = new JobListAdapter(mUserSpec);
         }
 
         if ( mLowerAdapter == null) {
-            String[] lowerJobs = { "Zlecenie 11", "Zlecenie 13", "Zlecenie 21", "Zlecenie 24" };
+            List<String> lowerJobs = new ArrayList<>(); for (int i=1; i< 5 ; i++){lowerJobs.add("zlecenie " + (i*3-2));}
             mLowerAdapter = new JobListAdapter(lowerJobs);
         }
 
@@ -144,13 +138,47 @@ public class UserProfileFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private class AsyncSendData extends AsyncTask<String,Integer,String>
+    private class AsyncGetAllProfs extends AsyncTask<String,Integer,String>
+    {
+
+        @Override
+        protected String doInBackground(String... params) {
+            Communication communication = new Communication();
+            String JSON = communication.Receive("/profession/getall", "", "GET");
+            return JSON;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            Gson gson = new Gson();
+            Professions[] professionses = new Professions[10]; for (int j = 0; j < professionses.length ; j++) professionses[j] = new Professions();
+            professionses = gson.fromJson(result, Professions[].class);
+            for (Professions s:professionses) {
+                mAllSpec.add(s.name);
+            }
+            spinnerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class AsyncAddProfession extends AsyncTask<String,Integer,String>
     {
         @Override
         protected String doInBackground(String... params) {
-
+            ProfessionModel professionModel = new ProfessionModel();
+            User userID = new User(); userID.id = mUserModel.id;
+            Professions[] professionsTable = new Professions[mUserSpec.size()]; int i = 0; for (int j = 0; j < professionsTable.length ; j++) professionsTable[j] = new Professions();
+            for (String s: mUserSpec) {
+                professionsTable[i].name = mUserSpec.get(i);
+                i++;
+            }
+            professionModel.user = userID;
+            professionModel.professions = professionsTable;
+            Gson gson = new Gson();
             Communication communication = new Communication();
-            return communication.Receive("/user/professionadd", params[0]);
+            return communication.Receive("/user/professionadd",
+                    gson.toJson(professionModel), "PUT");
         }
 
         @Override

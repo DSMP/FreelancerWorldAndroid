@@ -17,4 +17,29 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="paddedRecycler">
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:background">@drawable/grey_border</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="paddedUpperRecycler" parent="paddedRecycler">
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <style name="paddedLowerRecycler" parent="paddedRecycler">
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <style name="paddedRecyclerItem">
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
 </resources>

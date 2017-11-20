@@ -2,6 +2,7 @@ package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import not_an_example.com.freelancerworld.JobListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import not_an_example.com.freelancerworld.JobListAdapter;
+import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
+import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
 
 public class MainFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
@@ -20,6 +38,8 @@ public class MainFragment extends Fragment {
     private View mLayout;
     private RecyclerView mUpperRecycler, mLowerRecycler;
     private JobListAdapter mUpperAdapter, mLowerAdapter;
+
+    List<RequestModel> requestModelList = new ArrayList<RequestModel>();
 
     public MainFragment() {
         // Required empty public constructor
@@ -49,6 +69,7 @@ public class MainFragment extends Fragment {
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
+        new GetAllRequestsTask().execute((Void)null);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -80,19 +101,49 @@ public class MainFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            String[] upperJobs = { "Steve Jobs", "No Jobs", "Blow Jobs" };
+            List<String> upperJobs = new ArrayList<>(); upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
             mUpperAdapter = new JobListAdapter(upperJobs);
         }
 
         if ( mLowerAdapter == null) {
-            String[] lowerJobs = { "Job well done", "Job not paid", "JIP a.k.a. job in progress", "Job awaiting... for executioner" };
+            List<String> lowerJobs = new ArrayList<>(); lowerJobs.add("Job well done");lowerJobs.add("Job not paid");
+            lowerJobs.add("JIP a.k.a. job in progress");lowerJobs.add("Job awaiting... for executioner");
             mLowerAdapter = new JobListAdapter(lowerJobs);
         }
+
+        DividerItemDecoration recyclerDecoration = new DividerItemDecoration(mUpperRecycler.getContext(),R.drawable.list_decorator);
+        mUpperRecycler.addItemDecoration(recyclerDecoration);
+        recyclerDecoration = new DividerItemDecoration(mLowerRecycler.getContext(),R.drawable.list_decorator);
+        mLowerRecycler.addItemDecoration(recyclerDecoration);
 
         mUpperRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mLowerRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         mUpperRecycler.setAdapter(mUpperAdapter);
         mLowerRecycler.setAdapter(mLowerAdapter);
+    }
+
+    public class GetAllRequestsTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            String response = new Communication().Receive("/request/getall","", "GET");
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            requestModelList = gson.fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
+            Log.v("======GSON", response);
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            List<String> requestNameList = new ArrayList<>();
+            for (RequestModel requestModel : requestModelList) {
+                requestNameList.add(requestModel.title);
+            }
+            mUpperAdapter = new JobListAdapter(requestNameList);
+            mUpperRecycler.setAdapter(mUpperAdapter);
+            mUpperAdapter.notifyDataSetChanged();
+        }
     }
 }

@@ -9,10 +9,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by Damianek on 06-Nov-17.
- */
-
 public class Communication extends AsyncTask<String, Integer, String> {
 
     private String returnedData;
@@ -27,7 +23,7 @@ public class Communication extends AsyncTask<String, Integer, String> {
 
         HttpURLConnection httpConnection= null;
         try {
-            httpConnection= (HttpURLConnection) new URL("http://192.168.0.51:8080" + params[0]).openConnection();
+            httpConnection= (HttpURLConnection) new URL("http://10.1.0.146:8080" + params[0]).openConnection();
             httpConnection.setRequestProperty( "Content-Type", "application/json");
             httpConnection.setRequestProperty( "charset", "utf-8");
             httpConnection.setRequestMethod(params[2]);
@@ -47,7 +43,7 @@ public class Communication extends AsyncTask<String, Integer, String> {
             while (inputStreamData != -1) {
                 char currentData = (char) inputStreamData;
                 inputStreamData = inputStreamReader.read();
-                postData += currentData;
+                postData += currentData; // litosci, cos takiego na stringu w petli
             }
         } catch (Exception e) {
             e.printStackTrace();
