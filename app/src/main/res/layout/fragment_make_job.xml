@@ -25,7 +25,8 @@
                     android:id="@+id/BuildingNumberEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Building Number"/>
+                    android:hint="Building Number"
+                    android:text="qwrsfdgfcv"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -36,7 +37,8 @@
                     android:id="@+id/CityEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="City"/>
+                    android:hint="City"
+                    android:text="lodz"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -48,7 +50,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Huose Number"
-                    android:inputType="number"/>
+                    android:inputType="text"
+                    android:text="20"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -59,7 +62,8 @@
                     android:id="@+id/PostalCodeEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Postal code"/>
+                    android:hint="Postal code"
+                    android:text="90-908"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -70,7 +74,8 @@
                     android:id="@+id/StreetEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Street Name"/>
+                    android:hint="Street Name"
+                    android:text="Piotrkowska"/>
             </android.support.design.widget.TextInputLayout>
 
             <Space
@@ -108,7 +113,8 @@
                     android:id="@+id/DescriptionEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Description"/>
+                    android:hint="Description"
+                    android:text="description1"/>
             </android.support.design.widget.TextInputLayout>
 
             <TextView
@@ -157,7 +163,8 @@
                     android:id="@+id/TitleEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Request Title"/>
+                    android:hint="Request Title"
+                    android:text="title1"/>
             </android.support.design.widget.TextInputLayout>
 
             <Button

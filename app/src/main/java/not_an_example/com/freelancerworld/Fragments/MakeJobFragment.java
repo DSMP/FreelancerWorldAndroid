@@ -14,12 +14,18 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import not_an_example.com.freelancerworld.Models.Message;
+import not_an_example.com.freelancerworld.Models.NewRequestModel;
+import not_an_example.com.freelancerworld.Models.SmallModels.Address;
 import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
+import not_an_example.com.freelancerworld.Models.SmallModels.Request;
+import not_an_example.com.freelancerworld.Models.SmallModels.User;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.Utils.Communication;
@@ -175,15 +181,30 @@ public class MakeJobFragment extends Fragment {
     }
     private class AsyncSendNewRequest extends AsyncTask<String,Integer,String>
     {
+        Gson gson = new Gson();
 
         @Override
         protected String doInBackground(String... strings) {
-            Gson gson = new Gson();
-
-            return null;
+            NewRequestModel newRequestModel = new NewRequestModel();
+            newRequestModel.address = new Address(); newRequestModel.address.buildingNumber = mBuildingNumber.getText().toString();
+            newRequestModel.address.city = mCity.getText().toString(); newRequestModel.address.houseNumber = mHouseNumber.getText().toString();
+            newRequestModel.address.postalCode = mPostalCode.getText().toString(); newRequestModel.address.street = mStreet.getText().toString();
+            newRequestModel.user = new User(); newRequestModel.user.id = mUserModel.id;
+            newRequestModel.profession = new Professions(); newRequestModel.profession.name = (String) mSpec.getSelectedItem();
+            Request request = new Request(); request.description = mDescription.getText().toString();
+            request.maxPayment = String.valueOf(mMaxPayment.getProgress()); request.minPayment = String.valueOf(mMinPayment.getProgress());
+            request.title = mTitle.getText().toString(); newRequestModel.request = request;
+            Communication communication = new Communication();
+            return communication.Receive("/request/newrequest", gson.toJson(newRequestModel),"POST");
         }
         @Override
         protected void onPostExecute(String result)
-        {}
+        {
+            Toast.makeText(getContext(),"New Request Sent",Toast.LENGTH_LONG);
+            Message message = new Message();
+            message = gson.fromJson(result, message.getClass());
+            if (message.status == 201)
+                Toast.makeText(getContext(),message.message, Toast.LENGTH_LONG);
+        }
     }
 }
