@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -33,7 +34,9 @@ public class MakeJobFragment extends Fragment {
     EditText mStreet;
     Spinner mSpec;
     EditText mDescription;
+    TextView mMaxPaymentT;
     SeekBar mMaxPayment;
+    TextView mMinPaymentT;
     SeekBar mMinPayment;
     EditText mTitle;
 
@@ -68,9 +71,13 @@ public class MakeJobFragment extends Fragment {
         mStreet = (EditText) view.findViewById(R.id.StreetEditText);
         mSpec = (Spinner) view.findViewById(R.id.SpecSpinner);
         mDescription = (EditText) view.findViewById(R.id.DescriptionEditText);
+        mMaxPaymentT = (TextView) view.findViewById(R.id.MaxPaymentTextView);
         mMaxPayment = (SeekBar) view.findViewById(R.id.MaxPaymentSeekBar);
+        mMinPaymentT = (TextView) view.findViewById(R.id.MinPaymentTextView);
         mMinPayment = (SeekBar) view.findViewById(R.id.MinPaymentSeekBar);
         mTitle = (EditText) view.findViewById(R.id.TitleEditText);
+        mMaxPaymentT.setText("100");
+        mMinPaymentT.setText("0");
         spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
         mSpec.setAdapter(spinnerAdapter);

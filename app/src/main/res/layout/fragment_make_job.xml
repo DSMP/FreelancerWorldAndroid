@@ -115,20 +115,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Max Payment"/>
-            <SeekBar
-                android:id="@+id/MaxPaymentSeekBar"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/MaxPaymentTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <SeekBar
+                    android:id="@+id/MaxPaymentSeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"/>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Min Payment"/>
-            <SeekBar
-                android:id="@+id/MinPaymentSeekBar"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/MinPaymentTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <SeekBar
+                    android:id="@+id/MinPaymentSeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
