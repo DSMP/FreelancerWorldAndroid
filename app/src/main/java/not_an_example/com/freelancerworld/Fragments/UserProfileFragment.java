@@ -34,6 +34,7 @@ public class UserProfileFragment extends Fragment {
     private JobListAdapter mUpperAdapter, mLowerAdapter;
     Spinner mSpinner;
     Button mSpeccAdd;
+    Button mSpeccRem;
     ArrayList<String> mAllSpec;
     ArrayList<String> mUserSpec;
     ArrayAdapter<String> spinnerAdapter;
@@ -76,6 +77,7 @@ public class UserProfileFragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
         mSpinner.setAdapter(spinnerAdapter);
         mSpeccAdd = (Button) view.findViewById(R.id.specAddButton);
+        mSpeccRem = (Button) view.findViewById(R.id.specRemButton);
         new AsyncGetAllProfs().execute();
         mSpeccAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +85,15 @@ public class UserProfileFragment extends Fragment {
                 mUserSpec.add((String) mSpinner.getSelectedItem());
                 mUpperAdapter.notifyItemInserted(mUserSpec.size()-1);
                 mUpperAdapter.notifyDataSetChanged();
-                new AsyncAddProfession().execute();
+                new AsyncPutProfession().execute();
+            }
+        });
+        mSpeccRem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUserSpec.remove((String) mSpinner.getSelectedItem());
+                mUpperAdapter.notifyDataSetChanged();
+                new AsyncPutProfession().execute();
             }
         });
         for (Professions p: mUserModel.professions) {
@@ -162,7 +172,7 @@ public class UserProfileFragment extends Fragment {
         }
     }
 
-    private class AsyncAddProfession extends AsyncTask<String,Integer,String>
+    private class AsyncPutProfession extends AsyncTask<String,Integer,String>
     {
         @Override
         protected String doInBackground(String... params) {
