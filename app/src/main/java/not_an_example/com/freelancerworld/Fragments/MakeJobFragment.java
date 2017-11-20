@@ -7,10 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+
+import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
 
 public class MakeJobFragment extends Fragment {
@@ -27,6 +34,9 @@ public class MakeJobFragment extends Fragment {
     SeekBar mMinPayment;
     EditText mTitle;
 
+    UserModel mUserModel;
+    ArrayList<String> mAllSpec;
+
 
     public MakeJobFragment() {
         // Required empty public constructor
@@ -39,6 +49,8 @@ public class MakeJobFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Gson gson = new Gson();
+        mUserModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
     }
 
     @Override
@@ -54,6 +66,8 @@ public class MakeJobFragment extends Fragment {
         mMaxPayment = (SeekBar) view.findViewById(R.id.MaxPaymentSeekBar);
         mMinPayment = (SeekBar) view.findViewById(R.id.MinPaymentSeekBar);
         mTitle = (EditText) view.findViewById(R.id.TitleEditText);
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, mAllSpec);
 
     }
 
