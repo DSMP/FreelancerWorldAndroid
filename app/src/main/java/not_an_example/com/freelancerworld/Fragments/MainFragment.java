@@ -101,13 +101,12 @@ public class MainFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            List<String> upperJobs = new ArrayList<>(); upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
+            List<String> upperJobs = new ArrayList<>();
             mUpperAdapter = new JobListAdapter(upperJobs);
         }
 
         if ( mLowerAdapter == null) {
-            List<String> lowerJobs = new ArrayList<>(); lowerJobs.add("Job well done");lowerJobs.add("Job not paid");
-            lowerJobs.add("JIP a.k.a. job in progress");lowerJobs.add("Job awaiting... for executioner");
+            List<String> lowerJobs = new ArrayList<>();
             mLowerAdapter = new JobListAdapter(lowerJobs);
         }
 
