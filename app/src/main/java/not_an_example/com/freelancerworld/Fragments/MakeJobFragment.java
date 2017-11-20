@@ -2,6 +2,7 @@ package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,8 +18,10 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
+import not_an_example.com.freelancerworld.Utils.Communication;
 
 public class MakeJobFragment extends Fragment {
 
@@ -36,6 +39,7 @@ public class MakeJobFragment extends Fragment {
 
     UserModel mUserModel;
     ArrayList<String> mAllSpec;
+    ArrayAdapter<String> spinnerAdapter;
 
 
     public MakeJobFragment() {
@@ -51,6 +55,7 @@ public class MakeJobFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Gson gson = new Gson();
         mUserModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
+        mAllSpec = new ArrayList<>();
     }
 
     @Override
@@ -66,8 +71,10 @@ public class MakeJobFragment extends Fragment {
         mMaxPayment = (SeekBar) view.findViewById(R.id.MaxPaymentSeekBar);
         mMinPayment = (SeekBar) view.findViewById(R.id.MinPaymentSeekBar);
         mTitle = (EditText) view.findViewById(R.id.TitleEditText);
-        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getContext(),
+        spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
+        mSpec.setAdapter(spinnerAdapter);
+        new AsyncGetAllProfs().execute();
 
     }
 
@@ -104,5 +111,28 @@ public class MakeJobFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private class AsyncGetAllProfs extends AsyncTask<String,Integer,String>
+    {
+
+        @Override
+        protected String doInBackground(String... params) {
+            Communication communication = new Communication();
+            String JSON = communication.Receive("/profession/getall", "", "GET");
+            return JSON;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            Gson gson = new Gson();
+            Professions[] professionses = new Professions[10]; for (int j = 0; j < professionses.length ; j++) professionses[j] = new Professions();
+            professionses = gson.fromJson(result, Professions[].class);
+            for (Professions s:professionses) {
+                mAllSpec.add(s.name);
+            }
+            spinnerAdapter.notifyDataSetChanged();
+        }
     }
 }
