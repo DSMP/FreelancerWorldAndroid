@@ -76,8 +76,39 @@ public class MakeJobFragment extends Fragment {
         mMinPaymentT = (TextView) view.findViewById(R.id.MinPaymentTextView);
         mMinPayment = (SeekBar) view.findViewById(R.id.MinPaymentSeekBar);
         mTitle = (EditText) view.findViewById(R.id.TitleEditText);
-        mMaxPaymentT.setText("100");
-        mMinPaymentT.setText("0");
+        mMaxPaymentT.setText("200"); mMinPaymentT.setText("0");
+        mMaxPayment.setMax(200); mMinPayment.setMax(100); mMaxPayment.setProgress(200);
+        mMaxPayment.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mMaxPaymentT.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        mMinPayment.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mMinPaymentT.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
         mSpec.setAdapter(spinnerAdapter);
