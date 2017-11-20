@@ -9,10 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +45,7 @@ public class MakeJobFragment extends Fragment {
     TextView mMinPaymentT;
     SeekBar mMinPayment;
     EditText mTitle;
+    Button mNewRequestButton;
 
     UserModel mUserModel;
     ArrayList<String> mAllSpec;
@@ -82,6 +83,7 @@ public class MakeJobFragment extends Fragment {
         mMinPaymentT = (TextView) view.findViewById(R.id.MinPaymentTextView);
         mMinPayment = (SeekBar) view.findViewById(R.id.MinPaymentSeekBar);
         mTitle = (EditText) view.findViewById(R.id.TitleEditText);
+        mNewRequestButton = (Button) view.findViewById(R.id.NewRequestButton);
         mMaxPaymentT.setText("200"); mMinPaymentT.setText("0");
         mMaxPayment.setMax(200); mMinPayment.setMax(100); mMaxPayment.setProgress(200);
         mMaxPayment.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -119,6 +121,12 @@ public class MakeJobFragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
         mSpec.setAdapter(spinnerAdapter);
         new AsyncGetAllProfs().execute();
+        mNewRequestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AsyncSendNewRequest().execute();
+            }
+        });
 
     }
 
