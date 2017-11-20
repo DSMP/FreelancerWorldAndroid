@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,11 +209,11 @@ public class MakeJobFragment extends Fragment {
         @Override
         protected void onPostExecute(String result)
         {
-            Toast.makeText(getContext(),"New Request Sent",Toast.LENGTH_LONG);
+            Toast.makeText(getActivity(),"New Request Sent",Toast.LENGTH_SHORT).show();
             Message message = new Message();
             message = gson.fromJson(result, message.getClass());
             if (message.status == 201)
-                Toast.makeText(getContext(),message.message, Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(),message.message, Toast.LENGTH_LONG).show();
         }
     }
 }
