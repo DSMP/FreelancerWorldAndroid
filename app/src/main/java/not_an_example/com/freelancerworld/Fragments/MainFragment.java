@@ -121,6 +121,8 @@ public class MainFragment extends Fragment {
 
         mUpperRecycler.setAdapter(mUpperAdapter);
         mLowerRecycler.setAdapter(mLowerAdapter);
+
+
     }
 
     public class GetAllRequestsTask extends AsyncTask<Void, Void, Boolean> {
