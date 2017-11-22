@@ -38,6 +38,7 @@ public class MainFragment extends Fragment {
     private View mLayout;
     private RecyclerView mUpperRecycler, mLowerRecycler;
     private JobListAdapter mUpperAdapter, mLowerAdapter;
+    List<String> upperJobs;
 
     List<RequestModel> requestModelList = new ArrayList<RequestModel>();
 
@@ -101,7 +102,7 @@ public class MainFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            List<String> upperJobs = new ArrayList<>(); upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
+            upperJobs = new ArrayList<>(); upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
             mUpperAdapter = new JobListAdapter(upperJobs);
         }
 
@@ -119,6 +120,8 @@ public class MainFragment extends Fragment {
         mUpperRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mLowerRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+        mUpperAdapter.setContext(this.getContext());
+        mLowerAdapter.setContext(this.getContext());
         mUpperRecycler.setAdapter(mUpperAdapter);
         mLowerRecycler.setAdapter(mLowerAdapter);
 
@@ -139,12 +142,11 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            List<String> requestNameList = new ArrayList<>();
             for (RequestModel requestModel : requestModelList) {
-                requestNameList.add(requestModel.title);
+                upperJobs.add(requestModel.title);
             }
-            mUpperAdapter = new JobListAdapter(requestNameList);
-            mUpperRecycler.setAdapter(mUpperAdapter);
+//            mUpperAdapter = new JobListAdapter(requestNameList);
+//            mUpperRecycler.setAdapter(mUpperAdapter);
             mUpperAdapter.notifyDataSetChanged();
         }
     }

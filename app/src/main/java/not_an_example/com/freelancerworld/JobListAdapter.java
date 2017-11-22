@@ -1,7 +1,9 @@
 package not_an_example.com.freelancerworld;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,13 +16,18 @@ import java.util.List;
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
     private List<String> mDataset;
+    private Context contexta;
+
+    public void setContext(Context context)
+    {
+        this.contexta = context;
+        String s = contexta.getPackageName();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mTextView;
-//        private Context context;
         ViewHolder(TextView v) {
             super(v);
-//            this.context = context;
             mTextView = v;
             itemView.setOnClickListener(this);
         }
@@ -33,6 +40,8 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
                 // We can access the data within the views
 //                Toast.makeText(context, user, Toast.LENGTH_SHORT).show();
                 Log.v("========Clicker",user);
+                Intent intent = new Intent(contexta, RequestActivity.class);
+                contexta.startActivity(intent);
             }
         }
     }
