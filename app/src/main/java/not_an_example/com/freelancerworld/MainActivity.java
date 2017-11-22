@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -31,6 +32,7 @@ import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment.OnFragmen
 import not_an_example.com.freelancerworld.Fragments.JobsTakenFragment;
 import not_an_example.com.freelancerworld.Fragments.MainFragment;
 import not_an_example.com.freelancerworld.Fragments.MakeJobFragment;
+import not_an_example.com.freelancerworld.Fragments.SettingsFragment;
 import not_an_example.com.freelancerworld.Fragments.UserProfileFragment;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
@@ -38,7 +40,8 @@ import not_an_example.com.freelancerworld.Models.UserModel;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,
         JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener,
-        UserProfileFragment.OnFragmentInteractionListener, MakeJobFragment.OnFragmentInteractionListener {
+        UserProfileFragment.OnFragmentInteractionListener, MakeJobFragment.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener{
 
     UserModel userModel;
     Gson gson;
@@ -102,8 +105,8 @@ public class MainActivity extends AppCompatActivity
         mSpecView = (TextView) findViewById(R.id.specView);
         mImageView = (ImageView) findViewById(R.id.logOffImageView);
         mNickNameView.setText(userModel.email);
-        mFullNameView.setText(userModel.name + userModel.lastName);
-        mSpecView.setText("nie mam specki");
+        mFullNameView.setText(userModel.name + " " + userModel.lastName);
+        mSpecView.setText(userModel.professions[0].name);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +157,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.YourProfile) {
             fragmentClass = UserProfileFragment.class;
         } else if (id == R.id.Settings) {
-
+            fragmentClass = SettingsFragment.class;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
