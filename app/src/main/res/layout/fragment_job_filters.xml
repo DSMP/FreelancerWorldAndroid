@@ -10,31 +10,30 @@
         android:id="@+id/job_filters_distance_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Distance"
+        android:text="@string/job_filters_distance_title"
         style="@style/jobFiltersTitle"/>
 
     <TextView
-        android:id="@+id/job_filters_distance_you_text"
+        android:id="@+id/job_filters_distance_your_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_distance_title"
-        android:text="In range from you"
+        android:text="@string/job_filters_distance_your"
         style="@style/jobFiltersSubtitle"/>
 
     <TextView
-        android:id="@+id/job_filters_distance_you_text_value"
+        android:id="@+id/job_filters_distance_your_text_value"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/job_filters_distance_you_text"
-        android:text="10 km"
+        android:layout_below="@id/job_filters_distance_your_text"
         style="@style/jobFiltersBasicText"/>
 
     <SeekBar
-        android:id="@+id/job_filters_distance_you_seek"
+        android:id="@+id/job_filters_distance_your_seek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/job_filters_distance_you_text"
-        android:layout_toEndOf="@id/job_filters_distance_you_text_value"
+        android:layout_below="@id/job_filters_distance_your_text"
+        android:layout_toEndOf="@id/job_filters_distance_your_text_value"
         android:max = "101"
         style="@style/jobFiltersBasicElement"/>
 
@@ -42,8 +41,8 @@
         android:id="@+id/job_filters_distance_home_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/job_filters_distance_you_seek"
-        android:text="In range from your home"
+        android:layout_below="@id/job_filters_distance_your_seek"
+        android:text="@string/job_filters_distance_home"
         style="@style/jobFiltersSubtitle"/>
 
     <TextView
@@ -51,7 +50,6 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_distance_home_text"
-        android:text="50 km"
         style="@style/jobFiltersBasicText"/>
 
     <SeekBar
@@ -69,7 +67,7 @@
         android:layout_below="@id/job_filters_distance_home_seek"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Payment"
+        android:text="@string/job_filters_payment_title"
         style="@style/jobFiltersTitle"/>
 
     <TextView
@@ -77,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_payment_title"
-        android:text="Minimum"
+        android:text="@string/job_filters_payment_or_time_min"
         style="@style/jobFiltersSubtitle"/>
 
     <TextView
@@ -85,7 +83,6 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_payment_min_text"
-        android:text="5 $"
         style="@style/jobFiltersBasicText"/>
 
     <SeekBar
@@ -102,7 +99,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_payment_min_seek"
-        android:text="Maximum"
+        android:text="@string/job_filters_payment_or_time_max"
         style="@style/jobFiltersSubtitle"/>
 
     <TextView
@@ -110,7 +107,6 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_payment_max_text"
-        android:text="100 $"
         style="@style/jobFiltersBasicText"/>
 
     <SeekBar
@@ -127,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_payment_max_seek"
-        android:text="Method"
+        android:text="@string/job_filters_payment_method"
         style="@style/jobFiltersSubtitle"/>
 
     <Spinner
@@ -143,7 +139,7 @@
         android:layout_below="@id/job_filters_payment_method_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time"
+        android:text="@string/job_filters_time_title"
         style="@style/jobFiltersTitle"/>
 
     <TextView
@@ -151,7 +147,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_time_title"
-        android:text="Minimum"
+        android:text="@string/job_filters_payment_or_time_min"
         style="@style/jobFiltersSubtitle"/>
 
     <TextView
@@ -159,7 +155,6 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_time_min_text"
-        android:text="0.5 h"
         style="@style/jobFiltersBasicText"/>
 
     <SeekBar
@@ -168,7 +163,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_time_min_text"
         android:layout_toEndOf="@id/job_filters_time_min_text_value"
-        android:max = "5"
+        android:max = "17"
         style="@style/jobFiltersBasicElement"/>
 
     <TextView
@@ -176,7 +171,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_time_min_seek"
-        android:text="Maximum"
+        android:text="@string/job_filters_payment_or_time_max"
         style="@style/jobFiltersSubtitle"/>
 
     <TextView
@@ -184,7 +179,6 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_time_max_text"
-        android:text="5 h"
         style="@style/jobFiltersBasicText"/>
 
     <SeekBar
@@ -193,7 +187,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_time_max_text"
         android:layout_toEndOf="@id/job_filters_time_max_text_value"
-        android:max = "6"
+        android:max = "17"
         style="@style/jobFiltersBasicElement"/>
 
 </RelativeLayout>
