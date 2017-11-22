@@ -12,10 +12,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
-public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
+public class JobListAdapter<T extends Object> extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
     private List<String> mDataset;
+    private List<T> mData;
     private Context contexta;
 
     public void setContext(Context context)
@@ -41,6 +44,8 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
 //                Toast.makeText(context, user, Toast.LENGTH_SHORT).show();
                 Log.v("========Clicker",user);
                 Intent intent = new Intent(contexta, RequestActivity.class);
+                Gson gson = new Gson();
+                intent.putExtra("REQUEST",  gson.toJson(mData.get(position)));
                 contexta.startActivity(intent);
             }
         }

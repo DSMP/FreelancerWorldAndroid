@@ -40,7 +40,7 @@ public class MainFragment extends Fragment {
     private JobListAdapter mUpperAdapter, mLowerAdapter;
     List<String> upperJobs;
 
-    List<RequestModel> requestModelList = new ArrayList<RequestModel>();
+    public List<RequestModel> requestModelList = new ArrayList<RequestModel>();
 
     public MainFragment() {
         // Required empty public constructor
