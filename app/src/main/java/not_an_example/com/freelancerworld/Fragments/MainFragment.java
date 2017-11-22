@@ -149,6 +149,7 @@ public class MainFragment extends Fragment {
 //            mUpperRecycler.setAdapter(mUpperAdapter);
             mUpperAdapter.notifyDataSetChanged();
             mUpperAdapter.setData(requestModelList);
+            mUpperAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
         }
     }
 }

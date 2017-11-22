@@ -23,6 +23,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
     private List<String> mDataset;
     private List<RequestModel> mData;
     private Context contexta;
+    private String userModel;
 
     public void setContext(Context context)
     {
@@ -32,6 +33,10 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
     public void setData(List<RequestModel> data)
     {
         mData = data;
+    }
+
+    public void setUser(String user) {
+        userModel = user;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -51,7 +56,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
 //                Toast.makeText(context, user, Toast.LENGTH_SHORT).show();
                 Log.v("========Clicker",user);
                 Intent intent = new Intent(contexta, RequestActivity.class);
-                intent.putExtra("RequestID", position);
+                intent.putExtra("user_profile", userModel);
                 Gson gson = new Gson();
                 intent.putExtra("REQUEST",  gson.toJson(mData.get(position)));
                 contexta.startActivity(intent);
