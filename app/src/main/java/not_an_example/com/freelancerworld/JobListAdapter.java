@@ -16,15 +16,22 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-public class JobListAdapter<T extends Object> extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
+import not_an_example.com.freelancerworld.Fragments.MainFragment;
+import not_an_example.com.freelancerworld.Models.RequestModel;
+
+public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
     private List<String> mDataset;
-    private List<T> mData;
+    private List<RequestModel> mData;
     private Context contexta;
 
     public void setContext(Context context)
     {
         this.contexta = context;
         String s = contexta.getPackageName();
+    }
+    public void setData(List<RequestModel> data)
+    {
+        mData = data;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -44,6 +51,7 @@ public class JobListAdapter<T extends Object> extends RecyclerView.Adapter<JobLi
 //                Toast.makeText(context, user, Toast.LENGTH_SHORT).show();
                 Log.v("========Clicker",user);
                 Intent intent = new Intent(contexta, RequestActivity.class);
+                intent.putExtra("RequestID", position);
                 Gson gson = new Gson();
                 intent.putExtra("REQUEST",  gson.toJson(mData.get(position)));
                 contexta.startActivity(intent);

@@ -129,11 +129,11 @@ public class MainFragment extends Fragment {
     }
 
     public class GetAllRequestsTask extends AsyncTask<Void, Void, Boolean> {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
         @Override
         protected Boolean doInBackground(Void... voids) {
             String response = new Communication().Receive("/request/getall","", "GET");
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
             requestModelList = gson.fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
             Log.v("======GSON", response);
             return true;
@@ -148,6 +148,7 @@ public class MainFragment extends Fragment {
 //            mUpperAdapter = new JobListAdapter(requestNameList);
 //            mUpperRecycler.setAdapter(mUpperAdapter);
             mUpperAdapter.notifyDataSetChanged();
+            mUpperAdapter.setData(requestModelList);
         }
     }
 }
