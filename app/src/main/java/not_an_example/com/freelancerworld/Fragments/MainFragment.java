@@ -102,7 +102,7 @@ public class MainFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            upperJobs = new ArrayList<>(); upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
+            upperJobs = new ArrayList<>(); //upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
             mUpperAdapter = new JobListAdapter(upperJobs);
         }
 
