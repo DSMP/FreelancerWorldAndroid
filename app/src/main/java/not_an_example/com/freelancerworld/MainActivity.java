@@ -106,7 +106,10 @@ public class MainActivity extends AppCompatActivity
         mImageView = (ImageView) findViewById(R.id.logOffImageView);
         mNickNameView.setText(userModel.email);
         mFullNameView.setText(userModel.name + " " + userModel.lastName);
-        mSpecView.setText(userModel.professions[0].name);
+        mSpecView.setText("Dupa a nie specjalista!");
+        if (userModel.professions.length != 0) {
+            mSpecView.setText(userModel.professions[0].name);
+        }
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
