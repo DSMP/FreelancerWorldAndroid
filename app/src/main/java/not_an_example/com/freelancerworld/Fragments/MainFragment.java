@@ -40,7 +40,7 @@ public class MainFragment extends Fragment {
     private JobListAdapter mUpperAdapter, mLowerAdapter;
     List<String> upperJobs;
 
-    public List<RequestModel> requestModelList = new ArrayList<RequestModel>();
+    List<RequestModel> requestModelList = new ArrayList<RequestModel>();
 
     public MainFragment() {
         // Required empty public constructor
@@ -124,8 +124,6 @@ public class MainFragment extends Fragment {
         mLowerAdapter.setContext(this.getContext());
         mUpperRecycler.setAdapter(mUpperAdapter);
         mLowerRecycler.setAdapter(mLowerAdapter);
-
-
     }
 
     public class GetAllRequestsTask extends AsyncTask<Void, Void, Boolean> {

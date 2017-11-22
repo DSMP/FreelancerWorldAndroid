@@ -1,13 +1,193 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     tools:context="not_an_example.com.freelancerworld.Fragments.JobFiltersFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- *********************************DISTANCE************************* !-->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/jobs_filters_ist" />
+        android:id="@+id/job_filters_distance_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/job_filters_distance_title"
+        style="@style/jobFiltersTitle"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/job_filters_distance_your_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_distance_title"
+        android:text="@string/job_filters_distance_your"
+        style="@style/jobFiltersSubtitle"/>
+
+    <TextView
+        android:id="@+id/job_filters_distance_your_text_value"
+        android:layout_width="@dimen/job_filter_text_value_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_distance_your_text"
+        style="@style/jobFiltersBasicText"/>
+
+    <SeekBar
+        android:id="@+id/job_filters_distance_your_seek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_distance_your_text"
+        android:layout_toEndOf="@id/job_filters_distance_your_text_value"
+        android:max = "101"
+        style="@style/jobFiltersBasicElement"/>
+
+    <TextView
+        android:id="@+id/job_filters_distance_home_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_distance_your_seek"
+        android:text="@string/job_filters_distance_home"
+        style="@style/jobFiltersSubtitle"/>
+
+    <TextView
+        android:id="@+id/job_filters_distance_home_text_value"
+        android:layout_width="@dimen/job_filter_text_value_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_distance_home_text"
+        style="@style/jobFiltersBasicText"/>
+
+    <SeekBar
+        android:id="@+id/job_filters_distance_home_seek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_distance_home_text"
+        android:layout_toEndOf="@id/job_filters_distance_home_text_value"
+        android:max = "101"
+        style="@style/jobFiltersBasicElement"/>
+
+    <!-- *********************************PAYMENT************************* !-->
+    <TextView
+        android:id="@+id/job_filters_payment_title"
+        android:layout_below="@id/job_filters_distance_home_seek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/job_filters_payment_title"
+        style="@style/jobFiltersTitle"/>
+
+    <TextView
+        android:id="@+id/job_filters_payment_min_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_payment_title"
+        android:text="@string/job_filters_payment_or_time_min"
+        style="@style/jobFiltersSubtitle"/>
+
+    <TextView
+        android:id="@+id/job_filters_payment_min_text_value"
+        android:layout_width="@dimen/job_filter_text_value_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_payment_min_text"
+        style="@style/jobFiltersBasicText"/>
+
+    <SeekBar
+        android:id="@+id/job_filters_payment_min_seek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_payment_min_text"
+        android:layout_toEndOf="@id/job_filters_payment_min_text_value"
+        android:max = "1001"
+        style="@style/jobFiltersBasicElement"/>
+
+    <TextView
+        android:id="@+id/job_filters_payment_max_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_payment_min_seek"
+        android:text="@string/job_filters_payment_or_time_max"
+        style="@style/jobFiltersSubtitle"/>
+
+    <TextView
+        android:id="@+id/job_filters_payment_max_text_value"
+        android:layout_width="@dimen/job_filter_text_value_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_payment_max_text"
+        style="@style/jobFiltersBasicText"/>
+
+    <SeekBar
+        android:id="@+id/job_filters_payment_max_seek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_payment_max_text"
+        android:layout_toEndOf="@id/job_filters_payment_max_text_value"
+        android:max = "1001"
+        style="@style/jobFiltersBasicElement"/>
+
+    <TextView
+        android:id="@+id/job_filters_payment_method_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_payment_max_seek"
+        android:text="@string/job_filters_payment_method"
+        style="@style/jobFiltersSubtitle"/>
+
+    <Spinner
+        android:id="@+id/job_filters_payment_method_spinner"
+        android:layout_width="1@dimen/job_filter_text_value_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_payment_method_text"
+        style="@style/jobFiltersSpinner" />
+
+    <!-- *********************************TIME************************* !-->
+    <TextView
+        android:id="@+id/job_filters_time_title"
+        android:layout_below="@id/job_filters_payment_method_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/job_filters_time_title"
+        style="@style/jobFiltersTitle"/>
+
+    <TextView
+        android:id="@+id/job_filters_time_min_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_time_title"
+        android:text="@string/job_filters_payment_or_time_min"
+        style="@style/jobFiltersSubtitle"/>
+
+    <TextView
+        android:id="@+id/job_filters_time_min_text_value"
+        android:layout_width="@dimen/job_filter_text_value_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_time_min_text"
+        style="@style/jobFiltersBasicText"/>
+
+    <SeekBar
+        android:id="@+id/job_filters_time_min_seek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_time_min_text"
+        android:layout_toEndOf="@id/job_filters_time_min_text_value"
+        android:max = "17"
+        style="@style/jobFiltersBasicElement"/>
+
+    <TextView
+        android:id="@+id/job_filters_time_max_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_time_min_seek"
+        android:text="@string/job_filters_payment_or_time_max"
+        style="@style/jobFiltersSubtitle"/>
+
+    <TextView
+        android:id="@+id/job_filters_time_max_text_value"
+        android:layout_width="@dimen/job_filter_text_value_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_time_max_text"
+        style="@style/jobFiltersBasicText"/>
+
+    <SeekBar
+        android:id="@+id/job_filters_time_max_seek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_filters_time_max_text"
+        android:layout_toEndOf="@id/job_filters_time_max_text_value"
+        android:max = "17"
+        style="@style/jobFiltersBasicElement"/>
+
+</RelativeLayout>
