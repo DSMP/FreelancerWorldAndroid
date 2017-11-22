@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         mSpecView = (TextView) findViewById(R.id.specView);
         mImageView = (ImageView) findViewById(R.id.logOffImageView);
         mNickNameView.setText(userModel.email);
-        mFullNameView.setText(userModel.name + userModel.lastName);
+        mFullNameView.setText(userModel.name + " " + userModel.lastName);
         mSpecView.setText(userModel.professions[0].name);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
