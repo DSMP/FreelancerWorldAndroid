@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/job_filters_distance_your_text_value"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/job_filter_text_value_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_distance_your_text"
         style="@style/jobFiltersBasicText"/>
@@ -47,7 +47,7 @@
 
     <TextView
         android:id="@+id/job_filters_distance_home_text_value"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/job_filter_text_value_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_distance_home_text"
         style="@style/jobFiltersBasicText"/>
@@ -80,7 +80,7 @@
 
     <TextView
         android:id="@+id/job_filters_payment_min_text_value"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/job_filter_text_value_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_payment_min_text"
         style="@style/jobFiltersBasicText"/>
@@ -104,7 +104,7 @@
 
     <TextView
         android:id="@+id/job_filters_payment_max_text_value"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/job_filter_text_value_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_payment_max_text"
         style="@style/jobFiltersBasicText"/>
@@ -128,7 +128,7 @@
 
     <Spinner
         android:id="@+id/job_filters_payment_method_spinner"
-        android:layout_width="150dp"
+        android:layout_width="1@dimen/job_filter_text_value_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_payment_method_text"
         style="@style/jobFiltersSpinner" />
@@ -152,7 +152,7 @@
 
     <TextView
         android:id="@+id/job_filters_time_min_text_value"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/job_filter_text_value_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_time_min_text"
         style="@style/jobFiltersBasicText"/>
@@ -176,7 +176,7 @@
 
     <TextView
         android:id="@+id/job_filters_time_max_text_value"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/job_filter_text_value_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/job_filters_time_max_text"
         style="@style/jobFiltersBasicText"/>

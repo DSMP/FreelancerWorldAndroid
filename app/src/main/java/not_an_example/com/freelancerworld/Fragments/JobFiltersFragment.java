@@ -1,6 +1,7 @@
 package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,11 +9,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import not_an_example.com.freelancerworld.Contants.FilterConstants;
+import not_an_example.com.freelancerworld.Enum.PaymentMethod;
 import not_an_example.com.freelancerworld.Enum.SeekType;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.Utils.Filters;
@@ -61,6 +67,8 @@ public class JobFiltersFragment extends Fragment {
         mMinTimeText = (TextView) view.findViewById(R.id.job_filters_time_min_text_value);
         mMaxTimeText = (TextView) view.findViewById(R.id.job_filters_time_max_text_value);
 
+        mPaymentMethodSpinner = (Spinner) view.findViewById(R.id.job_filters_payment_method_spinner);
+
         setListeners();
         assignInitialValues();
         return view;
@@ -98,12 +106,14 @@ public class JobFiltersFragment extends Fragment {
     }
 
     private void assignInitialValues() {
-        mYourDistance.setProgress((int)(Filters.getRangeFromYou() / FilterConstants.DISTANCE_CONVERSION));
-        mHomeDistance.setProgress((int)(Filters.getRangeFromOffice() / FilterConstants.DISTANCE_CONVERSION));
-        mMinPayment.setProgress((int)(Filters.getMinPayment() / FilterConstants.MONEY_CONVERSION));
-        mMaxPayment.setProgress((int)(Filters.getMaxPayment() / FilterConstants.MONEY_CONVERSION));
-        mMinTime.setProgress((int)(Filters.getMinTime() / FilterConstants.TIME_CONVERSION));
-        mMaxTime.setProgress((int)(Filters.getMaxTime() / FilterConstants.TIME_CONVERSION));
+        mYourDistance.setProgress((int) (Filters.getRangeFromYou() / FilterConstants.DISTANCE_CONVERSION));
+        mHomeDistance.setProgress((int) (Filters.getRangeFromOffice() / FilterConstants.DISTANCE_CONVERSION));
+        mMinPayment.setProgress((int) (Filters.getMinPayment() / FilterConstants.MONEY_CONVERSION));
+        mMaxPayment.setProgress((int) (Filters.getMaxPayment() / FilterConstants.MONEY_CONVERSION));
+        mMinTime.setProgress((int) (Filters.getMinTime() / FilterConstants.TIME_CONVERSION));
+        mMaxTime.setProgress((int) (Filters.getMaxTime() / FilterConstants.TIME_CONVERSION));
+
+        mPaymentMethodSpinner.setSelection(Filters.getPaymentMethod().ordinal());
 
         mYourDistanceText.setText((Filters.getRangeFromYou() / FilterConstants.DISTANCE_CONVERSION) + " " + FilterConstants.DISTANCE_UNIT);
         mHomeDistanceText.setText((Filters.getRangeFromOffice() / FilterConstants.DISTANCE_CONVERSION) + " " + FilterConstants.DISTANCE_UNIT);
@@ -120,6 +130,7 @@ public class JobFiltersFragment extends Fragment {
         Filters.setMaxPayment(mMaxPayment.getProgress());
         Filters.setMinTime(mMinTime.getProgress());
         Filters.setMaxTime(mMaxTime.getProgress());
+        Filters.setPaymentMethod(PaymentMethod.fromString((String) mPaymentMethodSpinner.getSelectedItem()));
     }
 
     private void setListeners() {
@@ -147,6 +158,14 @@ public class JobFiltersFragment extends Fragment {
                 mMinTime, SeekType.MAX, mMaxTimeText,
                 FilterConstants.TIME_CONVERSION, FilterConstants.TIME_MIN_VALUE, FilterConstants.TIME_UNIT
         ));
+
+        ArrayList<String> paymentMethods = new ArrayList<>();
+        for (PaymentMethod paymentMethod : PaymentMethod.values()) {
+            paymentMethods.add(paymentMethod.toString());
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, paymentMethods);
+        mPaymentMethodSpinner.setAdapter(spinnerAdapter);
     }
 
     public interface OnFragmentInteractionListener {
@@ -163,19 +182,19 @@ public class JobFiltersFragment extends Fragment {
         private int mProgressMinValue;
         private String mSeekBarUnit;
 
-        public JobSeekBarListener() {
-            this( null, SeekType.INDEPENDENT, null,1.0f, 1, "");
+        JobSeekBarListener() {
+            this(null, SeekType.INDEPENDENT, null, 1.0f, 1, "");
         }
 
-        public JobSeekBarListener(SeekBar relatedSeekBar, SeekType seekType) {
-            this( relatedSeekBar, seekType, null,1.0f, 1, "");
+        JobSeekBarListener(SeekBar relatedSeekBar, SeekType seekType) {
+            this(relatedSeekBar, seekType, null, 1.0f, 1, "");
         }
 
-        public JobSeekBarListener(SeekBar relatedSeekBar, SeekType seekType, TextView relatedTextView, String seekBarUnit) {
+        JobSeekBarListener(SeekBar relatedSeekBar, SeekType seekType, TextView relatedTextView, String seekBarUnit) {
             this(relatedSeekBar, seekType, relatedTextView, 1.0f, 1, seekBarUnit);
         }
 
-        public JobSeekBarListener(SeekBar relatedSeekBar, SeekType seekType, TextView relatedTextView, float conversionMultiplier, int progressMinValue, String seekBarUnit) {
+        JobSeekBarListener(SeekBar relatedSeekBar, SeekType seekType, TextView relatedTextView, float conversionMultiplier, int progressMinValue, String seekBarUnit) {
             mRelatedSeekBar = relatedSeekBar;
             mSeekType = seekType;
             mRelatedTextView = relatedTextView;
@@ -184,31 +203,31 @@ public class JobFiltersFragment extends Fragment {
             mSeekBarUnit = seekBarUnit;
         }
 
-        public float getmConversionMultiplier() {
+        float getmConversionMultiplier() {
             return mConversionMultiplier;
         }
 
-        public int getmProgressMinValue() {
+        int getmProgressMinValue() {
             return mProgressMinValue;
         }
 
-        public String getmSeekBarUnit() {
+        String getmSeekBarUnit() {
             return mSeekBarUnit;
         }
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (mRelatedTextView != null && mSeekType != SeekType.INDEPENDENT) {
+            if (mRelatedTextView != null) {
                 String progressString = (progress * mConversionMultiplier) + " " + mSeekBarUnit;
-                if ( progress == seekBar.getMax()) {
-                    progressString = String.valueOf(( --progress * mConversionMultiplier)) + "+ " + mSeekBarUnit;
+                if (progress == seekBar.getMax()) {
+                    progressString = String.valueOf((--progress * mConversionMultiplier)) + "+ " + mSeekBarUnit;
                 }
                 mRelatedTextView.setText(progressString);
             }
 
-            if ( progress < mProgressMinValue) seekBar.setProgress(mProgressMinValue);
+            if (progress < mProgressMinValue) seekBar.setProgress(mProgressMinValue);
 
-            if ( mRelatedSeekBar != null) {
+            if (mRelatedSeekBar != null) {
                 if (mSeekType == SeekType.MIN && (progress > mRelatedSeekBar.getProgress())) {
                     mRelatedSeekBar.setProgress(progress);
                 } else if (mSeekType == SeekType.MAX && (progress < mRelatedSeekBar.getProgress())) {
@@ -227,6 +246,4 @@ public class JobFiltersFragment extends Fragment {
 
         }
     }
-
-
 }
