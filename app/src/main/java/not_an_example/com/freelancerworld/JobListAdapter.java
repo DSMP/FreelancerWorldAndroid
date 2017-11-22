@@ -1,7 +1,9 @@
 package not_an_example.com.freelancerworld;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,17 +12,37 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.List;
+
+import not_an_example.com.freelancerworld.Fragments.MainFragment;
+import not_an_example.com.freelancerworld.Models.RequestModel;
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
     private List<String> mDataset;
+    private List<RequestModel> mData;
+    private Context contexta;
+    private String userModel;
+
+    public void setContext(Context context)
+    {
+        this.contexta = context;
+        String s = contexta.getPackageName();
+    }
+    public void setData(List<RequestModel> data)
+    {
+        mData = data;
+    }
+
+    public void setUser(String user) {
+        userModel = user;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mTextView;
-//        private Context context;
         ViewHolder(TextView v) {
             super(v);
-//            this.context = context;
             mTextView = v;
             itemView.setOnClickListener(this);
         }
@@ -33,6 +55,11 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
                 // We can access the data within the views
 //                Toast.makeText(context, user, Toast.LENGTH_SHORT).show();
                 Log.v("========Clicker",user);
+                Intent intent = new Intent(contexta, RequestActivity.class);
+                intent.putExtra("user_profile", userModel);
+                Gson gson = new Gson();
+                intent.putExtra("REQUEST",  gson.toJson(mData.get(position)));
+                contexta.startActivity(intent);
             }
         }
     }
