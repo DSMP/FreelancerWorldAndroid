@@ -23,7 +23,7 @@ public class Communication extends AsyncTask<String, Integer, String> {
 
         HttpURLConnection httpConnection= null;
         try {
-            httpConnection= (HttpURLConnection) new URL("http://10.1.0.146:8080" + params[0]).openConnection();
+            httpConnection= (HttpURLConnection) new URL("http://192.168.0.51:8080" + params[0]).openConnection();//10.1.0.146
             httpConnection.setRequestProperty( "Content-Type", "application/json");
             httpConnection.setRequestProperty( "charset", "utf-8");
             httpConnection.setRequestMethod(params[2]);
