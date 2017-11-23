@@ -133,8 +133,8 @@ public class MainFragment extends Fragment {
         protected Boolean doInBackground(Void... voids) {
             UserModel userModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"),UserModel.class);
             String response = new Communication().Receive("/user/findrequests/" + userModel.id,"", "GET");
-            requestModelList = gson.fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
             Log.v("======GSON", response);
+            requestModelList = gson.fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
             return true;
         }
 
