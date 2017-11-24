@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ public class MyRequestsFragment extends Fragment {
     }
     private class AsyncGetMyRequests extends AsyncTask<String,Integer,String>
     {
-        Gson gson = new Gson();
+        Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
         @Override
         protected String doInBackground(String... strings) {
