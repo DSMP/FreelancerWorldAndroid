@@ -2,16 +2,34 @@ package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import not_an_example.com.freelancerworld.JobListAdapter;
+import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
+import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
 
 public class MyRequestsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+    List<RequestModel> requestModelList = new ArrayList<RequestModel>();
+    private RecyclerView myRequestsRecycler;
+    private JobListAdapter myRequestsAdapter;
+    private List<String> myRequestsList;
 
     public MyRequestsFragment() {
         // Required empty public constructor
@@ -20,6 +38,29 @@ public class MyRequestsFragment extends Fragment {
     public static MyRequestsFragment newInstance(String param1, String param2) {
         MyRequestsFragment fragment = new MyRequestsFragment();
         return fragment;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        myRequestsRecycler = (RecyclerView) view.findViewById(R.id.my_job_recycler);
+        createAdapters();
+        new AsyncGetMyRequests().execute();
+    }
+    private void createAdapters() {
+        if ( myRequestsAdapter == null) {
+            myRequestsList = new ArrayList<>(); //upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
+            myRequestsAdapter = new JobListAdapter(myRequestsList);
+        }
+
+
+        DividerItemDecoration recyclerDecoration = new DividerItemDecoration(myRequestsRecycler.getContext(),R.drawable.list_decorator);
+        myRequestsRecycler.addItemDecoration(recyclerDecoration);
+
+        myRequestsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        myRequestsAdapter.setContext(this.getContext());
+        myRequestsRecycler.setAdapter(myRequestsAdapter);
     }
 
     @Override
@@ -61,5 +102,21 @@ public class MyRequestsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private class AsyncGetMyRequests extends AsyncTask<String,Integer,String>
+    {
+        Gson gson = new Gson();
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            UserModel userModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"),UserModel.class);
+            return new Communication().Receive("/request/getrequests/"+userModel.id, "","GET");
+        }
+        @Override
+        protected void onPostExecute(String result)
+        {
+            requestModelList = gson.fromJson( result, new TypeToken<ArrayList<RequestModel>>(){}.getType());
+        }
     }
 }
