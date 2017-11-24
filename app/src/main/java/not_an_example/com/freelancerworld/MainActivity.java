@@ -2,11 +2,8 @@ package not_an_example.com.freelancerworld;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -19,29 +16,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment;
-import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment.OnFragmentInteractionListener;
 import not_an_example.com.freelancerworld.Fragments.JobsTakenFragment;
 import not_an_example.com.freelancerworld.Fragments.MainFragment;
 import not_an_example.com.freelancerworld.Fragments.MakeJobFragment;
+import not_an_example.com.freelancerworld.Fragments.MyRequestsFragment;
 import not_an_example.com.freelancerworld.Fragments.SettingsFragment;
 import not_an_example.com.freelancerworld.Fragments.UserProfileFragment;
-import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,
         JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener,
         UserProfileFragment.OnFragmentInteractionListener, MakeJobFragment.OnFragmentInteractionListener,
-        SettingsFragment.OnFragmentInteractionListener{
+        SettingsFragment.OnFragmentInteractionListener, MyRequestsFragment.OnFragmentInteractionListener{
 
     UserModel userModel;
     Gson gson;
@@ -157,6 +149,8 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = JobFiltersFragment.class;
         } else if (id == R.id.MakeJob) {
             fragmentClass = MakeJobFragment.class;
+        } else if (id == R.id.MyRequests) {
+            fragmentClass = MyRequestsFragment.class;
         } else if (id == R.id.YourProfile) {
             fragmentClass = UserProfileFragment.class;
         } else if (id == R.id.Settings) {
