@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 
 import not_an_example.com.freelancerworld.R;
 
-public class MyRequestFragment extends Fragment {
+public class MyRequestsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
-    public MyRequestFragment() {
+    public MyRequestsFragment() {
         // Required empty public constructor
     }
 
-    public static MyRequestFragment newInstance(String param1, String param2) {
-        MyRequestFragment fragment = new MyRequestFragment();
+    public static MyRequestsFragment newInstance(String param1, String param2) {
+        MyRequestsFragment fragment = new MyRequestsFragment();
         return fragment;
     }
 
