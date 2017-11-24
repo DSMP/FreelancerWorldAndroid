@@ -118,6 +118,10 @@ public class MyRequestsFragment extends Fragment {
         protected void onPostExecute(String result)
         {
             requestModelList = gson.fromJson( result, new TypeToken<ArrayList<RequestModel>>(){}.getType());
+            for (RequestModel r: requestModelList) {
+                myRequestsList.add(r.title);
+            }
+            myRequestsAdapter.notifyDataSetChanged();
         }
     }
 }
