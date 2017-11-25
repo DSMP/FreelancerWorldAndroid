@@ -6,7 +6,7 @@ public class Filters {
     private static int rangeFromYou;
     private static int rangeFromOffice;
     private static int minPayment;
-    private static int maxPayment;
+    private static int maxPayment = 1001;
     private static float minTime;
     private static float maxTime;
     private static PaymentMethod paymentMethod = PaymentMethod.NOSERVICE;
