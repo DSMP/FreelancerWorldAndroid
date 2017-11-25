@@ -153,14 +153,13 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-//            for (RequestModel requestModel : requestModelList) {
-//                upperJobs.add(requestModel.title);
-//            }
-//            mUpperAdapter = new JobListAdapter(requestNameList);
-//            mUpperRecycler.setAdapter(mUpperAdapter);
             applyFilters();
+            for (RequestModel requestModel : filteredModelList) {
+                upperJobs.add(requestModel.title);
+            }
+            
+            mUpperAdapter.setRequests(filteredModelList);
             mUpperAdapter.notifyDataSetChanged();
-            mUpperAdapter.setRequests(requestModelList);
             mUpperAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
         }
     }
