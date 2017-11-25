@@ -14,14 +14,21 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.UserModel;
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
     private List<String> mDataset;
-    private List<RequestModel> mData;
+    private List<RequestModel> mRequests;
+
+    public void setUsers(List<UserModel> mUsers) {
+        this.mUsers = mUsers;
+    }
+
+    private List<UserModel> mUsers;
     private Context mContexta;
     private String mUserModel;
 
-    public void setmClass(Class mClass) {
+    public void setClass(Class mClass) {
         this.mClass = mClass;
     }
 
@@ -32,9 +39,9 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
         this.mContexta = context;
         String s = mContexta.getPackageName();
     }
-    public void setData(List<RequestModel> data)
+    public void setRequests(List<RequestModel> data)
     {
-        mData = data;
+        mRequests = data;
     }
 
     public void setUser(String user) {
@@ -60,7 +67,10 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
                 Intent intent = new Intent(mContexta, mClass);
                 intent.putExtra("user_profile", mUserModel);
                 Gson gson = new Gson();
-                intent.putExtra("REQUEST",  gson.toJson(mData.get(position)));
+                if (mRequests != null)
+                    intent.putExtra("REQUEST",  gson.toJson(mRequests.get(position)));
+//                else
+//                    intent.putExtra("Contractors",  gson.toJson(mUsers.get(position)));
                 mContexta.startActivity(intent);
             }
         }

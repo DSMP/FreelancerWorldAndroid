@@ -21,6 +21,7 @@ import java.util.List;
 import not_an_example.com.freelancerworld.JobListAdapter;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
+import not_an_example.com.freelancerworld.MyRequestActivity;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.Utils.Communication;
 import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
@@ -61,6 +62,7 @@ public class MyRequestsFragment extends Fragment {
         myRequestsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         myRequestsAdapter.setContext(this.getContext());
+        myRequestsAdapter.setClass(MyRequestActivity.class);
         myRequestsRecycler.setAdapter(myRequestsAdapter);
     }
 
@@ -121,6 +123,7 @@ public class MyRequestsFragment extends Fragment {
             for (RequestModel r: requestModelList) {
                 myRequestsList.add(r.title);
             }
+            myRequestsAdapter.setRequests(requestModelList);
             myRequestsAdapter.notifyDataSetChanged();
         }
     }

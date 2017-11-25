@@ -1,5 +1,6 @@
 package not_an_example.com.freelancerworld;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.List;
 import not_an_example.com.freelancerworld.Models.AddressModel;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
+import not_an_example.com.freelancerworld.Utils.Communication;
 import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
 
 public class MyRequestActivity extends AppCompatActivity {
@@ -33,6 +37,8 @@ public class MyRequestActivity extends AppCompatActivity {
 
     RequestModel requestModel;
     UserModel mUserModel;
+    List<UserModel> mContractors;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +65,12 @@ public class MyRequestActivity extends AppCompatActivity {
         AddressModel adress = requestModel.address; mAdresstText.setText(new StringBuilder("Adres: " + adress.buildingNumber + " " +
                 adress.city + " " + adress.city + " " + adress.street + " " + adress.houseNumber + " " + adress.postalCode));
         mUserText.setText("Signature: " + requestModel.user.name + " " + requestModel.user.lastName);
+        interestsContractorsRecycler = (RecyclerView) findViewById(R.id.ContractorsRecycler);
 
         createAdapters();
 
-        
+        //TODO: narazie bo nie ma jeszcze
+        interestsContractorsAdapter.setClass(null);
     }
 
     private void createAdapters() {
@@ -79,5 +87,26 @@ public class MyRequestActivity extends AppCompatActivity {
 
         interestsContractorsAdapter.setContext(this);
         interestsContractorsRecycler.setAdapter(interestsContractorsAdapter);
+    }
+
+    private class AsyncGetMyRequests extends AsyncTask<String,Integer,String>
+    {
+        Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            return new Communication().Receive("/request/showcontractors/"+requestModel.id, "","POST");
+        }
+        @Override
+        protected void onPostExecute(String result)
+        {
+            mContractors = gson.fromJson( result, new TypeToken<ArrayList<RequestModel>>(){}.getType());
+            for (UserModel u: mContractors) {
+                interestsContractorsList.add(u.name + u.lastName);
+            }
+            interestsContractorsAdapter.setUsers(mContractors);
+            interestsContractorsAdapter.notifyDataSetChanged();
+        }
     }
 }

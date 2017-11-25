@@ -1,11 +1,9 @@
 package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,10 +21,6 @@ import java.util.List;
 
 import not_an_example.com.freelancerworld.JobListAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import not_an_example.com.freelancerworld.JobListAdapter;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
@@ -124,8 +118,8 @@ public class MainFragment extends Fragment {
 
         mUpperAdapter.setContext(this.getContext());
         mLowerAdapter.setContext(this.getContext());
-        mUpperAdapter.setmClass(RequestActivity.class);
-        mLowerAdapter.setmClass(RequestActivity.class);
+        mUpperAdapter.setClass(RequestActivity.class);
+        mLowerAdapter.setClass(RequestActivity.class);
         mUpperRecycler.setAdapter(mUpperAdapter);
         mLowerRecycler.setAdapter(mLowerAdapter);
     }
@@ -151,7 +145,7 @@ public class MainFragment extends Fragment {
 //            mUpperAdapter = new JobListAdapter(requestNameList);
 //            mUpperRecycler.setAdapter(mUpperAdapter);
             mUpperAdapter.notifyDataSetChanged();
-            mUpperAdapter.setData(requestModelList);
+            mUpperAdapter.setRequests(requestModelList);
             mUpperAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
         }
     }
