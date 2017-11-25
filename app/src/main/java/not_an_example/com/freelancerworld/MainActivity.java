@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         mImageView = (ImageView) findViewById(R.id.logOffImageView);
         mNickNameView.setText(userModel.email);
         mFullNameView.setText(userModel.name + " " + userModel.lastName);
-        mSpecView.setText("Brak specializacji");
+        mSpecView.setText("Brak specjalizacji");
         if (userModel.professions.length != 0) {
             mSpecView.setText(userModel.professions[0].name);
         }

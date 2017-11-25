@@ -27,6 +27,7 @@ import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.RequestActivity;
 import not_an_example.com.freelancerworld.Utils.Communication;
 import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
+import not_an_example.com.freelancerworld.Utils.Filters;
 
 public class MainFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
@@ -37,6 +38,7 @@ public class MainFragment extends Fragment {
     List<String> upperJobs;
 
     List<RequestModel> requestModelList = new ArrayList<RequestModel>();
+    List<RequestModel> filteredModelList;
 
     public MainFragment() {
         // Required empty public constructor
@@ -124,6 +126,18 @@ public class MainFragment extends Fragment {
         mLowerRecycler.setAdapter(mLowerAdapter);
     }
 
+    private void applyFilters() {
+        filteredModelList = new ArrayList<>();
+        for (RequestModel requestModel : requestModelList) {
+            if ( (requestModel.minPayment >= Filters.getMinPayment()) &&
+                    (requestModel.minPayment <= Filters.getMaxPayment()) &&
+                    (requestModel.maxPayment <= Filters.getMaxPayment()) &&
+                    (requestModel.maxPayment >= Filters.getMinPayment()) ) {
+                filteredModelList.add(requestModel);
+            }
+        }
+    }
+
     public class GetAllRequestsTask extends AsyncTask<Void, Void, Boolean> {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
@@ -139,11 +153,12 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            for (RequestModel requestModel : requestModelList) {
-                upperJobs.add(requestModel.title);
-            }
+//            for (RequestModel requestModel : requestModelList) {
+//                upperJobs.add(requestModel.title);
+//            }
 //            mUpperAdapter = new JobListAdapter(requestNameList);
 //            mUpperRecycler.setAdapter(mUpperAdapter);
+            applyFilters();
             mUpperAdapter.notifyDataSetChanged();
             mUpperAdapter.setRequests(requestModelList);
             mUpperAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
