@@ -77,7 +77,7 @@ public class RequestActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            return new Communication().Receive("/request/addrequesttaker/" + params[0] + "/" + params[1] + "","","POST");
+            return new Communication().Receive("/user/contractoradd/" + params[1] + "/" + params[0] + "","","POST");
         }
         @Override
         protected void onPostExecute(String result) {
