@@ -70,6 +70,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
                 if (mRequests != null)
                     intent.putExtra("REQUEST",  gson.toJson(mRequests.get(position)));
 //                else
+//                else
 //                    intent.putExtra("Contractors",  gson.toJson(mUsers.get(position)));
                 mContexta.startActivity(intent);
             }

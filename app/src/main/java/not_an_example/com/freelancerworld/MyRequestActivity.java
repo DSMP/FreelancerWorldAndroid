@@ -71,6 +71,12 @@ public class MyRequestActivity extends AppCompatActivity {
 
         //TODO: narazie bo nie ma jeszcze
         interestsContractorsAdapter.setClass(null);
+        new AsyncShowContractors().execute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void createAdapters() {
@@ -80,8 +86,8 @@ public class MyRequestActivity extends AppCompatActivity {
         }
 
 
-        DividerItemDecoration recyclerDecoration = new DividerItemDecoration(interestsContractorsRecycler.getContext(),R.drawable.list_decorator);
-        interestsContractorsRecycler.addItemDecoration(recyclerDecoration);
+//        DividerItemDecoration recyclerDecoration = new DividerItemDecoration(interestsContractorsRecycler.getContext(),R.drawable.list_decorator);
+//        interestsContractorsRecycler.addItemDecoration(recyclerDecoration);
 
         interestsContractorsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
@@ -89,21 +95,21 @@ public class MyRequestActivity extends AppCompatActivity {
         interestsContractorsRecycler.setAdapter(interestsContractorsAdapter);
     }
 
-    private class AsyncGetMyRequests extends AsyncTask<String,Integer,String>
+    private class AsyncShowContractors extends AsyncTask<String,Integer,String>
     {
         Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
         @Override
         protected String doInBackground(String... strings) {
 
-            return new Communication().Receive("/request/showcontractors/"+requestModel.id, "","POST");
+            return new Communication().Receive("/request/showcontractors/"+String.valueOf(requestModel.id), "","POST");
         }
         @Override
         protected void onPostExecute(String result)
         {
-            mContractors = gson.fromJson( result, new TypeToken<ArrayList<RequestModel>>(){}.getType());
+            mContractors = gson.fromJson( result, new TypeToken<ArrayList<UserModel>>(){}.getType());
             for (UserModel u: mContractors) {
-                interestsContractorsList.add(u.name + u.lastName);
+                interestsContractorsList.add(u.name + " " + u.lastName);
             }
             interestsContractorsAdapter.setUsers(mContractors);
             interestsContractorsAdapter.notifyDataSetChanged();
