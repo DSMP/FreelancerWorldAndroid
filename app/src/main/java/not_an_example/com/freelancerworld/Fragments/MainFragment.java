@@ -1,6 +1,7 @@
 package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import not_an_example.com.freelancerworld.JobListAdapter;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
+import not_an_example.com.freelancerworld.RequestActivity;
 import not_an_example.com.freelancerworld.Utils.Communication;
 import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
 
@@ -122,6 +124,8 @@ public class MainFragment extends Fragment {
 
         mUpperAdapter.setContext(this.getContext());
         mLowerAdapter.setContext(this.getContext());
+        mUpperAdapter.setmClass(RequestActivity.class);
+        mLowerAdapter.setmClass(RequestActivity.class);
         mUpperRecycler.setAdapter(mUpperAdapter);
         mLowerRecycler.setAdapter(mLowerAdapter);
     }
