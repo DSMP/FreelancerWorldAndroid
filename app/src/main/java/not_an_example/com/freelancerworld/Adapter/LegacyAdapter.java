@@ -1,4 +1,4 @@
-package not_an_example.com.freelancerworld;
+package not_an_example.com.freelancerworld.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import java.util.List;
 
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
+import not_an_example.com.freelancerworld.R;
 
 public class LegacyAdapter extends RecyclerView.Adapter<LegacyAdapter.ViewHolder>  {
     private List<String> mDataset;

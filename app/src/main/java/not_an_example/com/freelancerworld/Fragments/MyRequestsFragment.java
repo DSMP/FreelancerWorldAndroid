@@ -18,7 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import not_an_example.com.freelancerworld.LegacyAdapter;
+import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.MyRequestActivity;
