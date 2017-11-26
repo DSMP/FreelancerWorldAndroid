@@ -174,11 +174,6 @@ public class UserProfileFragment extends Fragment {
     private void launchPortfolio()
     {
         new AsyncShowPortfolio().execute(String.valueOf(mUserModel.id));
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private class AsyncGetAllProfs extends AsyncTask<String,Integer,String>
