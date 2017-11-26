@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
 
@@ -107,6 +109,9 @@ public class MainFragment extends Fragment {
             List<RequestModel> upperJobs = new ArrayList<>();
             upperJobs.add(new RequestModel("Kierowca PKS"));upperJobs.add(new RequestModel("Android Developer"));upperJobs.add(new RequestModel("Potrzebny mechanik"));
             mUpperAdapter = new JobListAdapter(upperJobs);
+            Map<String,Boolean> flags = new HashMap<>();
+            flags.put(RequestActivity.IS_REQUEST_BTN_VISIBLE, true);
+            mUpperAdapter.setActivityFlags(flags);
         }
 
         if ( mLowerAdapter == null) {

@@ -73,7 +73,8 @@
                 android:id="@+id/SendResponseButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Send Response"/>
+                android:visibility="gone"
+                android:text="Send Response" />
         </LinearLayout>
     </ScrollView>
 

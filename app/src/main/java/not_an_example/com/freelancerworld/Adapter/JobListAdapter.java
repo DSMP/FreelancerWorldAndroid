@@ -2,6 +2,7 @@ package not_an_example.com.freelancerworld.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.renderscript.Sampler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.Map;
 
 import not_an_example.com.freelancerworld.Contants.FilterConstants;
 import not_an_example.com.freelancerworld.Models.RequestModel;
@@ -22,6 +24,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
     private String mUserModelSerialized;
     private Context mContext;
     private Class mActivity;
+    private Map<String, Boolean> mActivityFlags;
 
     public JobListAdapter(List<RequestModel> myDataset) {
         this(myDataset, null, null, null);
@@ -35,20 +38,24 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
     }
 
     public void setDataset( List<RequestModel> myDataset) {
-        mDataset = myDataset;
+        this.mDataset = myDataset;
     }
 
     public void setActivityForListener(Class activityClass) {
-        mActivity = activityClass;
+        this.mActivity = activityClass;
     }
 
     public void setUser(String userSerialized) {
-        mUserModelSerialized = userSerialized;
+        this.mUserModelSerialized = userSerialized;
     }
 
     public void setContext(Context context)
     {
         this.mContext = context;
+    }
+
+    public void setActivityFlags(Map<String, Boolean> activityFlags) {
+        this.mActivityFlags = activityFlags;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -71,6 +78,11 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
                 Intent intent = new Intent(mContext, mActivity);
                 intent.putExtra("user_profile", mUserModelSerialized);
                 intent.putExtra("REQUEST", Utils.getGsonInstance().toJson(mDataset.get(position)));
+                if ( mActivityFlags != null && !mActivityFlags.isEmpty()) {
+                    for (String key : mActivityFlags.keySet()) {
+                        intent.putExtra(key, mActivityFlags.get(key));
+                    }
+                }
                 mContext.startActivity(intent);
             }
         }

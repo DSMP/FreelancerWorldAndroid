@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -19,8 +18,11 @@ import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class RequestActivity extends AppCompatActivity {
+
+    public final static String IS_REQUEST_BTN_VISIBLE = "requestBtnVisibility";
 
     TextView mTitleText;
     TextView mMinPaymentText;
@@ -51,9 +53,9 @@ public class RequestActivity extends AppCompatActivity {
         mUserText = (TextView) findViewById(R.id.UserText);
         mSendResponseButton = (Button) findViewById(R.id.SendResponseButton);
 
-        Gson gson = new Gson();
-        requestModel = gson.fromJson(getIntent().getStringExtra("REQUEST"), RequestModel.class);
-        mUserModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);;
+        requestModel = Utils.getGsonInstance().fromJson(getIntent().getStringExtra("REQUEST"), RequestModel.class);
+        mUserModel = Utils.getGsonInstance().fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
+        Boolean requestButtonVisible = getIntent().getBooleanExtra(IS_REQUEST_BTN_VISIBLE, false);
 
         mTitleText.setText("Title: " + requestModel.title);
         mMinPaymentText.setText("Min payment: " + String.valueOf(requestModel.minPayment));
@@ -65,12 +67,15 @@ public class RequestActivity extends AppCompatActivity {
         adress.city + " " + adress.city + " " + adress.street + " " + adress.houseNumber + " " + adress.postalCode));
         mUserText.setText("Signature: " + requestModel.user.name + " " + requestModel.user.lastName);
 
-        mSendResponseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SendResponseTask().execute(String.valueOf(requestModel.id),String.valueOf(mUserModel.id));
-            }
-        });
+        if (requestButtonVisible) {
+            mSendResponseButton.setVisibility(View.VISIBLE);
+            mSendResponseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new SendResponseTask().execute(String.valueOf(requestModel.id),String.valueOf(mUserModel.id));
+                }
+            });
+        }
     }
     private class SendResponseTask extends AsyncTask<String, Void, String>
     {
@@ -83,8 +88,7 @@ public class RequestActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Toast.makeText(getBaseContext(), "Response sent", Toast.LENGTH_SHORT).show();
-            Gson gson = new Gson();
-            Message message = gson.fromJson(result, Message.class);
+            Message message = Utils.getGsonInstance().fromJson(result, Message.class);
             Toast.makeText(getBaseContext(), message.message, Toast.LENGTH_LONG).show();
         }
 
