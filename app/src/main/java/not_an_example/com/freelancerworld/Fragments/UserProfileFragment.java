@@ -1,6 +1,7 @@
 package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
+import not_an_example.com.freelancerworld.MainActivity;
 import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.ProfessionModel;
 import not_an_example.com.freelancerworld.Models.RequestModel;
@@ -84,13 +86,13 @@ public class UserProfileFragment extends Fragment {
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
         mDescribeEditText = (EditText) view.findViewById(R.id.describeEditText);
         mDescribeEditText.setText(mUserModel.description);
-        mDescribeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus)
-                    new AsyncEditDescribe().execute();
-            }
-        });
+//        mDescribeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus)
+//                    new AsyncEditDescribe().execute();
+//            }
+//        });
         spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
         mSpinner.setAdapter(spinnerAdapter);
@@ -118,10 +120,13 @@ public class UserProfileFragment extends Fragment {
             mUserSpec.add(p.name);
         }
     }
-
-    public void OnDestroyView()
+    @Override
+    public void onDestroyView()
     {
+        super.onDestroyView();
         new AsyncEditDescribe().execute();
+//        getActivity().getIntent().putExtra("user_profile", new Gson().toJson(mUserModel));
+        ((MainActivity)getActivity()).refreshMenu();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -232,9 +237,17 @@ public class UserProfileFragment extends Fragment {
     private class AsyncEditDescribe extends AsyncTask<String,Integer,String>
     {
         Gson gson = new Gson();
+        EditDescription ed = new EditDescription();
+        Intent intent;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            intent = getActivity().getIntent();
+        }
+
         @Override
         protected String doInBackground(String... params) {
-            EditDescription ed = new EditDescription();
             ed.id = mUserModel.id;
             ed.description = mDescribeEditText.getText().toString();
             return new Communication().Receive("/user/editdescription",gson.toJson(ed),"PATCH");
@@ -247,6 +260,9 @@ public class UserProfileFragment extends Fragment {
             Message msg = gson.fromJson(result, Message.class);
             if (msg.status == 202)
                 Toast.makeText(getContext(), msg.message, Toast.LENGTH_LONG).show();
+            else
+                mUserModel.description = mDescribeEditText.getText().toString();
+            intent.putExtra("user_profile", new Gson().toJson(mUserModel));
         }
     }
     private class AsyncShowPortfolio extends AsyncTask<String,Integer,String>
