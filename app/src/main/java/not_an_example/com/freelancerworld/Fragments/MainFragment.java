@@ -19,10 +19,9 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import not_an_example.com.freelancerworld.JobListAdapter;
+import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
 
 import not_an_example.com.freelancerworld.Models.RequestModel;
-import not_an_example.com.freelancerworld.Models.SmallModels.Request;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.RequestActivity;

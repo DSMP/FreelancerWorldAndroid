@@ -14,11 +14,11 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
+import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
 import not_an_example.com.freelancerworld.Models.AddressModel;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
-import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
 
 public class MyRequestActivity extends AppCompatActivity {
 
