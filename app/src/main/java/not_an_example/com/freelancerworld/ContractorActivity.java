@@ -37,9 +37,9 @@ public class ContractorActivity extends AppCompatActivity {
         Gson gson = new Gson();
         mContractorModel = gson.fromJson(getIntent().getStringExtra("contractor_profile"), UserModel.class);
         mRequest = gson.fromJson(getIntent().getStringExtra("request"), RequestModel.class);
-        contrFullName.setText(new StringBuilder().append(mContractorModel.name).append(mContractorModel.lastName).toString());
-        contrPhoneNumber.setText(mContractorModel.phoneNumber);
-        StringBuilder sb = new StringBuilder();
+        contrFullName.setText(new StringBuilder().append("Name: ").append(mContractorModel.name + " ").append(mContractorModel.lastName).toString());
+        contrPhoneNumber.setText(new StringBuilder().append("Phone: ").append(mContractorModel.phoneNumber).toString());
+        StringBuilder sb = new StringBuilder("Professions: ");
         for (Professions s: mContractorModel.professions) {
             sb.append(s.name + " ");
         }
