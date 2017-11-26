@@ -26,6 +26,7 @@ import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
 import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.ProfessionModel;
 import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.SmallModels.EditDescription;
 import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.SmallModels.User;
 import not_an_example.com.freelancerworld.Models.UserModel;
@@ -117,10 +118,10 @@ public class UserProfileFragment extends Fragment {
         }
     }
 
-//    public void OnDestroyView()
-//    {
-//        new AsyncEditDescribe().execute();
-//    }
+    public void OnDestroyView()
+    {
+        new AsyncEditDescribe().execute();
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -229,15 +230,22 @@ public class UserProfileFragment extends Fragment {
     }
     private class AsyncEditDescribe extends AsyncTask<String,Integer,String>
     {
+        Gson gson = new Gson();
         @Override
         protected String doInBackground(String... params) {
-            return new Communication().Receive();
+            EditDescription ed = new EditDescription();
+            ed.id = mUserModel.id;
+            ed.description = mDescribeEditText.getText().toString();
+            return new Communication().Receive("/user/editdescription",gson.toJson(ed),"POST");
         }
 
         @Override
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
+            Message msg = gson.fromJson(result, Message.class);
+            if (msg.status == 202)
+                Toast.makeText(getContext(), msg.message, Toast.LENGTH_LONG).show();
         }
     }
     private class AsyncShowPortfolio extends AsyncTask<String,Integer,String>
