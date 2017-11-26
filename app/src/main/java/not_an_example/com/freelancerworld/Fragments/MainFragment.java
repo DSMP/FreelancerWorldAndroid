@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
+import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
 
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
@@ -37,7 +37,7 @@ public class MainFragment extends Fragment {
     private UserModel mUserModel;
 
     private RecyclerView mUpperRecycler, mLowerRecycler;
-    private JobListAdapter mUpperAdapter, mLowerAdapter;
+    private LegacyAdapter mUpperAdapter, mLowerAdapter;
     private List<String> upperJobs;
     private List<String> lowerJobs;
 
@@ -111,14 +111,14 @@ public class MainFragment extends Fragment {
     private void createAdapters() {
         if ( mUpperAdapter == null) {
             upperJobs = new ArrayList<>(); //upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
-            mUpperAdapter = new JobListAdapter(upperJobs);
+            mUpperAdapter = new LegacyAdapter(upperJobs);
         }
 
         if ( mLowerAdapter == null) {
             lowerJobs = new ArrayList<>();
             lowerJobs.add("Job well done");lowerJobs.add("Job not paid");
             lowerJobs.add("JIP a.k.a. job in progress");lowerJobs.add("Job awaiting... for executioner");
-            mLowerAdapter = new JobListAdapter(lowerJobs);
+            mLowerAdapter = new LegacyAdapter(lowerJobs);
         }
 
         DividerItemDecoration recyclerDecoration = new DividerItemDecoration(mUpperRecycler.getContext(),R.drawable.list_decorator);

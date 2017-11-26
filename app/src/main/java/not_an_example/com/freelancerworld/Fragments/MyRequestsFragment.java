@@ -18,7 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
+import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.MyRequestActivity;
@@ -30,7 +30,7 @@ public class MyRequestsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     List<RequestModel> requestModelList = new ArrayList<RequestModel>();
     private RecyclerView myRequestsRecycler;
-    private JobListAdapter myRequestsAdapter;
+    private LegacyAdapter myRequestsAdapter;
     private List<String> myRequestsList;
 
     public MyRequestsFragment() {
@@ -52,7 +52,7 @@ public class MyRequestsFragment extends Fragment {
     private void createAdapters() {
         if ( myRequestsAdapter == null) {
             myRequestsList = new ArrayList<>(); //upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
-            myRequestsAdapter = new JobListAdapter(myRequestsList);
+            myRequestsAdapter = new LegacyAdapter(myRequestsList);
         }
 
 

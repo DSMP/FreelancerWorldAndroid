@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
+import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
 import not_an_example.com.freelancerworld.Models.ProfessionModel;
 import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.SmallModels.User;
@@ -31,7 +31,7 @@ public class UserProfileFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private RecyclerView mUpperRecycler, mLowerRecycler;
-    private JobListAdapter mUpperAdapter, mLowerAdapter;
+    private LegacyAdapter mUpperAdapter, mLowerAdapter;
     Spinner mSpinner;
     Button mSpeccAdd;
     Button mSpeccRem;
@@ -127,12 +127,12 @@ public class UserProfileFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            mUpperAdapter = new JobListAdapter(mUserSpec);
+            mUpperAdapter = new LegacyAdapter(mUserSpec);
         }
 
         if ( mLowerAdapter == null) {
             List<String> lowerJobs = new ArrayList<>(); for (int i=1; i< 5 ; i++){lowerJobs.add("zlecenie " + (i*3-2));}
-            mLowerAdapter = new JobListAdapter(lowerJobs);
+            mLowerAdapter = new LegacyAdapter(lowerJobs);
         }
 
         mUpperRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));

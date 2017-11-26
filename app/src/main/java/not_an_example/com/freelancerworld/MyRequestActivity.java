@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
+import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
 import not_an_example.com.freelancerworld.Models.AddressModel;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
@@ -32,7 +33,7 @@ public class MyRequestActivity extends AppCompatActivity {
     TextView mUserText;
 
     private RecyclerView interestsContractorsRecycler;
-    private JobListAdapter interestsContractorsAdapter;
+    private LegacyAdapter interestsContractorsAdapter;
     private List<String> interestsContractorsList;
 
     RequestModel requestModel;
@@ -82,7 +83,7 @@ public class MyRequestActivity extends AppCompatActivity {
     private void createAdapters() {
         if ( interestsContractorsAdapter == null) {
             interestsContractorsList = new ArrayList<>(); //upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
-            interestsContractorsAdapter = new JobListAdapter(interestsContractorsList);
+            interestsContractorsAdapter = new LegacyAdapter(interestsContractorsList);
         }
 
 
