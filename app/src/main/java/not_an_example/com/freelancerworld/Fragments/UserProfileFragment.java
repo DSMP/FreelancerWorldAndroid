@@ -14,15 +14,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
+import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.ProfessionModel;
+import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.SmallModels.User;
 import not_an_example.com.freelancerworld.Models.UserModel;
@@ -43,6 +46,8 @@ public class UserProfileFragment extends Fragment {
     EditText mDescribeEditText;
 
     UserModel mUserModel;
+    private List<RequestModel> mPortfolioList;
+    private List<String> mRequestsTitles;
 
 
     public UserProfileFragment() {
@@ -112,10 +117,10 @@ public class UserProfileFragment extends Fragment {
         }
     }
 
-    public void OnDestroyView()
-    {
-        new AsyncEditDescribe().execute();
-    }
+//    public void OnDestroyView()
+//    {
+//        new AsyncEditDescribe().execute();
+//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -147,8 +152,9 @@ public class UserProfileFragment extends Fragment {
         }
 
         if ( mLowerAdapter == null) {
-            List<String> lowerJobs = new ArrayList<>(); for (int i=1; i< 5 ; i++){lowerJobs.add("zlecenie " + (i*3-2));}
-            mLowerAdapter = new LegacyAdapter(lowerJobs);
+            mPortfolioList = new ArrayList<>();
+            mRequestsTitles = new ArrayList<>();
+            mLowerAdapter = new LegacyAdapter(mRequestsTitles);
         }
 
         mUpperRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -162,6 +168,11 @@ public class UserProfileFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void launchPortfolio()
+    {
+        new AsyncShowPortfolio().execute(String.valueOf(mUserModel.id));
     }
 
     private class AsyncGetAllProfs extends AsyncTask<String,Integer,String>
@@ -185,6 +196,7 @@ public class UserProfileFragment extends Fragment {
                 mAllSpec.add(s.name);
             }
             spinnerAdapter.notifyDataSetChanged();
+            launchPortfolio();
         }
     }
 
@@ -226,6 +238,27 @@ public class UserProfileFragment extends Fragment {
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
+        }
+    }
+    private class AsyncShowPortfolio extends AsyncTask<String,Integer,String>
+    {
+        Gson gson = new Gson();
+        @Override
+        protected String doInBackground(String... params) {
+            return new Communication().Receive("/user/getportfolio/"+params[0],"","GET");
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            mPortfolioList = gson.fromJson(result,  new TypeToken<ArrayList<RequestModel>>(){}.getType());
+//            if (mPortfolioList!=null)
+                for (RequestModel r: mPortfolioList) {
+                    mRequestsTitles.add(r.title);
+                }
+            mLowerAdapter.notifyDataSetChanged();
+
         }
     }
 }
