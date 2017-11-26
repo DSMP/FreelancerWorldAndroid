@@ -22,6 +22,7 @@ import java.util.List;
 import not_an_example.com.freelancerworld.JobListAdapter;
 
 import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.SmallModels.Request;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.RequestActivity;
@@ -33,12 +34,18 @@ public class MainFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private View mLayout;
+    private Gson mGson;
+    private UserModel mUserModel;
+
     private RecyclerView mUpperRecycler, mLowerRecycler;
     private JobListAdapter mUpperAdapter, mLowerAdapter;
-    List<String> upperJobs;
+    private List<String> upperJobs;
+    private List<String> lowerJobs;
 
-    List<RequestModel> requestModelList = new ArrayList<RequestModel>();
-    List<RequestModel> filteredModelList;
+    private List<RequestModel> myRequestModelList = new ArrayList<RequestModel>();
+    private List<RequestModel> filteredModelList;
+    private List<RequestModel> takenRequestModelList;
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -48,12 +55,15 @@ public class MainFragment extends Fragment {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        mUserModel = mGson.fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
     }
 
     @Override
@@ -68,6 +78,7 @@ public class MainFragment extends Fragment {
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
+        new GetAllRequestsForUserTask().execute((Void)null);
         new GetAllRequestsTask().execute((Void)null);
     }
 
@@ -105,7 +116,8 @@ public class MainFragment extends Fragment {
         }
 
         if ( mLowerAdapter == null) {
-            List<String> lowerJobs = new ArrayList<>(); lowerJobs.add("Job well done");lowerJobs.add("Job not paid");
+            lowerJobs = new ArrayList<>();
+            lowerJobs.add("Job well done");lowerJobs.add("Job not paid");
             lowerJobs.add("JIP a.k.a. job in progress");lowerJobs.add("Job awaiting... for executioner");
             mLowerAdapter = new JobListAdapter(lowerJobs);
         }
@@ -128,7 +140,7 @@ public class MainFragment extends Fragment {
 
     private void applyFilters() {
         filteredModelList = new ArrayList<>();
-        for (RequestModel requestModel : requestModelList) {
+        for (RequestModel requestModel : myRequestModelList) {
             if ( (requestModel.minPayment >= Filters.getMinPayment()) &&
                     (requestModel.minPayment <= Filters.getMaxPayment()) &&
                     (requestModel.maxPayment <= Filters.getMaxPayment()) &&
@@ -138,7 +150,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public class GetAllRequestsTask extends AsyncTask<Void, Void, Boolean> {
+    public class GetAllRequestsForUserTask extends AsyncTask<Void, Void, Boolean> {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
         @Override
@@ -146,7 +158,7 @@ public class MainFragment extends Fragment {
             UserModel userModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"),UserModel.class);
             String response = new Communication().Receive("/user/findrequests/" + userModel.id,"", "GET");
             Log.v("======GSON", response);
-            requestModelList = gson.fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
+            myRequestModelList = gson.fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
             return true;
         }
 
@@ -161,6 +173,38 @@ public class MainFragment extends Fragment {
             mUpperAdapter.setRequests(filteredModelList);
             mUpperAdapter.notifyDataSetChanged();
             mUpperAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
+        }
+    }
+
+    public class GetAllRequestsTask extends AsyncTask<Void, Void, Boolean> {
+
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            UserModel userModel = mGson.fromJson(getActivity().getIntent().getStringExtra("user_profile"),UserModel.class);
+            String response = new Communication().Receive("/request/getall/","", "GET");
+            Log.v("======GSON", response);
+            takenRequestModelList = mGson.fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            List<RequestModel> allRequestModelList = new ArrayList<RequestModel>(takenRequestModelList);
+
+            takenRequestModelList.clear();
+            lowerJobs.clear();
+            for (RequestModel requestModel : allRequestModelList) {
+                if (requestModel.requestTakerId == mUserModel.id) {
+                    takenRequestModelList.add(requestModel);
+                    lowerJobs.add(requestModel.title);
+                }
+            }
+
+            mLowerAdapter.setRequests(takenRequestModelList);
+            mLowerAdapter.notifyDataSetChanged();
+            mLowerAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
         }
     }
 }
