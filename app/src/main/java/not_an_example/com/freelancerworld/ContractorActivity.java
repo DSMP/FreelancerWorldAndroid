@@ -3,8 +3,10 @@ package not_an_example.com.freelancerworld;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
+import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.UserModel;
@@ -44,22 +47,34 @@ public class ContractorActivity extends AppCompatActivity {
             sb.append(s.name + " ");
         }
         contrProfessions.setText(sb);
+        acceptContractor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AsyncSendAcceptContractor().execute(String.valueOf(mRequest.id), String.valueOf(mContractorModel.id));
+            }
+        });
 
 
     }
-    private class AsyncShowContractors extends AsyncTask<String,Integer,String>
+    private class AsyncSendAcceptContractor extends AsyncTask<String,Integer,String>
     {
         Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
+        protected void onPreExecute()
+        {
+            Toast.makeText(getBaseContext(),"Accept sent", Toast.LENGTH_SHORT).show();
+        }
         @Override
-        protected String doInBackground(String... strings) {
+        protected String doInBackground(String... params) {
 
-            return new Communication().Receive("/request/showcontractors/"+String.valueOf(mRequest.id), "","POST");
+            return new Communication().Receive("/request/addrequesttaker/"+params[0]+"/"+params[1]+"", "","POST");
         }
         @Override
         protected void onPostExecute(String result)
         {
-
+            super.onPostExecute(result);
+            Message msg = gson.fromJson(result, Message.class);
+            Toast.makeText(getBaseContext(), msg.message, Toast.LENGTH_LONG).show();
         }
     }
 }
