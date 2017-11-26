@@ -16,4 +16,9 @@ public class RequestModel {
     public Professions profession;
     public AddressModel address;
     public UserModel user;
+
+    //temporary constructor for placeHolder
+    public RequestModel(String reqName) {
+        this.title = reqName;
+    }
 }

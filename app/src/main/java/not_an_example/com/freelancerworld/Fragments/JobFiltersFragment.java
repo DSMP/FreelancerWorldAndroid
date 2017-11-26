@@ -1,7 +1,6 @@
 package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -108,8 +106,8 @@ public class JobFiltersFragment extends Fragment {
     private void assignInitialValues() {
         mYourDistance.setProgress((int) (Filters.getRangeFromYou() / FilterConstants.DISTANCE_CONVERSION));
         mHomeDistance.setProgress((int) (Filters.getRangeFromOffice() / FilterConstants.DISTANCE_CONVERSION));
-        mMinPayment.setProgress((int) (Filters.getMinPayment() / FilterConstants.MONEY_CONVERSION));
-        mMaxPayment.setProgress((int) (Filters.getMaxPayment() / FilterConstants.MONEY_CONVERSION));
+        mMinPayment.setProgress((int) (Filters.getMinPayment() / FilterConstants.PAYMENT_CONVERSION));
+        mMaxPayment.setProgress((int) (Filters.getMaxPayment() / FilterConstants.PAYMENT_CONVERSION));
         mMinTime.setProgress((int) (Filters.getMinTime() / FilterConstants.TIME_CONVERSION));
         mMaxTime.setProgress((int) (Filters.getMaxTime() / FilterConstants.TIME_CONVERSION));
 
@@ -117,8 +115,8 @@ public class JobFiltersFragment extends Fragment {
 
         mYourDistanceText.setText((Filters.getRangeFromYou() / FilterConstants.DISTANCE_CONVERSION) + " " + FilterConstants.DISTANCE_UNIT);
         mHomeDistanceText.setText((Filters.getRangeFromOffice() / FilterConstants.DISTANCE_CONVERSION) + " " + FilterConstants.DISTANCE_UNIT);
-        mMinPaymentText.setText((Filters.getMinPayment() / FilterConstants.MONEY_CONVERSION) + " " + FilterConstants.MONEY_UNIT);
-        mMaxPaymentText.setText((Filters.getMaxPayment() / FilterConstants.MONEY_CONVERSION) + " " + FilterConstants.MONEY_UNIT);
+        mMinPaymentText.setText((Filters.getMinPayment() / FilterConstants.PAYMENT_CONVERSION) + " " + FilterConstants.PAYMENT_UNIT);
+        mMaxPaymentText.setText((Filters.getMaxPayment() / FilterConstants.PAYMENT_CONVERSION) + " " + FilterConstants.PAYMENT_UNIT);
         mMinTimeText.setText((Filters.getMinTime() / FilterConstants.TIME_CONVERSION) + " " + FilterConstants.TIME_UNIT);
         mMaxTimeText.setText((Filters.getMaxTime() / FilterConstants.TIME_CONVERSION) + " " + FilterConstants.TIME_UNIT);
     }
@@ -144,11 +142,11 @@ public class JobFiltersFragment extends Fragment {
         ));
         mMinPayment.setOnSeekBarChangeListener(new JobSeekBarListener(
                 mMaxPayment, SeekType.MIN, mMinPaymentText,
-                FilterConstants.MONEY_CONVERSION, FilterConstants.PAYMENT_MIN_VALUE, FilterConstants.MONEY_UNIT
+                FilterConstants.PAYMENT_CONVERSION, FilterConstants.PAYMENT_MIN_VALUE, FilterConstants.PAYMENT_UNIT
         ));
         mMaxPayment.setOnSeekBarChangeListener(new JobSeekBarListener(
                 mMinPayment, SeekType.MAX, mMaxPaymentText,
-                FilterConstants.MONEY_CONVERSION, FilterConstants.PAYMENT_MIN_VALUE, FilterConstants.MONEY_UNIT
+                FilterConstants.PAYMENT_CONVERSION, FilterConstants.PAYMENT_MIN_VALUE, FilterConstants.PAYMENT_UNIT
         ));
         mMinTime.setOnSeekBarChangeListener(new JobSeekBarListener(
                 mMaxTime, SeekType.MIN, mMinTimeText,

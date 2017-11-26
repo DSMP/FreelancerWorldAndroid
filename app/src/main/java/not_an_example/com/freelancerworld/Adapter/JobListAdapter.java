@@ -3,7 +3,6 @@ package not_an_example.com.freelancerworld.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,89 +12,84 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import not_an_example.com.freelancerworld.Contants.FilterConstants;
 import not_an_example.com.freelancerworld.Models.RequestModel;
-import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
-    private List<String> mDataset;
-    private List<RequestModel> mRequests;
+    private List<RequestModel> mDataset;
+    private String mUserModelSerialized;
+    private Context mContext;
+    private Class mActivity;
 
-    public void setUsers(List<UserModel> mUsers) {
-        this.mUsers = mUsers;
+    public JobListAdapter(List<RequestModel> myDataset) {
+        this(myDataset, null, null, null);
     }
 
-    private List<UserModel> mUsers;
-    private Context mContexta;
-    private String mUserModel;
-
-    public void setClass(Class mClass) {
-        this.mClass = mClass;
+    public JobListAdapter(List<RequestModel> myDataset, String userModelSerialized, Context currentActivityContext, Class activityClass) {
+        mDataset = myDataset;
+        mUserModelSerialized = userModelSerialized;
+        mContext = currentActivityContext;
+        mActivity = activityClass;
     }
 
-    private Class mClass;
+    public void setDataset( List<RequestModel> myDataset) {
+        mDataset = myDataset;
+    }
+
+    public void setActivityForListener(Class activityClass) {
+        mActivity = activityClass;
+    }
+
+    public void setUser(String userSerialized) {
+        mUserModelSerialized = userSerialized;
+    }
 
     public void setContext(Context context)
     {
-        this.mContexta = context;
-        String s = mContexta.getPackageName();
-    }
-    public void setRequests(List<RequestModel> data)
-    {
-        mRequests = data;
-    }
-
-    public void setUser(String user) {
-        mUserModel = user;
+        this.mContext = context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mTextView;
-        ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
+        TextView mJobOfferName, mJobOfferMinPayment, mJobOfferMaxPayment;
+
+        ViewHolder(View view) {
+            super(view);
+            mJobOfferName = (TextView) view.findViewById(R.id.job_offer_item_name);
+            mJobOfferMinPayment = (TextView) view.findViewById(R.id.job_offer_item_min_payment_text);
+            mJobOfferMaxPayment = (TextView) view.findViewById(R.id.job_offer_item_max_payment_text);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition(); // gets item position
-            if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                String user = mDataset.get(position);
-                // We can access the data within the views
-//                Toast.makeText(context, user, Toast.LENGTH_SHORT).show();
-                Log.v("========Clicker",user);
-                Intent intent = new Intent(mContexta, mClass);
-                intent.putExtra("user_profile", mUserModel);
-                Gson gson = new Gson();
-                if (mRequests != null)
-                    intent.putExtra("REQUEST",  gson.toJson(mRequests.get(position)));
-//                else
-//                else
-//                    intent.putExtra("Contractors",  gson.toJson(mUsers.get(position)));
-                mContexta.startActivity(intent);
+            if (position == RecyclerView.NO_POSITION) { return; }
+
+            if (mActivity != null && mContext != null) {
+                Intent intent = new Intent(mContext, mActivity);
+                intent.putExtra("user_profile", mUserModelSerialized);
+                intent.putExtra("REQUEST", Utils.getGsonInstance().toJson(mDataset.get(position)));
+                mContext.startActivity(intent);
             }
         }
-    }
-
-    public JobListAdapter(List<String> myDataset) {
-        mDataset = myDataset;
     }
 
     @Override
     public JobListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                         int viewType) {
         View v = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.job_item_recycler, parent, false);
-        TextView textView = (TextView) v.findViewById(R.id.job_name);
-        ViewHolder vh = new ViewHolder(textView);
+                .inflate(R.layout.job_offer_item, parent, false);
+        ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(mDataset.get(position));
-
+        holder.mJobOfferName.setText(mDataset.get(position).title);
+        holder.mJobOfferMinPayment.setText("Min:" + mDataset.get(position).minPayment + FilterConstants.PAYMENT_UNIT);
+        holder.mJobOfferMaxPayment.setText("Max:" + mDataset.get(position).maxPayment + FilterConstants.PAYMENT_UNIT);
     }
 
     @Override
