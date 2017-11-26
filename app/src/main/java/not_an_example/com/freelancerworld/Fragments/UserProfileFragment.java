@@ -83,6 +83,7 @@ public class UserProfileFragment extends Fragment {
         createAdapters();
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
         mDescribeEditText = (EditText) view.findViewById(R.id.describeEditText);
+        mDescribeEditText.setText(mUserModel.description);
         mDescribeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

@@ -19,4 +19,5 @@ public class UserModel {
     public String[] orderMaker;
     public String[] orderTaker;
     public double averageMark;
+    public String description;
 }
