@@ -16,7 +16,7 @@ import java.util.List;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 
-public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
+public class LegacyAdapter extends RecyclerView.Adapter<LegacyAdapter.ViewHolder>  {
     private List<String> mDataset;
     private List<RequestModel> mRequests;
     private RequestModel mRequest;
@@ -82,13 +82,13 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
         }
     }
 
-    public JobListAdapter(List<String> myDataset) {
+    public LegacyAdapter(List<String> myDataset) {
         mDataset = myDataset;
     }
 
     @Override
-    public JobListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                        int viewType) {
+    public LegacyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                       int viewType) {
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.job_item_recycler, parent, false);
         TextView textView = (TextView) v.findViewById(R.id.job_name);
