@@ -16,6 +16,7 @@ import java.util.List;
 
 import not_an_example.com.freelancerworld.Models.AddressModel;
 import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.SmallModels.Request;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
 import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
@@ -70,7 +71,9 @@ public class MyRequestActivity extends AppCompatActivity {
         createAdapters();
 
         //TODO: narazie bo nie ma jeszcze
-        interestsContractorsAdapter.setClass(null);
+        interestsContractorsAdapter.setClass(ContractorActivity.class);
+        interestsContractorsAdapter.setUsers(mContractors);
+        interestsContractorsAdapter.setRequest(requestModel);
         new AsyncShowContractors().execute();
     }
 
