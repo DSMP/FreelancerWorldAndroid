@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteX="8dp"
                 android:hint="Describe you and your Job"
-                android:id="@+id/editText" />
+                android:id="@+id/describeEditText" />
         </ScrollView>
 
         <android.support.v7.widget.RecyclerView

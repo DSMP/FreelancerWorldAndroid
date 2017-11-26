@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -38,6 +40,7 @@ public class UserProfileFragment extends Fragment {
     ArrayList<String> mAllSpec;
     ArrayList<String> mUserSpec;
     ArrayAdapter<String> spinnerAdapter;
+    EditText mDescribeEditText;
 
     UserModel mUserModel;
 
@@ -73,6 +76,14 @@ public class UserProfileFragment extends Fragment {
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
+        mDescribeEditText = (EditText) view.findViewById(R.id.describeEditText);
+        mDescribeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus)
+                    new AsyncEditDescribe().execute();
+            }
+        });
         spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
         mSpinner.setAdapter(spinnerAdapter);
@@ -99,6 +110,11 @@ public class UserProfileFragment extends Fragment {
         for (Professions p: mUserModel.professions) {
             mUserSpec.add(p.name);
         }
+    }
+
+    public void OnDestroyView()
+    {
+        new AsyncEditDescribe().execute();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -197,6 +213,19 @@ public class UserProfileFragment extends Fragment {
             super.onPostExecute(result);
             Gson gson = new Gson();
             mUserModel = gson.fromJson(result, UserModel.class);
+        }
+    }
+    private class AsyncEditDescribe extends AsyncTask<String,Integer,String>
+    {
+        @Override
+        protected String doInBackground(String... params) {
+            return new Communication().Receive();
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
         }
     }
 }
