@@ -28,7 +28,7 @@ public class Communication extends AsyncTask<String, Integer, String> {
             httpConnection.setRequestProperty( "charset", "utf-8");
             httpConnection.setRequestMethod(params[2]);
             DataOutputStream outputStream;
-            if (params[2].equals("POST")) {
+            if (!params[2].equals("GET")) {
                 httpConnection.setDoOutput(true);
                 outputStream = new DataOutputStream(httpConnection.getOutputStream());
                 Log.v("========" + params[0], params[1]);

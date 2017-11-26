@@ -174,6 +174,11 @@ public class UserProfileFragment extends Fragment {
     private void launchPortfolio()
     {
         new AsyncShowPortfolio().execute(String.valueOf(mUserModel.id));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private class AsyncGetAllProfs extends AsyncTask<String,Integer,String>
@@ -236,7 +241,7 @@ public class UserProfileFragment extends Fragment {
             EditDescription ed = new EditDescription();
             ed.id = mUserModel.id;
             ed.description = mDescribeEditText.getText().toString();
-            return new Communication().Receive("/user/editdescription",gson.toJson(ed),"POST");
+            return new Communication().Receive("/user/editdescription",gson.toJson(ed),"PATCH");
         }
 
         @Override
