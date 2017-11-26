@@ -16,4 +16,5 @@ public class RequestModel {
     public Professions profession;
     public AddressModel address;
     public UserModel user;
+    public int mark;
 }
