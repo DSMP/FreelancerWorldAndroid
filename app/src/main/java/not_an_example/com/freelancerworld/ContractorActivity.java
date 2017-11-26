@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 
 import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
 
@@ -36,6 +37,13 @@ public class ContractorActivity extends AppCompatActivity {
         Gson gson = new Gson();
         mContractorModel = gson.fromJson(getIntent().getStringExtra("contractor_profile"), UserModel.class);
         mRequest = gson.fromJson(getIntent().getStringExtra("request"), RequestModel.class);
+        contrFullName.setText(new StringBuilder().append(mContractorModel.name).append(mContractorModel.lastName).toString());
+        contrPhoneNumber.setText(mContractorModel.phoneNumber);
+        StringBuilder sb = new StringBuilder();
+        for (Professions s: mContractorModel.professions) {
+            sb.append(s.name + " ");
+        }
+        contrProfessions.setText(sb);
 
 
     }
