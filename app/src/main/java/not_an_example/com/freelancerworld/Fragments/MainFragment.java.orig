@@ -38,13 +38,16 @@ public class MainFragment extends Fragment {
 
     private RecyclerView mUpperRecycler, mLowerRecycler;
     private LegacyAdapter mUpperAdapter, mLowerAdapter;
-
+<<<<<<< HEAD
     private List<String> upperJobs;
     private List<String> lowerJobs;
 
     private List<RequestModel> myRequestModelList = new ArrayList<RequestModel>();
     private List<RequestModel> filteredModelList;
     private List<RequestModel> takenRequestModelList;
+=======
+    List<String> upperJobs;
+>>>>>>> feature/ContrDetails
 
 
     public MainFragment() {
@@ -169,7 +172,13 @@ public class MainFragment extends Fragment {
             for (RequestModel requestModel : filteredModelList) {
                 upperJobs.add(requestModel.title);
             }
+<<<<<<< HEAD
+            
             mUpperAdapter.setRequests(filteredModelList);
+=======
+//            mUpperAdapter = new LegacyAdapter(requestNameList);
+//            mUpperRecycler.setAdapter(mUpperAdapter);
+>>>>>>> feature/ContrDetails
             mUpperAdapter.notifyDataSetChanged();
             mUpperAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
         }

@@ -63,6 +63,7 @@ public class MyRequestsFragment extends Fragment {
 
         myRequestsAdapter.setContext(this.getContext());
         myRequestsAdapter.setClass(MyRequestActivity.class);
+        myRequestsAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
         myRequestsRecycler.setAdapter(myRequestsAdapter);
     }
 
