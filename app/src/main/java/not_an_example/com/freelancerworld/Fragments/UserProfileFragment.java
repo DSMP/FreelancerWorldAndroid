@@ -126,7 +126,6 @@ public class UserProfileFragment extends Fragment {
         super.onDestroyView();
         new AsyncEditDescribe().execute();
 //        getActivity().getIntent().putExtra("user_profile", new Gson().toJson(mUserModel));
-        ((MainActivity)getActivity()).refreshMenu();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -238,12 +237,12 @@ public class UserProfileFragment extends Fragment {
     {
         Gson gson = new Gson();
         EditDescription ed = new EditDescription();
-        Intent intent;
+        MainActivity activity;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            intent = getActivity().getIntent();
+            activity = (MainActivity) getActivity();
         }
 
         @Override
@@ -262,7 +261,8 @@ public class UserProfileFragment extends Fragment {
                 Toast.makeText(getContext(), msg.message, Toast.LENGTH_LONG).show();
             else
                 mUserModel.description = mDescribeEditText.getText().toString();
-            intent.putExtra("user_profile", new Gson().toJson(mUserModel));
+            activity.getIntent().putExtra("user_profile", new Gson().toJson(mUserModel));
+            activity.refreshMenu();
         }
     }
     private class AsyncShowPortfolio extends AsyncTask<String,Integer,String>
