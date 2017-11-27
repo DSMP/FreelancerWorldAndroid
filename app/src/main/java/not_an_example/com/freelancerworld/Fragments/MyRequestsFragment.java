@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import not_an_example.com.freelancerworld.Adapter.MyRequestsListAdapter;
@@ -25,12 +27,14 @@ import not_an_example.com.freelancerworld.MyRequestActivity;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.Utils.Communication;
 import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class MyRequestsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     List<RequestModel> requestModelList = new ArrayList<RequestModel>();
     private RecyclerView myRequestsRecycler;
     private MyRequestsListAdapter myRequestsAdapter;
+    private HashMap<Integer,Integer> requestContractorCountMap;
 
     public MyRequestsFragment() {
         // Required empty public constructor
@@ -122,4 +126,5 @@ public class MyRequestsFragment extends Fragment {
             myRequestsAdapter.notifyDataSetChanged();
         }
     }
+
 }
