@@ -18,7 +18,8 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
+import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
+import not_an_example.com.freelancerworld.Adapter.MyRequestsListAdapter;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.MyRequestActivity;
@@ -30,8 +31,7 @@ public class MyRequestsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     List<RequestModel> requestModelList = new ArrayList<RequestModel>();
     private RecyclerView myRequestsRecycler;
-    private LegacyAdapter myRequestsAdapter;
-    private List<String> myRequestsList;
+    private MyRequestsListAdapter myRequestsAdapter;
 
     public MyRequestsFragment() {
         // Required empty public constructor
@@ -51,18 +51,17 @@ public class MyRequestsFragment extends Fragment {
     }
     private void createAdapters() {
         if ( myRequestsAdapter == null) {
-            myRequestsList = new ArrayList<>(); //upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
-            myRequestsAdapter = new LegacyAdapter(myRequestsList);
+            List<RequestModel> myRequestsList = new ArrayList<RequestModel>();// myRequestsList.add(new RequestModel("Kierowca PKS"));myRequestsList.add(new RequestModel("Android Developer"));myRequestsList.add(new RequestModel("Potrzebny mechanik"));
+            myRequestsAdapter = new MyRequestsListAdapter(myRequestsList);
         }
 
 
         DividerItemDecoration recyclerDecoration = new DividerItemDecoration(myRequestsRecycler.getContext(),R.drawable.list_decorator);
         myRequestsRecycler.addItemDecoration(recyclerDecoration);
-
         myRequestsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         myRequestsAdapter.setContext(this.getContext());
-        myRequestsAdapter.setClass(MyRequestActivity.class);
+        myRequestsAdapter.setActivityForListener(MyRequestActivity.class);
         myRequestsRecycler.setAdapter(myRequestsAdapter);
     }
 
@@ -120,10 +119,7 @@ public class MyRequestsFragment extends Fragment {
         protected void onPostExecute(String result)
         {
             requestModelList = gson.fromJson( result, new TypeToken<ArrayList<RequestModel>>(){}.getType());
-            for (RequestModel r: requestModelList) {
-                myRequestsList.add(r.title);
-            }
-            myRequestsAdapter.setRequests(requestModelList);
+            myRequestsAdapter.setDataset(requestModelList);
             myRequestsAdapter.notifyDataSetChanged();
         }
     }

@@ -26,6 +26,7 @@ import not_an_example.com.freelancerworld.Models.SmallModels.User;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class UserProfileFragment extends Fragment {
 
@@ -65,8 +66,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Gson gson = new Gson();
-        mUserModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
+        mUserModel = Utils.getGsonInstance().fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
         mAllSpec = new ArrayList<>();
         mUserSpec = new ArrayList<>();
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);

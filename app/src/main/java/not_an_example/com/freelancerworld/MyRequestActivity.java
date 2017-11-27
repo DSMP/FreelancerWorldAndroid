@@ -37,7 +37,6 @@ public class MyRequestActivity extends AppCompatActivity {
     private List<String> interestsContractorsList;
 
     RequestModel requestModel;
-    UserModel mUserModel;
     List<UserModel> mContractors;
 
     @Override
@@ -55,7 +54,6 @@ public class MyRequestActivity extends AppCompatActivity {
 
         Gson gson = new Gson();
         requestModel = gson.fromJson(getIntent().getStringExtra("REQUEST"), RequestModel.class);
-        mUserModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);;
 
         mTitleText.setText("Title: " + requestModel.title);
         mMinPaymentText.setText("Min payment: " + String.valueOf(requestModel.minPayment));

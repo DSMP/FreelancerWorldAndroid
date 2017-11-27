@@ -2,37 +2,38 @@ package not_an_example.com.freelancerworld.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.renderscript.Sampler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Map;
 
 import not_an_example.com.freelancerworld.Contants.FilterConstants;
 import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.SmallModels.Request;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.Utils.Utils;
 
-public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHolder>  {
+/**
+ * Created by user on 2017-11-26.
+ */
+
+public class MyRequestsListAdapter extends RecyclerView.Adapter<MyRequestsListAdapter.ViewHolder> {
     protected List<RequestModel> mDataset;
-    protected String mUserModelSerialized;
     protected Context mContext;
     protected Class mActivity;
     protected Map<String, Boolean> mActivityFlags;
 
-    public JobListAdapter(List<RequestModel> myDataset) {
-        this(myDataset, null, null, null);
+    public MyRequestsListAdapter(List<RequestModel> myDataset) {
+        this(myDataset, null, null);
     }
 
-    public JobListAdapter(List<RequestModel> myDataset, String userModelSerialized, Context currentActivityContext, Class activityClass) {
+    public MyRequestsListAdapter(List<RequestModel> myDataset, Context currentActivityContext, Class activityClass) {
         mDataset = myDataset;
-        mUserModelSerialized = userModelSerialized;
         mContext = currentActivityContext;
         mActivity = activityClass;
     }
@@ -45,10 +46,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
         this.mActivity = activityClass;
     }
 
-    public void setUser(String userSerialized) {
-        this.mUserModelSerialized = userSerialized;
-    }
-
     public void setContext(Context context)
     {
         this.mContext = context;
@@ -59,13 +56,14 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mJobOfferName, mJobOfferMinPayment, mJobOfferMaxPayment;
+        TextView mJobOfferName, mJobOfferContractors;
+        ImageView mJobOfferAssignedContractor;
 
         ViewHolder(View view) {
             super(view);
             mJobOfferName = (TextView) view.findViewById(R.id.job_offer_item_name);
-            mJobOfferMinPayment = (TextView) view.findViewById(R.id.job_offer_item_min_payment_text);
-            mJobOfferMaxPayment = (TextView) view.findViewById(R.id.job_offer_item_max_payment_text);
+            mJobOfferContractors = (TextView) view.findViewById(R.id.job_offer_item_contractors);
+            mJobOfferAssignedContractor = (ImageView) view.findViewById(R.id.job_offer_item_image_approved);
             itemView.setOnClickListener(this);
         }
 
@@ -76,7 +74,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
 
             if (mActivity != null && mContext != null) {
                 Intent intent = new Intent(mContext, mActivity);
-                intent.putExtra("user_profile", mUserModelSerialized);
                 intent.putExtra("REQUEST", Utils.getGsonInstance().toJson(mDataset.get(position)));
                 if ( mActivityFlags != null && !mActivityFlags.isEmpty()) {
                     for (String key : mActivityFlags.keySet()) {
@@ -89,19 +86,22 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.ViewHold
     }
 
     @Override
-    public JobListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public MyRequestsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                         int viewType) {
         View v = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.job_offer_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
+                .inflate(R.layout.job_my_request_item, parent, false);
+        MyRequestsListAdapter.ViewHolder vh = new MyRequestsListAdapter.ViewHolder(v);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mJobOfferName.setText(mDataset.get(position).title);
-        holder.mJobOfferMinPayment.setText("Min:" + mDataset.get(position).minPayment + FilterConstants.PAYMENT_UNIT);
-        holder.mJobOfferMaxPayment.setText("Max:" + mDataset.get(position).maxPayment + FilterConstants.PAYMENT_UNIT);
+        RequestModel requestModel = mDataset.get(position);
+        holder.mJobOfferName.setText(requestModel.title);
+        if (requestModel.requestTakerId != 0) {
+            holder.mJobOfferAssignedContractor.setVisibility(View.VISIBLE);
+            holder.mJobOfferContractors.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
