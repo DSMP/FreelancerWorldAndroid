@@ -15,49 +15,49 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/TitleText"
+                android:id="@+id/my_request_title_text"
                 android:textSize="20dp"
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/MinPaymentText"
+                android:id="@+id/my_request_min_payment"
                 android:textSize="20dp"
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/MaxPaymentText"
+                android:id="@+id/my_request_max_payment"
                 android:textSize="20dp"
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/DescriptionText"
+                android:id="@+id/my_request_description_label"
                 android:textSize="20dp"
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/CreationDateText"
+                android:id="@+id/my_request_created_date_label"
                 android:textSize="20dp"
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/ProfessionText"
+                android:id="@+id/my_request_profession_text"
                 android:textSize="20dp"
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/AdresstText"
+                android:id="@+id/my_request_address_text"
                 android:textSize="20dp"
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"
