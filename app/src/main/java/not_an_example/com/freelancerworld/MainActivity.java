@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     private TextView mFullNameView;
     private TextView mSpecView;
     private ImageView mImageView;
+    private Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,11 @@ public class MainActivity extends AppCompatActivity
         userModel = new UserModel();
         gson = new Gson();
         userModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
+
+
+//        mMenu = gson.fromJson(getIntent().getStringExtra("ham-menu"), Menu.class);
+
+        this.supportInvalidateOptionsMenu();
 
         Fragment fragment = null;
         Class fragmentClass = null;
@@ -88,9 +94,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void refreshMenu()
+    {
+        if (mMenu!=null)
+        {
+            mMenu.clear();
+            this.onCreateOptionsMenu(this.mMenu);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the mMenu; this adds items to the action bar if it is present.
+        this.setMenu(menu);
+        userModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
+//        getIntent().putExtra("ham-menu", new Gson().toJson(menu));
         getMenuInflater().inflate(R.menu.main, menu);
         mNickNameView = (TextView) findViewById(R.id.nickNameView);
         mFullNameView = (TextView) findViewById(R.id.fullNameView);
@@ -179,4 +197,10 @@ public class MainActivity extends AppCompatActivity
     {
         return userModel;
     }
+
+    private void setMenu(Menu menu) {
+        this.mMenu = menu;
+    }
+
+
 }

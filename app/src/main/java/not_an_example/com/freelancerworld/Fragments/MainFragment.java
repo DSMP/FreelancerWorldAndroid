@@ -167,7 +167,7 @@ public class MainFragment extends Fragment {
 //            for (RequestModel requestModel : filteredModelList) {
 //                upperJobs.add(requestModel.title);
 //            }
-            
+
             mUpperAdapter.setDataset(filteredModelList);
             mUpperAdapter.notifyDataSetChanged();
             mUpperAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));

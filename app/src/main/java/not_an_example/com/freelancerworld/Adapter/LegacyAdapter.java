@@ -20,6 +20,7 @@ import not_an_example.com.freelancerworld.R;
 public class LegacyAdapter extends RecyclerView.Adapter<LegacyAdapter.ViewHolder>  {
     private List<String> mDataset;
     private List<RequestModel> mRequests;
+    private RequestModel mRequest;
 
     public void setUsers(List<UserModel> mUsers) {
         this.mUsers = mUsers;
@@ -49,6 +50,10 @@ public class LegacyAdapter extends RecyclerView.Adapter<LegacyAdapter.ViewHolder
         mUserModel = user;
     }
 
+    public void setRequest(RequestModel request) {
+        this.mRequest = request;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mTextView;
         ViewHolder(TextView v) {
@@ -62,17 +67,17 @@ public class LegacyAdapter extends RecyclerView.Adapter<LegacyAdapter.ViewHolder
             int position = getAdapterPosition(); // gets item position
             if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
                 String user = mDataset.get(position);
-                // We can access the data within the views
-//                Toast.makeText(context, user, Toast.LENGTH_SHORT).show();
+                Gson gson = new Gson();
                 Log.v("========Clicker",user);
                 Intent intent = new Intent(mContexta, mClass);
-                intent.putExtra("user_profile", mUserModel);
-                Gson gson = new Gson();
+                if (mUserModel != null)
+                    intent.putExtra("user_profile", mUserModel);
+                else
+                    intent.putExtra("contractor_profile", gson.toJson(mUsers.get(position)));
                 if (mRequests != null)
                     intent.putExtra("REQUEST",  gson.toJson(mRequests.get(position)));
-//                else
-//                else
-//                    intent.putExtra("Contractors",  gson.toJson(mUsers.get(position)));
+                else
+                    intent.putExtra("request",  gson.toJson(mRequest));
                 mContexta.startActivity(intent);
             }
         }

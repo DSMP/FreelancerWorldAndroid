@@ -69,7 +69,9 @@ public class MyRequestActivity extends AppCompatActivity {
         createAdapters();
 
         //TODO: narazie bo nie ma jeszcze
-        interestsContractorsAdapter.setClass(null);
+        interestsContractorsAdapter.setClass(ContractorActivity.class);
+        interestsContractorsAdapter.setUsers(mContractors);
+        interestsContractorsAdapter.setRequest(requestModel);
         new AsyncShowContractors().execute();
     }
 

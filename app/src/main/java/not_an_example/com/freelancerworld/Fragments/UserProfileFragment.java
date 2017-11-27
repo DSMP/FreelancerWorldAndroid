@@ -1,6 +1,7 @@
 package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,15 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
+import not_an_example.com.freelancerworld.MainActivity;
+import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.ProfessionModel;
+import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.SmallModels.EditDescription;
 import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.SmallModels.User;
 import not_an_example.com.freelancerworld.Models.UserModel;
@@ -39,8 +47,11 @@ public class UserProfileFragment extends Fragment {
     ArrayList<String> mAllSpec;
     ArrayList<String> mUserSpec;
     ArrayAdapter<String> spinnerAdapter;
+    EditText mDescribeEditText;
 
     UserModel mUserModel;
+    private List<RequestModel> mPortfolioList;
+    private List<String> mRequestsTitles;
 
 
     public UserProfileFragment() {
@@ -73,6 +84,15 @@ public class UserProfileFragment extends Fragment {
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
+        mDescribeEditText = (EditText) view.findViewById(R.id.describeEditText);
+        mDescribeEditText.setText(mUserModel.description);
+//        mDescribeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus)
+//                    new AsyncEditDescribe().execute();
+//            }
+//        });
         spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, mAllSpec);
         mSpinner.setAdapter(spinnerAdapter);
@@ -99,6 +119,13 @@ public class UserProfileFragment extends Fragment {
         for (Professions p: mUserModel.professions) {
             mUserSpec.add(p.name);
         }
+    }
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+        new AsyncEditDescribe().execute();
+//        getActivity().getIntent().putExtra("user_profile", new Gson().toJson(mUserModel));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -131,8 +158,9 @@ public class UserProfileFragment extends Fragment {
         }
 
         if ( mLowerAdapter == null) {
-            List<String> lowerJobs = new ArrayList<>(); for (int i=1; i< 5 ; i++){lowerJobs.add("zlecenie " + (i*3-2));}
-            mLowerAdapter = new LegacyAdapter(lowerJobs);
+            mPortfolioList = new ArrayList<>();
+            mRequestsTitles = new ArrayList<>();
+            mLowerAdapter = new LegacyAdapter(mRequestsTitles);
         }
 
         mUpperRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -146,6 +174,11 @@ public class UserProfileFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void launchPortfolio()
+    {
+        new AsyncShowPortfolio().execute(String.valueOf(mUserModel.id));
     }
 
     private class AsyncGetAllProfs extends AsyncTask<String,Integer,String>
@@ -169,6 +202,7 @@ public class UserProfileFragment extends Fragment {
                 mAllSpec.add(s.name);
             }
             spinnerAdapter.notifyDataSetChanged();
+            launchPortfolio();
         }
     }
 
@@ -197,6 +231,59 @@ public class UserProfileFragment extends Fragment {
             super.onPostExecute(result);
             Gson gson = new Gson();
             mUserModel = gson.fromJson(result, UserModel.class);
+        }
+    }
+    private class AsyncEditDescribe extends AsyncTask<String,Integer,String>
+    {
+        Gson gson = new Gson();
+        EditDescription ed = new EditDescription();
+        MainActivity activity;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            activity = (MainActivity) getActivity();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            ed.id = mUserModel.id;
+            ed.description = mDescribeEditText.getText().toString();
+            return new Communication().Receive("/user/editdescription",gson.toJson(ed),"PATCH");
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            Message msg = gson.fromJson(result, Message.class);
+            if (msg.status == 202)
+                Toast.makeText(getContext(), msg.message, Toast.LENGTH_LONG).show();
+            else
+                mUserModel.description = mDescribeEditText.getText().toString();
+            activity.getIntent().putExtra("user_profile", new Gson().toJson(mUserModel));
+            activity.refreshMenu();
+        }
+    }
+    private class AsyncShowPortfolio extends AsyncTask<String,Integer,String>
+    {
+        Gson gson = new Gson();
+        @Override
+        protected String doInBackground(String... params) {
+            return new Communication().Receive("/user/getportfolio/"+params[0],"","GET");
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            mPortfolioList = gson.fromJson(result,  new TypeToken<ArrayList<RequestModel>>(){}.getType());
+//            if (mPortfolioList!=null)
+                for (RequestModel r: mPortfolioList) {
+                    mRequestsTitles.add(r.title);
+                }
+            mLowerAdapter.notifyDataSetChanged();
+
         }
     }
 }

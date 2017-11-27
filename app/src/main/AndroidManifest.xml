@@ -29,7 +29,8 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RequestActivity" />
-        <activity android:name=".MyRequestActivity"></activity>
+        <activity android:name=".MyRequestActivity" />
+        <activity android:name=".ContractorActivity"></activity>
     </application>
 
 </manifest>

@@ -17,25 +17,28 @@ public class Communication extends AsyncTask<String, Integer, String> {
        return Receive(params);
     }
 
-    public String Receive(String... params)
+    public synchronized String Receive(String... params)
     {
         String postData = "";
 
         HttpURLConnection httpConnection= null;
         try {
-            httpConnection= (HttpURLConnection) new URL("http://10.1.0.146:8080" + params[0]).openConnection();//10.1.0.146
+            httpConnection= (HttpURLConnection) new URL("http://192.168.0.51:8080" + params[0]).openConnection();//10.1.0.146
             httpConnection.setRequestProperty( "Content-Type", "application/json");
             httpConnection.setRequestProperty( "charset", "utf-8");
             httpConnection.setRequestMethod(params[2]);
-            httpConnection.setDoOutput(true);
+            DataOutputStream outputStream;
+            if (!params[2].equals("GET")) {
+                httpConnection.setDoOutput(true);
+                outputStream = new DataOutputStream(httpConnection.getOutputStream());
+                Log.v("========" + params[0], params[1]);
+                Log.v("========sentData", params[1]);
+                outputStream.writeBytes(params[1]);
+                outputStream.flush();
+                outputStream.close();
+            }
 
-            DataOutputStream outputStream= new DataOutputStream(httpConnection.getOutputStream());
-            Log.v("========sentData", params[1]);
-            outputStream.writeBytes(params[1]);
-            outputStream.flush();
-            outputStream.close();
-
-            Thread.sleep(1000);
+//            Thread.sleep(1000);
             InputStream in = httpConnection.getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(in);
 
