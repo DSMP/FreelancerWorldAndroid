@@ -2,6 +2,7 @@ package not_an_example.com.freelancerworld.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import not_an_example.com.freelancerworld.Contants.FilterConstants;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.SmallModels.Request;
+import not_an_example.com.freelancerworld.Models.UserModel;
+import not_an_example.com.freelancerworld.MyRequestActivity;
 import not_an_example.com.freelancerworld.R;
+import not_an_example.com.freelancerworld.Utils.Communication;
 import not_an_example.com.freelancerworld.Utils.Utils;
 
 /**
@@ -74,7 +81,7 @@ public class MyRequestsListAdapter extends RecyclerView.Adapter<MyRequestsListAd
 
             if (mActivity != null && mContext != null) {
                 Intent intent = new Intent(mContext, mActivity);
-                intent.putExtra("REQUEST", Utils.getGsonInstance().toJson(mDataset.get(position)));
+                intent.putExtra(MyRequestActivity.REQUEST, Utils.getGsonInstance().toJson(mDataset.get(position)));
                 if ( mActivityFlags != null && !mActivityFlags.isEmpty()) {
                     for (String key : mActivityFlags.keySet()) {
                         intent.putExtra(key, mActivityFlags.get(key));
@@ -108,4 +115,5 @@ public class MyRequestsListAdapter extends RecyclerView.Adapter<MyRequestsListAd
     public int getItemCount() {
         return mDataset.size();
     }
+
 }

@@ -19,15 +19,19 @@ import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class ContractorActivity extends AppCompatActivity {
 
-    TextView contrFullName;
-    TextView contrPhoneNumber;
-    TextView contrProfessions;
-    Button acceptContractor;
-    UserModel mContractorModel;
-    RequestModel mRequest;
+    public static final String CONTRACTOR = "contractor_profile";
+    public static final String REQUEST = "request";
+
+    private TextView contrFullName;
+    private TextView contrPhoneNumber;
+    private TextView contrProfessions;
+    private Button acceptContractor;
+    private UserModel mContractorModel;
+    private RequestModel mRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +41,8 @@ public class ContractorActivity extends AppCompatActivity {
         contrPhoneNumber = (TextView) findViewById(R.id.ContractorPhoneNumber);
         contrProfessions = (TextView) findViewById(R.id.ContractorProfessions);
         acceptContractor = (Button) findViewById(R.id.ContractorAcceptButton);
-        Gson gson = new Gson();
-        mContractorModel = gson.fromJson(getIntent().getStringExtra("contractor_profile"), UserModel.class);
-        mRequest = gson.fromJson(getIntent().getStringExtra("request"), RequestModel.class);
+        mContractorModel = Utils.getGsonInstance().fromJson(getIntent().getStringExtra(CONTRACTOR), UserModel.class);
+        mRequest = Utils.getGsonInstance().fromJson(getIntent().getStringExtra(REQUEST), RequestModel.class);
         contrFullName.setText(new StringBuilder().append("Name: ").append(mContractorModel.name + " ").append(mContractorModel.lastName).toString());
         contrPhoneNumber.setText(new StringBuilder().append("Phone: ").append(mContractorModel.phoneNumber).toString());
         StringBuilder sb = new StringBuilder("Professions: ");

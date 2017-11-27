@@ -14,30 +14,34 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
+import not_an_example.com.freelancerworld.Adapter.ContractorListAdapter;
 import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
 import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
 import not_an_example.com.freelancerworld.Models.AddressModel;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class MyRequestActivity extends AppCompatActivity {
 
-    TextView mTitleText;
-    TextView mMinPaymentText;
-    TextView mMaxPaymentText;
-    TextView mDescriptionText;
-    TextView mCreationDateText;
-    TextView mProfessionText;
-    TextView mAdresstText;
-    TextView mUserText;
+    public static final String REQUEST = "request";
+
+    private TextView mTitleText;
+    private TextView mMinPaymentText;
+    private TextView mMaxPaymentText;
+    private TextView mDescriptionText;
+    private TextView mCreationDateText;
+    private TextView mProfessionText;
+    private TextView mAdresstText;
+    private TextView mUserText;
 
     private RecyclerView interestsContractorsRecycler;
-    private LegacyAdapter interestsContractorsAdapter;
-    private List<String> interestsContractorsList;
+    private ContractorListAdapter interestsContractorsAdapter;
 
-    RequestModel requestModel;
-    List<UserModel> mContractors;
+
+    private RequestModel requestModel;
+    private List<UserModel> mContractors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +56,7 @@ public class MyRequestActivity extends AppCompatActivity {
         mAdresstText = (TextView) findViewById(R.id.AdresstText);
         mUserText = (TextView) findViewById(R.id.UserText);
 
-        Gson gson = new Gson();
-        requestModel = gson.fromJson(getIntent().getStringExtra("REQUEST"), RequestModel.class);
+        requestModel = Utils.getGsonInstance().fromJson(getIntent().getStringExtra(REQUEST), RequestModel.class);
 
         mTitleText.setText("Title: " + requestModel.title);
         mMinPaymentText.setText("Min payment: " + String.valueOf(requestModel.minPayment));
@@ -69,9 +72,9 @@ public class MyRequestActivity extends AppCompatActivity {
         createAdapters();
 
         //TODO: narazie bo nie ma jeszcze
-        interestsContractorsAdapter.setClass(ContractorActivity.class);
-        interestsContractorsAdapter.setUsers(mContractors);
-        interestsContractorsAdapter.setRequest(requestModel);
+        interestsContractorsAdapter.setActivityForListener(ContractorActivity.class);
+        interestsContractorsAdapter.setDataset(mContractors);
+        interestsContractorsAdapter.setRequest(Utils.getGsonInstance().toJson(requestModel));
         new AsyncShowContractors().execute();
     }
 
@@ -81,11 +84,11 @@ public class MyRequestActivity extends AppCompatActivity {
     }
 
     private void createAdapters() {
-        if ( interestsContractorsAdapter == null) {
-            interestsContractorsList = new ArrayList<>(); //upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
-            interestsContractorsAdapter = new LegacyAdapter(interestsContractorsList);
-        }
+        if ( mContractors == null) {
 
+            mContractors = new ArrayList<>(); //upperJobs.add("Kierowca PKS");upperJobs.add("Android Developer");upperJobs.add("Potrzebny mechanik");
+            interestsContractorsAdapter = new ContractorListAdapter(mContractors);
+        }
 
 //        DividerItemDecoration recyclerDecoration = new DividerItemDecoration(interestsContractorsRecycler.getContext(),R.drawable.list_decorator);
 //        interestsContractorsRecycler.addItemDecoration(recyclerDecoration);
@@ -98,8 +101,6 @@ public class MyRequestActivity extends AppCompatActivity {
 
     private class AsyncShowContractors extends AsyncTask<String,Integer,String>
     {
-        Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-
         @Override
         protected String doInBackground(String... strings) {
 
@@ -108,11 +109,8 @@ public class MyRequestActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result)
         {
-            mContractors = gson.fromJson( result, new TypeToken<ArrayList<UserModel>>(){}.getType());
-            for (UserModel u: mContractors) {
-                interestsContractorsList.add(u.name + " " + u.lastName);
-            }
-            interestsContractorsAdapter.setUsers(mContractors);
+            mContractors = Utils.getGsonInstance().fromJson( result, new TypeToken<ArrayList<UserModel>>(){}.getType());
+            interestsContractorsAdapter.setDataset(mContractors);
             interestsContractorsAdapter.notifyDataSetChanged();
         }
     }

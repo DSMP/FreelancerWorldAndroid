@@ -20,4 +20,8 @@ public class UserModel {
     public String[] orderTaker;
     public double averageMark;
     public String description;
+
+    public String getFullName() {
+        return new StringBuilder().append(name).append(" ").append(lastName).toString();
+    }
 }
