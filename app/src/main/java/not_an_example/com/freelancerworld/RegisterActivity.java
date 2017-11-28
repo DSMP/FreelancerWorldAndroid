@@ -26,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mSurname;
     private EditText mPhoneNumber;
     private Button mSignUp;
+    private UserModel mUserLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,16 +87,27 @@ public class RegisterActivity extends AppCompatActivity {
         return password.equals(rePassword);
     }
 
+    private void StartLogging() {
+        new AsyncLogin().execute();
+    }
+
+    private void StartDashboard() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("user_profile", Utils.getGsonInstance().toJson(mUserLogin));
+        startActivity(intent);
+        finish();
+    }
+
     private void setErrorRegistration(String message)
     {
         mEmail.setError(message);
     }
     private class AsyncSendData extends AsyncTask<String,Integer,String>
     {
+        Communication communication = new Communication();
         @Override
         protected String doInBackground(String... params) {
 
-            Communication communication = new Communication();
             return communication.Receive("/user/register", params[0], "POST");
         }
 
@@ -103,10 +115,45 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            Message message = Utils.getGsonInstance().fromJson(result, Message.class);
-            setErrorRegistration(message.message);
-            if (message.status == 1)
-                finish();
+            if (communication.getStatus() == 2) {
+                mEmail.setError("Can't connect to register service");
+                mEmail.requestFocus();
+            }else
+            {
+                Message message = Utils.getGsonInstance().fromJson(result, Message.class);
+                setErrorRegistration(message.message);
+                if (message.status == 1) {
+                    StartLogging();
+                }
+            }
+        }
+    }
+
+
+    private class AsyncLogin extends AsyncTask<String,Integer,String>
+    {
+        Communication communication = new Communication();
+        @Override
+        protected String doInBackground(String... params) {
+            UserModel user = new UserModel();
+            user.email = mEmail.getText().toString();
+            user.password = mPass.getText().toString();
+            String userJson = Utils.getGsonInstance().toJson(user);
+            return communication.Receive("/user/login", userJson, "POST");
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            mUserLogin = Utils.getGsonInstance().fromJson(result, UserModel.class);
+            if (communication.getStatus() == 2) {
+                mEmail.setError("Can't connect to register service");
+                mEmail.requestFocus();
+            }else
+            {
+                StartDashboard();
+            }
         }
     }
 }
