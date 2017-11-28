@@ -64,21 +64,23 @@ public class LegacyAdapter extends RecyclerView.Adapter<LegacyAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-            int position = getAdapterPosition(); // gets item position
-            if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                String user = mDataset.get(position);
-                Gson gson = new Gson();
-                Log.v("========Clicker",user);
-                Intent intent = new Intent(mContexta, mClass);
-                if (mUserModel != null)
-                    intent.putExtra("user_profile", mUserModel);
-                else
-                    intent.putExtra("contractor_profile", gson.toJson(mUsers.get(position)));
-                if (mRequests != null)
-                    intent.putExtra("REQUEST",  gson.toJson(mRequests.get(position)));
-                else
-                    intent.putExtra("request",  gson.toJson(mRequest));
-                mContexta.startActivity(intent);
+            if (mClass != null && mContexta != null) {
+                int position = getAdapterPosition(); // gets item position
+                if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
+                    String user = mDataset.get(position);
+                    Gson gson = new Gson();
+                    Log.v("========Clicker", user);
+                    Intent intent = new Intent(mContexta, mClass);
+                    if (mUserModel != null)
+                        intent.putExtra("user_profile", mUserModel);
+                    else
+                        intent.putExtra("contractor_profile", gson.toJson(mUsers.get(position)));
+                    if (mRequests != null)
+                        intent.putExtra("REQUEST", gson.toJson(mRequests.get(position)));
+                    else
+                        intent.putExtra("request", gson.toJson(mRequest));
+                    mContexta.startActivity(intent);
+                }
             }
         }
     }

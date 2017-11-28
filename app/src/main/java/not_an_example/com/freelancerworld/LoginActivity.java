@@ -38,6 +38,7 @@ import java.util.List;
 
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -324,6 +325,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        Communication communication = new Communication();
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -339,8 +341,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 UserModel user = new UserModel();
                 user.email = mEmail;
                 user.password = mPassword;
-                String userJson = gson.toJson(user);
-                UserProfile = new Communication().Receive("/user/login", userJson, "POST");
+                String userJson = Utils.getGsonInstance().toJson(user);
+                UserProfile = communication.Receive("/user/login", userJson, "POST");
+                if (communication.getStatus() == 2)
+                    mEmailView.setError("Can't connect to login service");
 //                UserModel user = gson.fromJson(UserProfile, UserModel.class);
 //                Thread.sleep(2000);
 //            } catch (InterruptedException e) {
@@ -367,8 +371,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 StartDashboard();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                if (communication.getStatus() != 2) {
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                }
             }
         }
 

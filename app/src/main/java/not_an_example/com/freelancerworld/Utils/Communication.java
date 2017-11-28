@@ -9,13 +9,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Communication extends AsyncTask<String, Integer, String> {
+public class Communication {
+
+    int status = 0;
 
     private String returnedData;
-    @Override
-    protected String doInBackground(String... params) {
-       return Receive(params);
-    }
 
     public synchronized String Receive(String... params)
     {
@@ -23,10 +21,10 @@ public class Communication extends AsyncTask<String, Integer, String> {
 
         HttpURLConnection httpConnection= null;
         try {
-            httpConnection= (HttpURLConnection) new URL("http://10.105.94.64:8080" + params[0]).openConnection();//10.1.0.146
+            httpConnection = (HttpURLConnection) new URL("http://192.168.0.51:8080" + params[0]).openConnection();
             //192.168.0.51
-            httpConnection.setRequestProperty( "Content-Type", "application/json");
-            httpConnection.setRequestProperty( "charset", "utf-8");
+            httpConnection.setRequestProperty("Content-Type", "application/json");
+            httpConnection.setRequestProperty("charset", "utf-8");
             httpConnection.setRequestMethod(params[2]);
             DataOutputStream outputStream;
             if (!params[2].equals("GET")) {
@@ -49,6 +47,9 @@ public class Communication extends AsyncTask<String, Integer, String> {
                 inputStreamData = inputStreamReader.read();
                 postData += currentData; // litosci, cos takiego na stringu w petli
             }
+            status = 1;
+        } catch (java.net.ConnectException ce){
+            status = 2;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -56,17 +57,14 @@ public class Communication extends AsyncTask<String, Integer, String> {
                 httpConnection.disconnect();
             }
         }
-        Log.v("========receivedData", postData);
+        Log.v(status + "========receivedData", postData);
         return postData;
     }
-
-    public void OnPostExecute(String result)
-    {
-        super.onPostExecute(result);
-        returnedData = result;
-    }
-
     public String getReturnedData() {
         return returnedData;
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

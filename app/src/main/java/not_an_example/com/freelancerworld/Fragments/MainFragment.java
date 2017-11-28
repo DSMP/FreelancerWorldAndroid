@@ -107,7 +107,7 @@ public class MainFragment extends Fragment {
     private void createAdapters() {
         if ( mUpperAdapter == null) {
             List<RequestModel> upperJobs = new ArrayList<>();
-            upperJobs.add(new RequestModel("Kierowca PKS"));upperJobs.add(new RequestModel("Android Developer"));upperJobs.add(new RequestModel("Potrzebny mechanik"));
+//            upperJobs.add(new RequestModel("Kierowca PKS"));upperJobs.add(new RequestModel("Android Developer"));upperJobs.add(new RequestModel("Potrzebny mechanik"));
             mUpperAdapter = new JobListAdapter(upperJobs);
             Map<String,Boolean> flags = new HashMap<>();
             flags.put(RequestActivity.IS_REQUEST_BTN_VISIBLE, true);

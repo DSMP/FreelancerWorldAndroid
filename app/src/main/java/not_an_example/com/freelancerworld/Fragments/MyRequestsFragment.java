@@ -110,7 +110,7 @@ public class MyRequestsFragment extends Fragment {
     }
     private class AsyncGetMyRequests extends AsyncTask<String,Integer,String>
     {
-        Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Gson gson = Utils.getGsonInstance();
 
         @Override
         protected String doInBackground(String... strings) {

@@ -195,9 +195,8 @@ public class UserProfileFragment extends Fragment {
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            Gson gson = new Gson();
             Professions[] professionses = new Professions[10]; for (int j = 0; j < professionses.length ; j++) professionses[j] = new Professions();
-            professionses = gson.fromJson(result, Professions[].class);
+            professionses = Utils.getGsonInstance().fromJson(result, Professions[].class);
             for (Professions s:professionses) {
                 mAllSpec.add(s.name);
             }
@@ -219,23 +218,20 @@ public class UserProfileFragment extends Fragment {
             }
             professionModel.user = userID;
             professionModel.professions = professionsTable;
-            Gson gson = new Gson();
             Communication communication = new Communication();
             return communication.Receive("/user/professionadd",
-                    gson.toJson(professionModel), "PUT");
+                    Utils.getGsonInstance().toJson(professionModel), "PUT");
         }
 
         @Override
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            Gson gson = new Gson();
-            mUserModel = gson.fromJson(result, UserModel.class);
+            mUserModel = Utils.getGsonInstance().fromJson(result, UserModel.class);
         }
     }
     private class AsyncEditDescribe extends AsyncTask<String,Integer,String>
     {
-        Gson gson = new Gson();
         EditDescription ed = new EditDescription();
         MainActivity activity;
 
@@ -249,25 +245,24 @@ public class UserProfileFragment extends Fragment {
         protected String doInBackground(String... params) {
             ed.id = mUserModel.id;
             ed.description = mDescribeEditText.getText().toString();
-            return new Communication().Receive("/user/editdescription",gson.toJson(ed),"PATCH");
+            return new Communication().Receive("/user/editdescription",Utils.getGsonInstance().toJson(ed),"PATCH");
         }
 
         @Override
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            Message msg = gson.fromJson(result, Message.class);
-            if (msg.status == 202)
+            Message msg = Utils.getGsonInstance().fromJson(result, Message.class);
+            if (msg.status != 201)
                 Toast.makeText(getContext(), msg.message, Toast.LENGTH_LONG).show();
             else
                 mUserModel.description = mDescribeEditText.getText().toString();
-            activity.getIntent().putExtra("user_profile", new Gson().toJson(mUserModel));
+            activity.getIntent().putExtra("user_profile", Utils.getGsonInstance().toJson(mUserModel));
             activity.refreshMenu();
         }
     }
     private class AsyncShowPortfolio extends AsyncTask<String,Integer,String>
     {
-        Gson gson = new Gson();
         @Override
         protected String doInBackground(String... params) {
             return new Communication().Receive("/user/getportfolio/"+params[0],"","GET");
@@ -277,7 +272,7 @@ public class UserProfileFragment extends Fragment {
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            mPortfolioList = gson.fromJson(result,  new TypeToken<ArrayList<RequestModel>>(){}.getType());
+            mPortfolioList = Utils.getGsonInstance().fromJson(result,  new TypeToken<ArrayList<RequestModel>>(){}.getType());
 //            if (mPortfolioList!=null)
                 for (RequestModel r: mPortfolioList) {
                     mRequestsTitles.add(r.title);
