@@ -30,6 +30,7 @@ import not_an_example.com.freelancerworld.Models.SmallModels.User;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class MakeJobFragment extends Fragment {
 
@@ -210,10 +211,8 @@ public class MakeJobFragment extends Fragment {
         protected void onPostExecute(String result)
         {
             Toast.makeText(getActivity(),"New Request Sent",Toast.LENGTH_SHORT).show();
-            Message message = new Message();
-            message = gson.fromJson(result, message.getClass());
-            if (message.status == 201)
-                Toast.makeText(getActivity(),message.message, Toast.LENGTH_LONG).show();
+            Message msg = Utils.getGsonInstance().fromJson(result, Message.class);
+            Toast.makeText(getContext(), msg.message, Toast.LENGTH_LONG).show();
         }
     }
 }
