@@ -253,7 +253,7 @@ public class UserProfileFragment extends Fragment {
         {
             super.onPostExecute(result);
             Message msg = Utils.getGsonInstance().fromJson(result, Message.class);
-            if (msg.status == 202)
+            if (msg.status != 201)
                 Toast.makeText(getContext(), msg.message, Toast.LENGTH_LONG).show();
             else
                 mUserModel.description = mDescribeEditText.getText().toString();
