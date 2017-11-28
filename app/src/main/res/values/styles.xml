@@ -124,17 +124,18 @@
     <style name="myRequestDescriptionText">
         <item name="android:textSize">14sp</item>
         <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginLeft">20dp</item>
-        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
         <item name="android:padding">4dp</item>
         <item name="android:background">@drawable/grey_border</item>
         <item name="android:scrollbars">vertical</item>
+        <item name="android:elevation">2dp</item>
     </style>
 
     <style name="myRequestRatingBar">
         <item name="android:numStars">5</item>
         <item name="android:max">5</item>
-        <item name="android:stepSize">0.5</item>
+        <item name="android:stepSize">1</item>
         <item name="android:rating">5</item>
         <item name="android:isIndicator">true</item>
     </style>

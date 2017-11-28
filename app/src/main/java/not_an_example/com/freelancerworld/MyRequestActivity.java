@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Filter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -35,6 +38,8 @@ public class MyRequestActivity extends AppCompatActivity {
     private RecyclerView interestsContractorsRecycler;
     private ContractorListAdapter interestsContractorsAdapter;
 
+    private RatingBar mRequestRating;
+    private Button  mFinishButton;
 
     private RequestModel requestModel;
     private List<UserModel> mContractors;
@@ -49,6 +54,17 @@ public class MyRequestActivity extends AppCompatActivity {
         mCreationDateText = (TextView) findViewById(R.id.my_request_created_date_text);
         mProfessionText = (TextView) findViewById(R.id.my_request_profession_text);
         mAdresstText = (TextView) findViewById(R.id.my_request_address_text);
+        mRequestRating = (RatingBar) findViewById(R.id.my_request_rating_bar);
+        mFinishButton = (Button) findViewById(R.id.my_request_button_rate);
+        mFinishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRequestRating.setIsIndicator(true);
+                requestModel.mark = (int) mRequestRating.getRating();
+                requestModel.active = 0;
+
+            }
+        });
 
         requestModel = Utils.getGsonInstance().fromJson(getIntent().getStringExtra(REQUEST), RequestModel.class);
 
@@ -63,12 +79,23 @@ public class MyRequestActivity extends AppCompatActivity {
         interestsContractorsRecycler = (RecyclerView) findViewById(R.id.my_request_contractor_recycler);
 
         createAdapters();
+        Boolean isRecyclerShown = setVisibility();
+        if (isRecyclerShown) {
+            interestsContractorsAdapter.setActivityForListener(ContractorActivity.class);
+            interestsContractorsAdapter.setDataset(mContractors);
+            interestsContractorsAdapter.setRequest(Utils.getGsonInstance().toJson(requestModel));
+            new AsyncShowContractors().execute();
+        }
+    }
 
-        //TODO: narazie bo nie ma jeszcze
-        interestsContractorsAdapter.setActivityForListener(ContractorActivity.class);
-        interestsContractorsAdapter.setDataset(mContractors);
-        interestsContractorsAdapter.setRequest(Utils.getGsonInstance().toJson(requestModel));
-        new AsyncShowContractors().execute();
+    private boolean setVisibility() {
+        if (requestModel.requestTakerId != 0) {
+            interestsContractorsRecycler.setVisibility(View.INVISIBLE);
+            mRequestRating.setVisibility(View.VISIBLE);
+            mFinishButton.setVisibility(View.VISIBLE);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -93,6 +120,22 @@ public class MyRequestActivity extends AppCompatActivity {
     }
 
     private class AsyncShowContractors extends AsyncTask<String,Integer,String>
+    {
+        @Override
+        protected String doInBackground(String... strings) {
+
+            return new Communication().Receive("/request/showcontractors/"+String.valueOf(requestModel.id), "","POST");
+        }
+        @Override
+        protected void onPostExecute(String result)
+        {
+            mContractors = Utils.getGsonInstance().fromJson( result, new TypeToken<ArrayList<UserModel>>(){}.getType());
+            interestsContractorsAdapter.setDataset(mContractors);
+            interestsContractorsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class AsyncRateAndClose extends AsyncTask<String,Integer,String>
     {
         @Override
         protected String doInBackground(String... strings) {
