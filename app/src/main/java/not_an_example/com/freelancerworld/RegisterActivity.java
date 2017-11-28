@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -102,8 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            Gson gson = new Gson();
-            Message message = gson.fromJson(result, Message.class);
+            Message message = Utils.getGsonInstance().fromJson(result, Message.class);
             setErrorRegistration(message.message);
             if (message.status == 1)
                 finish();
