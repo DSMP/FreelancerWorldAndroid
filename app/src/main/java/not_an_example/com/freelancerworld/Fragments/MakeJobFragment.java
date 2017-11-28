@@ -91,7 +91,13 @@ public class MakeJobFragment extends Fragment {
         mMaxPayment.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mMaxPaymentT.setText(String.valueOf(progress));
+                int minProgress = Integer.parseInt(mMinPaymentT.getText().toString());
+                if (progress < minProgress) {
+                    mMaxPaymentT.setText(mMinPaymentT.getText());
+                    seekBar.setProgress(minProgress);
+                }
+                else
+                    mMaxPaymentT.setText(String.valueOf(progress));
             }
 
             @Override
@@ -106,7 +112,14 @@ public class MakeJobFragment extends Fragment {
         mMinPayment.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mMinPaymentT.setText(String.valueOf(progress));
+                int maxProgress = Integer.parseInt(mMaxPaymentT.getText().toString());
+                if (progress > maxProgress)
+                {
+                    mMinPaymentT.setText(mMaxPaymentT.getText());
+                    seekBar.setProgress(maxProgress);
+                }
+                else
+                    mMinPaymentT.setText(String.valueOf(progress));
             }
 
             @Override
