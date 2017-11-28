@@ -104,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
         {
             super.onPostExecute(result);
             if (communication.getStatus() == 2) {
-                mEmail.setError("Can't connect to login service");
+                mEmail.setError("Can't connect to register service");
                 mEmail.requestFocus();
             }else
             {
