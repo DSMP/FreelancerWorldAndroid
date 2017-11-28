@@ -5,18 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Filter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import not_an_example.com.freelancerworld.Adapter.ContractorListAdapter;
-import not_an_example.com.freelancerworld.Adapter.JobListAdapter;
-import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
+import not_an_example.com.freelancerworld.Contants.FilterConstants;
 import not_an_example.com.freelancerworld.Models.AddressModel;
 import not_an_example.com.freelancerworld.Models.RequestModel;
 import not_an_example.com.freelancerworld.Models.UserModel;
@@ -28,17 +29,17 @@ public class MyRequestActivity extends AppCompatActivity {
     public static final String REQUEST = "request";
 
     private TextView mTitleText;
-    private TextView mMinPaymentText;
-    private TextView mMaxPaymentText;
+    private TextView mPaymentText;
     private TextView mDescriptionText;
     private TextView mCreationDateText;
     private TextView mProfessionText;
     private TextView mAdresstText;
-    private TextView mUserText;
 
     private RecyclerView interestsContractorsRecycler;
     private ContractorListAdapter interestsContractorsAdapter;
 
+    private RatingBar mRequestRating;
+    private Button  mFinishButton;
 
     private RequestModel requestModel;
     private List<UserModel> mContractors;
@@ -47,35 +48,58 @@ public class MyRequestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_request);
-        mTitleText = (TextView) findViewById(R.id.TitleText);
-        mMinPaymentText = (TextView) findViewById(R.id.MinPaymentText);
-        mMaxPaymentText = (TextView) findViewById(R.id.MaxPaymentText);
-        mDescriptionText = (TextView) findViewById(R.id.DescriptionText);
-        mCreationDateText = (TextView) findViewById(R.id.CreationDateText);
-        mProfessionText = (TextView) findViewById(R.id.ProfessionText);
-        mAdresstText = (TextView) findViewById(R.id.AdresstText);
-        mUserText = (TextView) findViewById(R.id.UserText);
+        mTitleText = (TextView) findViewById(R.id.my_request_title_text);
+        mPaymentText = (TextView) findViewById(R.id.my_request_payment);
+        mDescriptionText = (TextView) findViewById(R.id.my_request_description_text);
+        mCreationDateText = (TextView) findViewById(R.id.my_request_created_date_text);
+        mProfessionText = (TextView) findViewById(R.id.my_request_profession_text);
+        mAdresstText = (TextView) findViewById(R.id.my_request_address_text);
+        mRequestRating = (RatingBar) findViewById(R.id.my_request_rating_bar);
+        mFinishButton = (Button) findViewById(R.id.my_request_button_rate);
+        mFinishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestModel.mark = (int) mRequestRating.getRating();
+                requestModel.active = 0;
+                new AsyncRateAndClose().execute();
+            }
+        });
 
         requestModel = Utils.getGsonInstance().fromJson(getIntent().getStringExtra(REQUEST), RequestModel.class);
 
-        mTitleText.setText("Title: " + requestModel.title);
-        mMinPaymentText.setText("Min payment: " + String.valueOf(requestModel.minPayment));
-        mMaxPaymentText.setText("Max payment: " + String.valueOf(requestModel.maxPayment));
-        mDescriptionText.setText("Description: " + requestModel.description);
-        mCreationDateText.setText("Date created: " + requestModel.creationDate.toString());
-        mProfessionText.setText("Lookingo for: " + requestModel.profession.name);
-        AddressModel adress = requestModel.address; mAdresstText.setText(new StringBuilder("Adres: " + adress.buildingNumber + " " +
+        mTitleText.setText(requestModel.title);
+        mPaymentText.setText(requestModel.getPaymentThreshold("-", FilterConstants.PAYMENT_UNIT));
+        mDescriptionText.setText(requestModel.description);
+        mCreationDateText.setText(requestModel.getFormattedDate());
+        mProfessionText.setText(requestModel.profession.name);
+        AddressModel adress = requestModel.address;
+        mAdresstText.setText(new StringBuilder(adress.buildingNumber + " " +
                 adress.city + " " + adress.city + " " + adress.street + " " + adress.houseNumber + " " + adress.postalCode));
-        mUserText.setText("Signature: " + requestModel.user.name + " " + requestModel.user.lastName);
-        interestsContractorsRecycler = (RecyclerView) findViewById(R.id.ContractorsRecycler);
+        interestsContractorsRecycler = (RecyclerView) findViewById(R.id.my_request_contractor_recycler);
 
         createAdapters();
+        Boolean isRecyclerShown = setVisibility();
+        if (isRecyclerShown) {
+            interestsContractorsAdapter.setActivityForListener(ContractorActivity.class);
+            interestsContractorsAdapter.setDataset(mContractors);
+            interestsContractorsAdapter.setRequest(Utils.getGsonInstance().toJson(requestModel));
+            new AsyncShowContractors().execute();
+        }
+    }
 
-        //TODO: narazie bo nie ma jeszcze
-        interestsContractorsAdapter.setActivityForListener(ContractorActivity.class);
-        interestsContractorsAdapter.setDataset(mContractors);
-        interestsContractorsAdapter.setRequest(Utils.getGsonInstance().toJson(requestModel));
-        new AsyncShowContractors().execute();
+    private boolean setVisibility() {
+        if (requestModel.mark != 0 ) {
+            mRequestRating.setIsIndicator(true);
+            mFinishButton.setText(getString(R.string.my_request_string_rated));
+            mFinishButton.setOnClickListener(null);
+        }
+        if (requestModel.requestTakerId != 0) {
+            interestsContractorsRecycler.setVisibility(View.INVISIBLE);
+            mRequestRating.setVisibility(View.VISIBLE);
+            mFinishButton.setVisibility(View.VISIBLE);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -112,6 +136,22 @@ public class MyRequestActivity extends AppCompatActivity {
             mContractors = Utils.getGsonInstance().fromJson( result, new TypeToken<ArrayList<UserModel>>(){}.getType());
             interestsContractorsAdapter.setDataset(mContractors);
             interestsContractorsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class AsyncRateAndClose extends AsyncTask<String,Integer,String>
+    {
+        @Override
+        protected String doInBackground(String... strings) {
+
+            return new Communication().Receive("/request/setmarkforrequest/"+String.valueOf(requestModel.id)+"/"+String.valueOf(requestModel.mark), "","PATCH");
+        }
+        @Override
+        protected void onPostExecute(String result)
+        {
+            mRequestRating.setIsIndicator(true);
+            mFinishButton.setText(getString(R.string.my_request_string_rated));
+            mFinishButton.setOnClickListener(null);
         }
     }
 }

@@ -3,7 +3,9 @@ package not_an_example.com.freelancerworld.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,11 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import not_an_example.com.freelancerworld.Contants.FilterConstants;
 import not_an_example.com.freelancerworld.Models.RequestModel;
@@ -30,10 +35,11 @@ import not_an_example.com.freelancerworld.Utils.Utils;
  */
 
 public class MyRequestsListAdapter extends RecyclerView.Adapter<MyRequestsListAdapter.ViewHolder> {
-    protected List<RequestModel> mDataset;
-    protected Context mContext;
-    protected Class mActivity;
-    protected Map<String, Boolean> mActivityFlags;
+    private List<RequestModel> mDataset;
+    private Map<Integer, Integer> mRequestContractorCountMap;
+    private Context mContext;
+    private Class mActivity;
+    private Map<String, Boolean> mActivityFlags;
 
     public MyRequestsListAdapter(List<RequestModel> myDataset) {
         this(myDataset, null, null);
@@ -45,8 +51,23 @@ public class MyRequestsListAdapter extends RecyclerView.Adapter<MyRequestsListAd
         mActivity = activityClass;
     }
 
+    private void additionalSetup() {
+        mRequestContractorCountMap = new HashMap<>();
+        for (RequestModel request : mDataset) {
+            if (request.requestTakerId == 0) {
+                mRequestContractorCountMap.put(request.id, 0);
+            }
+        }
+        new AsyncCountContractors().execute();
+    }
+
     public void setDataset( List<RequestModel> myDataset) {
         this.mDataset = myDataset;
+        additionalSetup();
+    }
+
+    public void setRequestContractorCountMap( Map<Integer,Integer> requestContractorCountMap ) {
+        mRequestContractorCountMap = requestContractorCountMap;
     }
 
     public void setActivityForListener(Class activityClass) {
@@ -108,6 +129,10 @@ public class MyRequestsListAdapter extends RecyclerView.Adapter<MyRequestsListAd
         if (requestModel.requestTakerId != 0) {
             holder.mJobOfferAssignedContractor.setVisibility(View.VISIBLE);
             holder.mJobOfferContractors.setVisibility(View.INVISIBLE);
+        } else {
+            holder.mJobOfferAssignedContractor.setVisibility(View.INVISIBLE);
+            holder.mJobOfferContractors.setVisibility(View.VISIBLE);
+            holder.mJobOfferContractors.setText(mRequestContractorCountMap.get(requestModel.id)+ " interested");
         }
     }
 
@@ -116,4 +141,21 @@ public class MyRequestsListAdapter extends RecyclerView.Adapter<MyRequestsListAd
         return mDataset.size();
     }
 
+
+    private class AsyncCountContractors extends AsyncTask<String,Integer,String>
+    {
+        protected String doInBackground(String... params) {
+
+            String requestContractorSerialized = Utils.getGsonInstance().toJson(mRequestContractorCountMap.keySet().toArray());
+
+            return new Communication().Receive("/request/countcontractors/",requestContractorSerialized,"POST");
+        }
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            mRequestContractorCountMap = Utils.getGsonInstance().fromJson(result, new TypeToken<HashMap<Integer, Integer>>(){}.getType());
+            notifyDataSetChanged();
+        }
+    }
 }

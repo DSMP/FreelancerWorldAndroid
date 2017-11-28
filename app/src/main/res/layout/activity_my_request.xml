@@ -1,79 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="not_an_example.com.freelancerworld.MyRequestActivity">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    android:padding="4dp"
+    tools:context="not_an_example.com.freelancerworld.MyRequestActivity">>
 
             <TextView
-                android:id="@+id/TitleText"
-                android:textSize="20dp"
-                android:paddingBottom="10dp"
+                android:id="@+id/my_request_title_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                style="@style/myRequestTitle"
+                android:text="title"/>
 
             <TextView
-                android:id="@+id/MinPaymentText"
-                android:textSize="20dp"
-                android:paddingBottom="10dp"
+                android:id="@+id/my_request_payment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_request_title_text"
+                style="@style/myRequestPayment"
+                android:text="100$ - 200$"/>
 
             <TextView
-                android:id="@+id/MaxPaymentText"
-                android:textSize="20dp"
-                android:paddingBottom="10dp"
+                android:id="@+id/my_request_description_label"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_request_payment"
+                style="@style/myRequestSubtitle"
+                android:text="@string/my_request_string_description"/>
 
             <TextView
-                android:id="@+id/DescriptionText"
-                android:textSize="20dp"
-                android:paddingBottom="10dp"
+                android:id="@+id/my_request_description_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="150dp"
+                android:layout_below="@id/my_request_description_label"
+                style="@style/myRequestDescriptionText"
+                android:text="typical boring description, you just have to do what yu have to do etc
+fdsfdsfsdfsdfsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+fdsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssgfdgfdgfdgfdggdfgfdgfdgdfgdfgdfgdfgdfgdfg" />
 
             <TextView
-                android:id="@+id/CreationDateText"
-                android:textSize="20dp"
-                android:paddingBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/my_request_created_date_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_request_description_text"
+                style="@style/myRequestSubtitle"
+                android:text="@string/my_request_string_date"/>
 
             <TextView
-                android:id="@+id/ProfessionText"
-                android:textSize="20dp"
-                android:paddingBottom="10dp"
+                android:id="@+id/my_request_created_date_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_request_description_text"
+                android:layout_toRightOf="@id/my_request_created_date_label"
+                style="@style/myRequestSubtitleText"
+                android:text="11-11-2011"/>
 
             <TextView
-                android:id="@+id/AdresstText"
-                android:textSize="20dp"
-                android:paddingBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/my_request_profession_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_request_created_date_label"
+                style="@style/myRequestSubtitle"
+                android:text="@string/my_request_string_profession"/>
 
             <TextView
-                android:id="@+id/UserText"
-                android:textSize="20dp"
-                android:paddingBottom="10dp"
+                android:id="@+id/my_request_profession_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_request_created_date_label"
+                android:layout_toRightOf="@id/my_request_profession_label"
+                style="@style/myRequestSubtitleText"
+                android:text="dupotechnik"/>
+
+
+            <TextView
+                android:id="@+id/my_request_address_text"
+                android:layout_below="@+id/my_request_profession_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/myRequestSubtitleText"
+                android:text="adres dupowa sadsadwqdasdasd"/>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/ContractorsRecycler"
-                style="@style/paddedUpperRecycler"
+                android:id="@+id/my_request_contractor_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
-        </LinearLayout>
-    </ScrollView>
-</android.support.constraint.ConstraintLayout>
+                android:layout_height="match_parent"
+                android:layout_below="@id/my_request_address_text"
+                android:layout_above="@+id/my_request_rating_bar"
+                android:layout_alignParentBottom="true"
+                android:visibility="visible"
+                style="@style/paddedUpperRecycler"/>
+
+            <RatingBar
+                android:id="@id/my_request_rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/my_request_button_rate"
+                style="@style/myRequestRatingBar"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/my_request_button_rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:text="@string/my_request_string_rate_finish"
+                android:visibility="invisible"/>
+
+
+</RelativeLayout>

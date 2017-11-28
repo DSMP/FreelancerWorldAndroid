@@ -8,11 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import not_an_example.com.freelancerworld.Models.AddressModel;
 import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.RequestModel;
@@ -43,13 +38,13 @@ public class RequestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
-        mTitleText = (TextView) findViewById(R.id.TitleText);
-        mMinPaymentText = (TextView) findViewById(R.id.MinPaymentText);
-        mMaxPaymentText = (TextView) findViewById(R.id.MaxPaymentText);
-        mDescriptionText = (TextView) findViewById(R.id.DescriptionText);
-        mCreationDateText = (TextView) findViewById(R.id.CreationDateText);
-        mProfessionText = (TextView) findViewById(R.id.ProfessionText);
-        mAdresstText = (TextView) findViewById(R.id.AdresstText);
+        mTitleText = (TextView) findViewById(R.id.my_request_title_text);
+        mMinPaymentText = (TextView) findViewById(R.id.my_request_min_payment);
+        mMaxPaymentText = (TextView) findViewById(R.id.my_request_max_payment);
+        mDescriptionText = (TextView) findViewById(R.id.my_request_description_label);
+        mCreationDateText = (TextView) findViewById(R.id.my_request_created_date_label);
+        mProfessionText = (TextView) findViewById(R.id.my_request_profession_text);
+        mAdresstText = (TextView) findViewById(R.id.my_request_address_text);
         mUserText = (TextView) findViewById(R.id.UserText);
         mSendResponseButton = (Button) findViewById(R.id.SendResponseButton);
 
