@@ -57,7 +57,7 @@ public class Communication {
                 httpConnection.disconnect();
             }
         }
-        Log.v("========receivedData", postData);
+        Log.v(status + "========receivedData", postData);
         return postData;
     }
     public String getReturnedData() {
