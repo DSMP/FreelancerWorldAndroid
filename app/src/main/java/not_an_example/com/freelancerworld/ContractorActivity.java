@@ -61,7 +61,7 @@ public class ContractorActivity extends AppCompatActivity {
     }
     private class AsyncSendAcceptContractor extends AsyncTask<String,Integer,String>
     {
-        Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Gson gson = Utils.getGsonInstance();
 
         protected void onPreExecute()
         {

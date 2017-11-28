@@ -38,6 +38,7 @@ import java.util.List;
 
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -339,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 UserModel user = new UserModel();
                 user.email = mEmail;
                 user.password = mPassword;
-                String userJson = gson.toJson(user);
+                String userJson = Utils.getGsonInstance().toJson(user);
                 UserProfile = new Communication().Receive("/user/login", userJson, "POST");
 //                UserModel user = gson.fromJson(UserProfile, UserModel.class);
 //                Thread.sleep(2000);

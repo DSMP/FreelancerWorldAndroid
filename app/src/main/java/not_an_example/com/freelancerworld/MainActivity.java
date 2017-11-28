@@ -28,6 +28,7 @@ import not_an_example.com.freelancerworld.Fragments.MyRequestsFragment;
 import not_an_example.com.freelancerworld.Fragments.SettingsFragment;
 import not_an_example.com.freelancerworld.Fragments.UserProfileFragment;
 import not_an_example.com.freelancerworld.Models.UserModel;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         userModel = new UserModel();
-        gson = new Gson();
+        gson = Utils.getGsonInstance();
         userModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
 
 

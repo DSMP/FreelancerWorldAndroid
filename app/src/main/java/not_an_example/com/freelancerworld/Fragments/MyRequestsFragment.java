@@ -25,6 +25,7 @@ import not_an_example.com.freelancerworld.MyRequestActivity;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.Utils.Communication;
 import not_an_example.com.freelancerworld.Utils.DividerItemDecoration;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class MyRequestsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
@@ -106,7 +107,7 @@ public class MyRequestsFragment extends Fragment {
     }
     private class AsyncGetMyRequests extends AsyncTask<String,Integer,String>
     {
-        Gson gson =  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Gson gson = Utils.getGsonInstance();
 
         @Override
         protected String doInBackground(String... strings) {
