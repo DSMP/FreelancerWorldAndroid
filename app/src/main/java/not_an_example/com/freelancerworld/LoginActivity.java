@@ -325,6 +325,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        Communication communication = new Communication();
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -341,9 +342,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 user.email = mEmail;
                 user.password = mPassword;
                 String userJson = Utils.getGsonInstance().toJson(user);
-                Communication communication = new Communication();
                 UserProfile = communication.Receive("/user/login", userJson, "POST");
-                if (communication.getStatus())
+                if (communication.getStatus() == 2)
+                    mEmailView.setError("Can't connect to login service");
 //                UserModel user = gson.fromJson(UserProfile, UserModel.class);
 //                Thread.sleep(2000);
 //            } catch (InterruptedException e) {
@@ -370,8 +371,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 StartDashboard();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                if (communication.getStatus() != 2) {
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                }
             }
         }
 

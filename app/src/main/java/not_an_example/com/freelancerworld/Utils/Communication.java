@@ -63,4 +63,8 @@ public class Communication {
     public String getReturnedData() {
         return returnedData;
     }
+
+    public int getStatus() {
+        return status;
+    }
 }
