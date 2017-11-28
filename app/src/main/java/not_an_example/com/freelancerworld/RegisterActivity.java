@@ -92,10 +92,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private class AsyncSendData extends AsyncTask<String,Integer,String>
     {
+        Communication communication = new Communication();
         @Override
         protected String doInBackground(String... params) {
 
-            Communication communication = new Communication();
             return communication.Receive("/user/register", params[0], "POST");
         }
 
@@ -103,10 +103,16 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            Message message = Utils.getGsonInstance().fromJson(result, Message.class);
-            setErrorRegistration(message.message);
-            if (message.status == 1)
-                finish();
+            if (communication.getStatus() == 2) {
+                mEmail.setError("Can't connect to login service");
+                mEmail.requestFocus();
+            }else
+            {
+                Message message = Utils.getGsonInstance().fromJson(result, Message.class);
+                setErrorRegistration(message.message);
+                if (message.status == 1)
+                    finish();
+            }
         }
     }
 }
