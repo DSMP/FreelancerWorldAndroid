@@ -59,10 +59,9 @@ public class MyRequestActivity extends AppCompatActivity {
         mFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRequestRating.setIsIndicator(true);
                 requestModel.mark = (int) mRequestRating.getRating();
                 requestModel.active = 0;
-
+                new AsyncRateAndClose().execute();
             }
         });
 
@@ -89,6 +88,11 @@ public class MyRequestActivity extends AppCompatActivity {
     }
 
     private boolean setVisibility() {
+        if (requestModel.mark != 0 ) {
+            mRequestRating.setIsIndicator(true);
+            mFinishButton.setText(getString(R.string.my_request_string_rated));
+            mFinishButton.setOnClickListener(null);
+        }
         if (requestModel.requestTakerId != 0) {
             interestsContractorsRecycler.setVisibility(View.INVISIBLE);
             mRequestRating.setVisibility(View.VISIBLE);
@@ -140,14 +144,14 @@ public class MyRequestActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
 
-            return new Communication().Receive("/request/showcontractors/"+String.valueOf(requestModel.id), "","POST");
+            return new Communication().Receive("/request/setmarkforrequest/"+String.valueOf(requestModel.id)+"/"+String.valueOf(requestModel.mark), "","PATCH");
         }
         @Override
         protected void onPostExecute(String result)
         {
-            mContractors = Utils.getGsonInstance().fromJson( result, new TypeToken<ArrayList<UserModel>>(){}.getType());
-            interestsContractorsAdapter.setDataset(mContractors);
-            interestsContractorsAdapter.notifyDataSetChanged();
+            mRequestRating.setIsIndicator(true);
+            mFinishButton.setText(getString(R.string.my_request_string_rated));
+            mFinishButton.setOnClickListener(null);
         }
     }
 }

@@ -41,4 +41,11 @@
     <string name="job_filters_payment_or_time_min">Minimum</string>
     <string name="job_filters_payment_or_time_max">Maximum</string>
 
+    <!-- **********************MY REQUEST STRINGS************************** !-->
+    <string name="my_request_string_rated">The reqest has been rated</string>
+    <string name="my_request_string_rate_finish">Rate and finish</string>
+    <string name="my_request_string_description">Description:</string>
+    <string name="my_request_string_date">Created date:</string>
+    <string name="my_request_string_profession">Required profession:</string>
+
 </resources>

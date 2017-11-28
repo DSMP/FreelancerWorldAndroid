@@ -137,11 +137,7 @@
         <item name="android:max">5</item>
         <item name="android:stepSize">1</item>
         <item name="android:rating">5</item>
-        <item name="android:isIndicator">true</item>
+        <item name="android:isIndicator">false</item>
     </style>
-
-
-
-
 
 </resources>

@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/my_request_payment"
                 style="@style/myRequestSubtitle"
-                android:text="Description:"/>
+                android:text="@string/my_request_string_description"/>
 
             <TextView
                 android:id="@+id/my_request_description_text"
@@ -45,7 +45,7 @@ fdsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssgfdgfdgfdgfdggdfgfd
                 android:layout_height="wrap_content"
                 android:layout_below="@id/my_request_description_text"
                 style="@style/myRequestSubtitle"
-                android:text="Created date:"/>
+                android:text="@string/my_request_string_date"/>
 
             <TextView
                 android:id="@+id/my_request_created_date_text"
@@ -62,7 +62,7 @@ fdsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssgfdgfdgfdgfdggdfgfd
                 android:layout_height="wrap_content"
                 android:layout_below="@id/my_request_created_date_label"
                 style="@style/myRequestSubtitle"
-                android:text="Required profession:"/>
+                android:text="@string/my_request_string_profession"/>
 
             <TextView
                 android:id="@+id/my_request_profession_text"
@@ -107,7 +107,7 @@ fdsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssgfdgfdgfdgfdggdfgfd
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
-                android:text="Mark as finished and rate"
+                android:text="@string/my_request_string_rate_finish"
                 android:visibility="invisible"/>
 
 
