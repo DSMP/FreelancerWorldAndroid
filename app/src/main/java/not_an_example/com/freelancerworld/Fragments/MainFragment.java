@@ -153,11 +153,15 @@ public class MainFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            UserModel userModel = Utils.getGsonInstance().fromJson(getActivity().getIntent().getStringExtra("user_profile"),UserModel.class);
-            String response = new Communication().Receive("/user/findrequests/" + userModel.id,"", "GET");
-            Log.v("======GSON", response);
-            myRequestModelList = Utils.getGsonInstance().fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
-            return true;
+            if (getActivity() != null) {
+                UserModel userModel = Utils.getGsonInstance().fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
+                String response = new Communication().Receive("/user/findrequests/" + userModel.id, "", "GET");
+                Log.v("======GSON", response);
+                myRequestModelList = Utils.getGsonInstance().fromJson(response, new TypeToken<ArrayList<RequestModel>>() {
+                }.getType());
+                return true;
+            }
+            return false;
         }
 
         @Override
@@ -170,7 +174,8 @@ public class MainFragment extends Fragment {
 
             mUpperAdapter.setDataset(filteredModelList);
             mUpperAdapter.notifyDataSetChanged();
-            mUpperAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
+            if (getActivity() != null)
+                mUpperAdapter.setUser(getActivity().getIntent().getStringExtra("user_profile"));
         }
     }
 
@@ -178,16 +183,21 @@ public class MainFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            UserModel userModel = Utils.getGsonInstance().fromJson(getActivity().getIntent().getStringExtra("user_profile"),UserModel.class);
-            String response = new Communication().Receive("/request/getall/","", "GET");
-            Log.v("======GSON", response);
-            takenRequestModelList = Utils.getGsonInstance().fromJson( response, new TypeToken<ArrayList<RequestModel>>(){}.getType());
-            return true;
+            if (getActivity() != null) {
+                UserModel userModel = Utils.getGsonInstance().fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
+                String response = new Communication().Receive("/request/getall/", "", "GET");
+                Log.v("======GSON", response);
+                takenRequestModelList = Utils.getGsonInstance().fromJson(response, new TypeToken<ArrayList<RequestModel>>() {
+                }.getType());
+                return true;
+            }
+            return false;
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+            if (aBoolean == false) return;
             List<RequestModel> allRequestModelList = new ArrayList<RequestModel>(takenRequestModelList);
 
             takenRequestModelList.clear();
