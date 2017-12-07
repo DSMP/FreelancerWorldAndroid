@@ -1,6 +1,7 @@
 package not_an_example.com.freelancerworld.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,31 +13,45 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import not_an_example.com.freelancerworld.JobListAdapter;
+import not_an_example.com.freelancerworld.Adapter.LegacyAdapter;
+import not_an_example.com.freelancerworld.MainActivity;
+import not_an_example.com.freelancerworld.Models.Message;
 import not_an_example.com.freelancerworld.Models.ProfessionModel;
+import not_an_example.com.freelancerworld.Models.RequestModel;
+import not_an_example.com.freelancerworld.Models.SmallModels.EditDescription;
 import not_an_example.com.freelancerworld.Models.SmallModels.Professions;
 import not_an_example.com.freelancerworld.Models.SmallModels.User;
 import not_an_example.com.freelancerworld.Models.UserModel;
 import not_an_example.com.freelancerworld.R;
 import not_an_example.com.freelancerworld.Utils.Communication;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class UserProfileFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private RecyclerView mUpperRecycler, mLowerRecycler;
-    private JobListAdapter mUpperAdapter, mLowerAdapter;
+    private LegacyAdapter mUpperAdapter, mLowerAdapter;
     Spinner mSpinner;
     Button mSpeccAdd;
+    Button mSpeccRem;
     ArrayList<String> mAllSpec;
     ArrayList<String> mUserSpec;
+    ArrayAdapter<String> spinnerAdapter;
+    EditText mDescribeEditText;
 
     UserModel mUserModel;
+    private List<RequestModel> mPortfolioList;
+    private List<String> mRequestsTitles;
 
 
     public UserProfileFragment() {
@@ -62,39 +77,55 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Gson gson = new Gson();
-        mUserModel = gson.fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
+        mUserModel = Utils.getGsonInstance().fromJson(getActivity().getIntent().getStringExtra("user_profile"), UserModel.class);
         mAllSpec = new ArrayList<>();
         mUserSpec = new ArrayList<>();
-        mAllSpec.add("Stolarz"); mAllSpec.add( "Hydraulik"); mAllSpec.add("Programista");
         mUpperRecycler = (RecyclerView) view.findViewById(R.id.upper_job_recycler);
         mLowerRecycler = (RecyclerView) view.findViewById(R.id.lower_job_recycler);
         createAdapters();
         mSpinner = (Spinner) view.findViewById(R.id.SelectSpec);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_dropdown_item, (String[]) mAllSpec.toArray(new String[mAllSpec.size()]));
-        mSpinner.setAdapter(adapter);
+        mDescribeEditText = (EditText) view.findViewById(R.id.describeEditText);
+        mDescribeEditText.setText(mUserModel.description);
+//        mDescribeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus)
+//                    new AsyncEditDescribe().execute();
+//            }
+//        });
+        spinnerAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, mAllSpec);
+        mSpinner.setAdapter(spinnerAdapter);
         mSpeccAdd = (Button) view.findViewById(R.id.specAddButton);
+        mSpeccRem = (Button) view.findViewById(R.id.specRemButton);
+        new AsyncGetAllProfs().execute();
         mSpeccAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mUserSpec.add((String) mSpinner.getSelectedItem());
                 mUpperAdapter.notifyItemInserted(mUserSpec.size()-1);
                 mUpperAdapter.notifyDataSetChanged();
-                ProfessionModel professionModel = new ProfessionModel();
-                User userID = new User(); userID.id = mUserModel.id;
-                Professions[] professionsTable = new Professions[mUserSpec.size()+1]; int i = 0; for (int j = 0; j < professionsTable.length ; j++) professionsTable[j] = new Professions();
-                for (String s: mUserSpec) {
-                    professionsTable[i].name = mUserSpec.get(i);
-                    i++;
-                }
-                professionsTable[i].name = (String) mSpinner.getSelectedItem();
-                professionModel.user = userID;
-                professionModel.professions = professionsTable;
-                Gson gson = new Gson();
-                new AsyncSendData().execute(gson.toJson(professionModel));
+                new AsyncPutProfession().execute();
             }
         });
+        mSpeccRem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUserSpec.remove((String) mSpinner.getSelectedItem());
+                mUpperAdapter.notifyDataSetChanged();
+                new AsyncPutProfession().execute();
+            }
+        });
+        for (Professions p: mUserModel.professions) {
+            mUserSpec.add(p.name);
+        }
+    }
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+        new AsyncEditDescribe().execute();
+//        getActivity().getIntent().putExtra("user_profile", new Gson().toJson(mUserModel));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -123,12 +154,13 @@ public class UserProfileFragment extends Fragment {
 
     private void createAdapters() {
         if ( mUpperAdapter == null) {
-            mUpperAdapter = new JobListAdapter((String[]) mUserSpec.toArray(new String[mUserSpec.size()]));
+            mUpperAdapter = new LegacyAdapter(mUserSpec);
         }
 
         if ( mLowerAdapter == null) {
-            String[] lowerJobs = { "Zlecenie 11", "Zlecenie 13", "Zlecenie 21", "Zlecenie 24" };
-            mLowerAdapter = new JobListAdapter(lowerJobs);
+            mPortfolioList = new ArrayList<>();
+            mRequestsTitles = new ArrayList<>();
+            mLowerAdapter = new LegacyAdapter(mRequestsTitles);
         }
 
         mUpperRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -144,21 +176,109 @@ public class UserProfileFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private class AsyncSendData extends AsyncTask<String,Integer,String>
+    private void launchPortfolio()
     {
+        new AsyncShowPortfolio().execute(String.valueOf(mUserModel.id));
+    }
+
+    private class AsyncGetAllProfs extends AsyncTask<String,Integer,String>
+    {
+
         @Override
         protected String doInBackground(String... params) {
-
             Communication communication = new Communication();
-            return communication.Receive("/user/professionadd", params[0]);
+            String JSON = communication.Receive("/profession/getall", "", "GET");
+            return JSON;
         }
 
         @Override
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            Gson gson = new Gson();
-            mUserModel = gson.fromJson(result, UserModel.class);
+            Professions[] professionses = new Professions[10]; for (int j = 0; j < professionses.length ; j++) professionses[j] = new Professions();
+            professionses = Utils.getGsonInstance().fromJson(result, Professions[].class);
+            for (Professions s:professionses) {
+                mAllSpec.add(s.name);
+            }
+            spinnerAdapter.notifyDataSetChanged();
+            launchPortfolio();
+        }
+    }
+
+    private class AsyncPutProfession extends AsyncTask<String,Integer,String>
+    {
+        @Override
+        protected String doInBackground(String... params) {
+            ProfessionModel professionModel = new ProfessionModel();
+            User userID = new User(); userID.id = mUserModel.id;
+            Professions[] professionsTable = new Professions[mUserSpec.size()]; int i = 0; for (int j = 0; j < professionsTable.length ; j++) professionsTable[j] = new Professions();
+            for (String s: mUserSpec) {
+                professionsTable[i].name = mUserSpec.get(i);
+                i++;
+            }
+            professionModel.user = userID;
+            professionModel.professions = professionsTable;
+            Communication communication = new Communication();
+            return communication.Receive("/user/professionadd",
+                    Utils.getGsonInstance().toJson(professionModel), "PUT");
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            mUserModel = Utils.getGsonInstance().fromJson(result, UserModel.class);
+        }
+    }
+    private class AsyncEditDescribe extends AsyncTask<String,Integer,String>
+    {
+        EditDescription ed = new EditDescription();
+        MainActivity activity;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            activity = (MainActivity) getActivity();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            ed.id = mUserModel.id;
+            ed.description = mDescribeEditText.getText().toString();
+            return new Communication().Receive("/user/editdescription",Utils.getGsonInstance().toJson(ed),"PATCH");
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            Message msg = Utils.getGsonInstance().fromJson(result, Message.class);
+            if (msg.status != 201)
+                Toast.makeText(getContext(), msg.message, Toast.LENGTH_LONG).show();
+            else
+                mUserModel.description = mDescribeEditText.getText().toString();
+            activity.getIntent().putExtra("user_profile", Utils.getGsonInstance().toJson(mUserModel));
+            activity.refreshMenu();
+        }
+    }
+    private class AsyncShowPortfolio extends AsyncTask<String,Integer,String>
+    {
+        @Override
+        protected String doInBackground(String... params) {
+            return new Communication().Receive("/user/getportfolio/"+params[0],"","GET");
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+            mPortfolioList = Utils.getGsonInstance().fromJson(result,  new TypeToken<ArrayList<RequestModel>>(){}.getType());
+//            if (mPortfolioList!=null)
+                for (RequestModel r: mPortfolioList) {
+                    mRequestsTitles.add(r.title);
+                }
+            mLowerAdapter.notifyDataSetChanged();
+
         }
     }
 }

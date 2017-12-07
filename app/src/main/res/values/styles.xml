@@ -13,8 +13,131 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay"  parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="paddedRecycler">
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:background">@drawable/grey_border</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="paddedUpperRecycler" parent="paddedRecycler">
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <style name="paddedLowerRecycler" parent="paddedRecycler">
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <style name="paddedRecyclerItem">
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="paddedRecyclerItemForPercent" parent="paddedRecyclerItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="paddedRecyclerItemForPercentStretchImage" parent="paddedRecyclerItemForPercent">
+        <item name="android:gravity">center_vertical|end</item>
+    </style>
+
+    <style name="paddedRecyclerItemForPercentRating" parent="paddedRecyclerItemForPercent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:scaleX">0.3</item>
+        <item name="android:scaleY">0.3</item>
+        <item name="android:numStars">5</item>
+        <item name="android:rating">3.7</item>
+        <item name="android:stepSize">0.5</item>
+        <item name="android:isIndicator">true</item>
+    </style>
+
+    <style name="paddedRecyclerItemForPercentStretchSmallText" parent="paddedRecyclerItemForPercent">
+        <item name="android:textSize">15dp</item>
+        <item name="android:gravity">center_vertical|end</item>
+    </style>
+
+    <style name="paddedRecyclerItemForPercentStretchBigText" parent="paddedRecyclerItemForPercent">
+        <item name="android:textSize">24dp</item>
+        <item name="android:gravity">center_vertical|start</item>
+    </style>
+
+    <style name="jobFiltersBasicElement">
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
+    <style name="jobFiltersBasicText" parent="jobFiltersBasicElement">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="jobFiltersSubtitle" parent="jobFiltersBasicText">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="jobFiltersTitle" parent="jobFiltersBasicText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">50dp</item>
+    </style>
+
+    <style name="jobFiltersSpinner" parent="jobFiltersBasicElement">
+        <item name="android:layout_marginEnd">50dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="myRequestTitle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">italic|bold</item>
+    </style>
+
+    <style name="myRequestPayment">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="myRequestSubtitleText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:textAlignment">viewEnd</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="myRequestSubtitle" parent="myRequestSubtitleText">
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:layout_alignParentEnd">false</item>
+    </style>
+
+    <style name="myRequestDescriptionText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/grey_border</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="myRequestRatingBar">
+        <item name="android:numStars">5</item>
+        <item name="android:max">5</item>
+        <item name="android:stepSize">1</item>
+        <item name="android:rating">5</item>
+        <item name="android:isIndicator">false</item>
+    </style>
 
 </resources>

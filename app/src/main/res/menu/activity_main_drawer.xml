@@ -18,19 +18,24 @@
             android:id="@+id/MakeJob"
             android:icon="@mipmap/ic_launcher"
             android:title="Make job" />
+        <item
+            android:id="@+id/MyRequests"
+            android:icon="@mipmap/ic_launcher"
+            android:title="My reuests" />
+        <item
+            android:id="@+id/YourProfile"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Your profile" />
+        <item
+            android:id="@+id/Settings"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Settings" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/YourProfile"
-                android:icon="@mipmap/ic_launcher"
-                android:title="Your profile" />
-            <item
-                android:id="@+id/Settings"
-                android:icon="@mipmap/ic_launcher"
-                android:title="Settings" />
-        </menu>
-    </item>
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>

@@ -3,8 +3,7 @@ package not_an_example.com.freelancerworld;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -22,22 +21,31 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment;
-import not_an_example.com.freelancerworld.Fragments.JobFiltersFragment.OnFragmentInteractionListener;
 import not_an_example.com.freelancerworld.Fragments.JobsTakenFragment;
 import not_an_example.com.freelancerworld.Fragments.MainFragment;
+import not_an_example.com.freelancerworld.Fragments.MakeJobFragment;
+import not_an_example.com.freelancerworld.Fragments.MyRequestsFragment;
+import not_an_example.com.freelancerworld.Fragments.SettingsFragment;
 import not_an_example.com.freelancerworld.Fragments.UserProfileFragment;
 import not_an_example.com.freelancerworld.Models.UserModel;
+import not_an_example.com.freelancerworld.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,
-        JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener, UserProfileFragment.OnFragmentInteractionListener {
+        JobsTakenFragment.OnFragmentInteractionListener, JobFiltersFragment.OnFragmentInteractionListener,
+        UserProfileFragment.OnFragmentInteractionListener, MakeJobFragment.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener, MyRequestsFragment.OnFragmentInteractionListener{
 
     UserModel userModel;
     Gson gson;
+
+    private Fragment SelectedFragment;
+
     private TextView mNickNameView;
     private TextView mFullNameView;
     private TextView mSpecView;
     private ImageView mImageView;
+    private Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +53,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -65,8 +64,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         userModel = new UserModel();
-        gson = new Gson();
+        gson = Utils.getGsonInstance();
         userModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
+
+
+//        mMenu = gson.fromJson(getIntent().getStringExtra("ham-menu"), Menu.class);
+
+        this.supportInvalidateOptionsMenu();
 
         Fragment fragment = null;
         Class fragmentClass = null;
@@ -91,17 +95,32 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void refreshMenu()
+    {
+        if (mMenu!=null)
+        {
+            mMenu.clear();
+            this.onCreateOptionsMenu(this.mMenu);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the mMenu; this adds items to the action bar if it is present.
+        this.setMenu(menu);
+        userModel = gson.fromJson(getIntent().getStringExtra("user_profile"), UserModel.class);
+//        getIntent().putExtra("ham-menu", new Gson().toJson(menu));
         getMenuInflater().inflate(R.menu.main, menu);
         mNickNameView = (TextView) findViewById(R.id.nickNameView);
         mFullNameView = (TextView) findViewById(R.id.fullNameView);
         mSpecView = (TextView) findViewById(R.id.specView);
         mImageView = (ImageView) findViewById(R.id.logOffImageView);
         mNickNameView.setText(userModel.email);
-        mFullNameView.setText(userModel.name + userModel.lastName);
-        mSpecView.setText("nie mam specki");
+        mFullNameView.setText(userModel.name + " " + userModel.lastName);
+        mSpecView.setText("Brak specjalizacji");
+        if (userModel.professions.length != 0) {
+            mSpecView.setText(userModel.professions[0].name);
+        }
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +155,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;
@@ -148,11 +167,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.JobFilters) {
             fragmentClass = JobFiltersFragment.class;
         } else if (id == R.id.MakeJob) {
-
+            fragmentClass = MakeJobFragment.class;
+        } else if (id == R.id.MyRequests) {
+            fragmentClass = MyRequestsFragment.class;
         } else if (id == R.id.YourProfile) {
             fragmentClass = UserProfileFragment.class;
         } else if (id == R.id.Settings) {
-
+            fragmentClass = SettingsFragment.class;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -177,4 +198,10 @@ public class MainActivity extends AppCompatActivity
     {
         return userModel;
     }
+
+    private void setMenu(Menu menu) {
+        this.mMenu = menu;
+    }
+
+
 }
