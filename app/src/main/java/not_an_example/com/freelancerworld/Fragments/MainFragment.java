@@ -116,8 +116,6 @@ public class MainFragment extends Fragment {
 
         if ( mLowerAdapter == null) {
             List<RequestModel> lowerJobs = new ArrayList<>();
-            lowerJobs.add(new RequestModel("Job well done"));lowerJobs.add(new RequestModel("Job not paid"));
-            lowerJobs.add(new RequestModel("JIP a.k.a. job in progress"));lowerJobs.add(new RequestModel("Job awaiting... for executioner"));
             mLowerAdapter = new JobListAdapter(lowerJobs);
         }
 
